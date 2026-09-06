@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" width="1000" height="520">
+  <rect width="1000" height="520" fill="#FBFAF7"/>
+  <text x="40" y="28" font-family="DejaVu Sans, sans-serif" font-size="14" letter-spacing="4" fill="#E24A17">SETE SETE · PALETA</text>
+  
+        <g transform="translate(40,40)">
+          <rect width="210" height="160" rx="18" fill="#E24A17"/>
+          <text x="20" y="118" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#F4F0E8">Kaki</text>
+          <text x="20" y="140" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#F4F0E8" opacity="0.8">#E24A17</text>
+        </g>
+        <g transform="translate(270,40)">
+          <rect width="210" height="160" rx="18" fill="#B83310"/>
+          <text x="20" y="118" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#F4F0E8">Kaki profundo</text>
+          <text x="20" y="140" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#F4F0E8" opacity="0.8">#B83310</text>
+        </g>
+        <g transform="translate(500,40)">
+          <rect width="210" height="160" rx="18" fill="#F4F0E8"/>
+          <text x="20" y="118" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#1A1714">Arroz</text>
+          <text x="20" y="140" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#1A1714" opacity="0.8">#F4F0E8</text>
+        </g>
+        <g transform="translate(730,40)">
+          <rect width="210" height="160" rx="18" fill="#FBFAF7"/>
+          <text x="20" y="118" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#1A1714">Arroz quente</text>
+          <text x="20" y="140" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#1A1714" opacity="0.8">#FBFAF7</text>
+        </g>
+        <g transform="translate(40,260)">
+          <rect width="210" height="160" rx="18" fill="#1A1714"/>
+          <text x="20" y="118" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#F4F0E8">Tinta</text>
+          <text x="20" y="140" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#F4F0E8" opacity="0.8">#1A1714</text>
+        </g>
+        <g transform="translate(270,260)">
+          <rect width="210" height="160" rx="18" fill="#231F1C"/>
+          <text x="20" y="118" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#F4F0E8">Nori</text>
+          <text x="20" y="140" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#F4F0E8" opacity="0.8">#231F1C</text>
+        </g>
+        <g transform="translate(500,260)">
+          <rect width="210" height="160" rx="18" fill="#8A8278"/>
+          <text x="20" y="118" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#1A1714">Pedra</text>
+          <text x="20" y="140" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#1A1714" opacity="0.8">#8A8278</text>
+        </g>
+        <g transform="translate(730,260)">
+          <rect width="210" height="160" rx="18" fill="#F3D5C6"/>
+          <text x="20" y="118" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#1A1714">Gari</text>
+          <text x="20" y="140" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#1A1714" opacity="0.8">#F3D5C6</text>
+        </g>
+</svg>

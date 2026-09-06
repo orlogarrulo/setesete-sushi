@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/pedir",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Sete Sete",
+      "hasCanvas": false,
+      "bodyTextLen": 845,
+      "bodyTextHash": "87db1db05ba1e225170250829f3aa7c0e6a30f0af1256d8f49b2a9403d9187e5",
+      "bodyTextPrefix": "SETE SETE NO TEU WHATSAPP INÍCIO A CASA MENU IDENTIDADE PT EN EN",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/pedir.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Sete Sete",
+      "hasCanvas": false,
+      "bodyTextLen": 798,
+      "bodyTextHash": "ef7a047d1129610be4932a77bfacdefd8b8e4e87e08dbdbcb1fc167b62af4275",
+      "bodyTextPrefix": "SETE SETE NO TEU WHATSAPP ENCOMENDAR Fecha o pedido no WhatsApp.",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/pedir-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/pedir.json"
+}

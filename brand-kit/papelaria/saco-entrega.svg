@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520">
+  <title>Saco de entrega — mockup vector</title>
+  <rect width="400" height="520" fill="#F4F0E8"/>
+  <rect x="70" y="40" width="260" height="440" rx="8" fill="#231F1C"/>
+  <rect x="70" y="40" width="260" height="28" fill="#1A1714"/>
+  <g transform="translate(140,160) scale(1)">
+    <circle cx="60" cy="60" r="58" fill="#E24A17"/>
+    <g fill="none" stroke="#F4F0E8" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30 42 Q60 24 84 40 L56 90"/><path d="M90 78 Q60 96 36 80 L64 30"/>
+    </g>
+  </g>
+  <text x="200" y="320" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="16" letter-spacing="5" fill="#F4F0E8">SETE SETE</text>
+  <text x="200" y="344" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="9" letter-spacing="3" fill="#E24A17">NO TEU WHATSAPP</text>
+</svg>

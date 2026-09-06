@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 595 842" width="595" height="842">
+  <title>Papel de carta A4</title>
+  <rect width="595" height="842" fill="#FBFAF7"/>
+  <rect x="0" y="0" width="8" height="842" fill="#E24A17"/>
+  <g transform="translate(48,48) scale(0.55)">
+    <circle cx="60" cy="60" r="58" fill="#E24A17"/>
+    <g fill="none" stroke="#F4F0E8" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30 42 Q60 24 84 40 L56 90"/><path d="M90 78 Q60 96 36 80 L64 30"/>
+    </g>
+  </g>
+  <text x="128" y="78" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="18" letter-spacing="4" fill="#1A1714">SETE SETE</text>
+  <text x="128" y="100" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="9" letter-spacing="3" fill="#E24A17">SUSHI · LUANDA · NO TEU WHATSAPP</text>
+  <line x1="48" y1="130" x2="547" y2="130" stroke="#E24A17" stroke-width="0.8" opacity="0.4"/>
+  <g fill="#8A8278" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="8">
+    <text x="48" y="800">Orlog Arrulo · Founder</text>
+    <text x="48" y="816">+244 945-407-841</text>
+    <text x="200" y="816">orlog.arrulo@setesete.ao</text>
+    <text x="547" y="800" text-anchor="end">instagram.com/setesete.ao</text>
+    <text x="547" y="816" text-anchor="end">Luanda, Angola</text>
+  </g>
+</svg>

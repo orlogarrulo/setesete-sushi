@@ -1,0 +1,54 @@
+SETE SETE — Especificações de cor
+=================================
+
+Valores CMYK e Pantone são conversões digitais a partir do RGB.
+Confirmar sempre em prova de cor (cromalim / plotter) antes da tiragem.
+
+KAKI (cor principal)
+  HEX      #E24A17
+  RGB      226  74  23
+  CMYK     0  67  90  11
+  Pantone  aprox. 1665 C / 172 C
+
+KAKI PROFUNDO (hover, sombra)
+  HEX      #B83310
+  RGB      184  51  16
+  CMYK     0  78  95  28
+  Pantone  aprox. 1805 C
+
+ARROZ (fundo claro)
+  HEX      #F4F0E8
+  RGB      244 240 232
+  CMYK     2   3   7   0
+
+ARROZ QUENTE
+  HEX      #FBFAF7
+  RGB      251 250 247
+  CMYK     1   1   2   0
+
+TINTA (texto)
+  HEX      #1A1714
+  RGB       26  23  20
+  CMYK     50  50  55  80
+
+NORI (fundo escuro)
+  HEX      #231F1C
+  RGB       35  31  28
+  CMYK     45  45  50  75
+
+PEDRA (secundário)
+  HEX      #8A8278
+  RGB      138 130 120
+  CMYK     32  30  36  12
+
+GARI (acento suave)
+  HEX      #F3D5C6
+  RGB      243 213 198
+  CMYK     0  15  18   0
+
+Impressão
+  Cartão de visita   85 × 55 mm  +  sangria 3 mm  (arte 91 × 61 mm)
+  Papel de carta     A4 210 × 297 mm  +  sangria 3 mm
+  Sticker            Ø 50 mm  ou  Ø 70 mm  (vector no SVG)
+  Resolução raster   300 dpi mínimo
+  Preferir sempre os SVG para corte, vinil e grandes formatos.

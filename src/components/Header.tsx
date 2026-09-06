@@ -1,136 +1,135 @@
-"use client";
-
+import { Link, useRouterState } from "@tanstack/react-router";
+import { Menu, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
-import Logo from "./Logo";
-import Link from "next/link";
+import { LogoLockup } from "@/components/mark.tsx";
+import { copy, t } from "@/lib/copy";
+import { cn } from "@/lib/utils";
+import { useCart } from "@/store/cart";
+import { useLang } from "@/store/lang";
 
-const WHATSAPP = "244974506949";
+const LINKS = [
+  { to: "/", key: "home" as const },
+  { to: "/casa", key: "casa" as const },
+  { to: "/menu", key: "menu" as const },
+  { to: "/identidade", key: "identity" as const },
+];
 
-export default function Header() {
-  const [lang, setLang] = useState<"pt" | "en">("pt");
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const t = {
-    pt: {
-      home: "Início",
-      menu: "Menu",
-      order: "Pedir Agora",
-      about: "Sobre",
-    },
-    en: {
-      home: "Home",
-      menu: "Menu",
-      order: "Order Now",
-      about: "About",
-    },
-  };
-
+export function Header() {
+  const lang = useLang((s) => s.lang);
+  const setLang = useLang((s) => s.setLang);
+  const count = useCart((s) => s.lines.reduce((n, l) => n + l.qty, 0));
+  const setOpen = useCart((s) => s.setOpen);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [mobile, setMobile] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-background/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/">
-          <Logo />
+    <header className="sticky top-0 z-40 border-b border-ink/8 bg-rice/92 text-ink backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-[4.25rem] sm:px-6">
+        <Link to="/" className="shrink-0" onClick={() => setMobile(false)}>
+          <LogoLockup />
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-8 md:flex">
-          <Link href="/" className="text-sm font-medium text-muted hover:text-white transition">
-            {t[lang].home}
-          </Link>
-          <Link href="/menu" className="text-sm font-medium text-muted hover:text-white transition">
-            {t[lang].menu}
-          </Link>
-          <Link href="/pedir" className="text-sm font-medium text-muted hover:text-white transition">
-            {t[lang].order}
-          </Link>
-
-          {/* Language switch */}
-          <div className="flex rounded-full border border-white/15 p-0.5 text-xs">
-            <button
-              onClick={() => setLang("pt")}
-              className={`rounded-full px-2.5 py-1 transition ${
-                lang === "pt" ? "bg-primary text-white" : "text-muted hover:text-white"
-              }`}
+        <nav className="hidden items-center gap-7 lg:flex">
+          {LINKS.map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={cn(
+                "text-[13px] font-medium tracking-[0.14em] uppercase transition-opacity hover:opacity-70",
+                pathname === l.to ? "text-kaki opacity-100" : "opacity-55",
+              )}
             >
-              PT
-            </button>
-            <button
-              onClick={() => setLang("en")}
-              className={`rounded-full px-2.5 py-1 transition ${
-                lang === "en" ? "bg-primary text-white" : "text-muted hover:text-white"
-              }`}
-            >
-              EN
-            </button>
-          </div>
-
-          <a
-            href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
-              lang === "pt"
-                ? "Olá! Quero fazer um pedido de sushi 🍣"
-                : "Hi! I would like to order sushi 🍣"
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition hover:bg-primary-hover"
-          >
-            WhatsApp
-          </a>
+              {t(copy.nav[l.key], lang)}
+            </Link>
+          ))}
         </nav>
 
-        {/* Mobile menu button */}
-        <button
-          className="md:hidden rounded-lg p-2 text-white"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {menuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="hidden items-center rounded-full bg-ink/5 p-0.5 text-[11px] font-semibold tracking-wider sm:flex">
+            {(["pt", "en"] as const).map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => setLang(code)}
+                className={cn(
+                  "min-h-8 rounded-full px-2.5 uppercase transition",
+                  lang === code
+                    ? "bg-ink text-rice"
+                    : "opacity-60 hover:opacity-100",
+                )}
+              >
+                {code}
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="relative inline-flex size-11 items-center justify-center rounded-full hover:bg-ink/5"
+            aria-label={t(copy.cart.title, lang)}
+          >
+            <ShoppingBag className="size-5" strokeWidth={1.75} />
+            {count > 0 && (
+              <span className="absolute top-1.5 right-1.5 grid min-w-4 place-items-center rounded-full bg-kaki px-1 text-[10px] font-semibold text-rice tabular-nums">
+                {count}
+              </span>
             )}
-          </svg>
-        </button>
+          </button>
+
+          <Link
+            to="/pedir"
+            className="hidden min-h-11 items-center rounded-full bg-kaki px-4 text-[12px] font-semibold tracking-[0.12em] text-rice uppercase transition hover:bg-kaki-deep sm:inline-flex"
+          >
+            {t(copy.nav.order, lang)}
+          </Link>
+
+          <button
+            type="button"
+            className="inline-flex size-11 items-center justify-center rounded-full lg:hidden"
+            onClick={() => setMobile((v) => !v)}
+            aria-label="Menu"
+          >
+            {mobile ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="border-t border-white/10 bg-background px-4 py-4 md:hidden">
-          <div className="flex flex-col gap-3">
-            <Link href="/" className="py-2 text-sm" onClick={() => setMenuOpen(false)}>
-              {t[lang].home}
-            </Link>
-            <Link href="/menu" className="py-2 text-sm" onClick={() => setMenuOpen(false)}>
-              {t[lang].menu}
-            </Link>
-            <Link href="/pedir" className="py-2 text-sm" onClick={() => setMenuOpen(false)}>
-              {t[lang].order}
-            </Link>
-            <div className="flex gap-2 py-2">
-              <button
-                onClick={() => setLang("pt")}
-                className={`rounded-full px-3 py-1 text-xs ${
-                  lang === "pt" ? "bg-primary text-white" : "border border-white/20"
-                }`}
+      {mobile && (
+        <div className="border-t border-ink/8 bg-rice px-4 py-4 lg:hidden">
+          <div className="flex flex-col gap-1">
+            {LINKS.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                onClick={() => setMobile(false)}
+                className="min-h-11 py-2 text-sm tracking-[0.12em] uppercase"
               >
-                PT
-              </button>
-              <button
-                onClick={() => setLang("en")}
-                className={`rounded-full px-3 py-1 text-xs ${
-                  lang === "en" ? "bg-primary text-white" : "border border-white/20"
-                }`}
-              >
-                EN
-              </button>
-            </div>
-            <a
-              href={`https://wa.me/${WHATSAPP}`}
-              className="mt-2 rounded-full bg-primary py-3 text-center text-sm font-semibold text-white"
+                {t(copy.nav[l.key], lang)}
+              </Link>
+            ))}
+            <Link
+              to="/pedir"
+              onClick={() => setMobile(false)}
+              className="mt-2 flex min-h-11 items-center justify-center rounded-full bg-kaki text-sm font-semibold tracking-[0.12em] text-rice uppercase"
             >
-              WhatsApp
-            </a>
+              {t(copy.nav.order, lang)}
+            </Link>
+            <div className="mt-2 flex gap-2">
+              {(["pt", "en"] as const).map((code) => (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => setLang(code)}
+                  className={cn(
+                    "min-h-11 rounded-full px-4 text-xs font-semibold uppercase",
+                    lang === code ? "bg-kaki text-rice" : "bg-ink/8",
+                  )}
+                >
+                  {code}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
