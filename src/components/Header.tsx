@@ -11,7 +11,6 @@ const LINKS = [
   { to: "/", key: "home" as const },
   { to: "/casa", key: "casa" as const },
   { to: "/menu", key: "menu" as const },
-  { to: "/identidade", key: "identity" as const },
 ];
 
 export function Header() {
@@ -23,7 +22,7 @@ export function Header() {
   const [mobile, setMobile] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink/8 bg-rice/92 text-ink backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-ink/8 bg-rice/92 text-ink backdrop-blur-md print:hidden">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-[4.25rem] sm:px-6">
         <Link to="/" className="shrink-0" onClick={() => setMobile(false)}>
           <LogoLockup />

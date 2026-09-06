@@ -1,0 +1,11 @@
+Tipografia Sete Sete
+====================
+
+Display  Cormorant Garamond  — títulos
+UI       Outfit              — corpo, contactos, preços
+
+Licença: SIL Open Font License 1.1 (Google Fonts).
+Uso livre em impressão e digital da marca Sete Sete.
+
+Web: https://fonts.google.com/specimen/Cormorant+Garamond
+     https://fonts.googleapis.com/css2?family=Outfit

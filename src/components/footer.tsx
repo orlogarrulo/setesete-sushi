@@ -1,21 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { Mark } from "@/components/mark.tsx";
 import { copy, t } from "@/lib/copy";
-import {
-  EMAIL,
-  FOUNDER_NAME,
-  FOUNDER_TITLE,
-  INSTAGRAM,
-  WHATSAPP,
-  WHATSAPP_DISPLAY,
-} from "@/lib/utils";
+import { EMAIL, INSTAGRAM, WHATSAPP, WHATSAPP_DISPLAY } from "@/lib/utils";
 import { useLang } from "@/store/lang";
 
 export function Footer() {
   const lang = useLang((s) => s.lang);
   return (
-    <footer className="border-t border-ink/8 bg-nori text-rice">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4">
+    <footer className="border-t border-ink/8 bg-nori text-rice print:hidden">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div className="md:col-span-2">
           <Mark className="size-12" />
           <p className="mt-5 font-display text-3xl tracking-tight">Sete Sete</p>
@@ -26,11 +19,6 @@ export function Footer() {
             {lang === "pt"
               ? "Sushi de precisão em Luanda. Pedidos das 12h às 22h, via WhatsApp."
               : "Precise sushi in Luanda. Orders from 12:00 to 22:00, via WhatsApp."}
-          </p>
-          <p className="mt-4 text-sm text-stone">
-            <span className="text-rice">{FOUNDER_NAME}</span>
-            <span className="mx-2 text-kaki">·</span>
-            {FOUNDER_TITLE}
           </p>
         </div>
         <div>
@@ -49,39 +37,9 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/identidade" className="hover:text-kaki-soft">
-                {t(copy.nav.identity, lang)}
-              </Link>
-            </li>
-            <li>
               <Link to="/pedir" className="hover:text-kaki-soft">
                 {t(copy.nav.order, lang)}
               </Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <p className="text-[11px] tracking-[0.22em] text-stone uppercase">
-            {t(copy.footer.downloads, lang)}
-          </p>
-          <ul className="mt-4 space-y-2 text-sm">
-            <li>
-              <a
-                href="/downloads/SeteSete-Identidade-Visual.zip"
-                className="hover:text-kaki-soft"
-                download
-              >
-                {t(copy.footer.identity, lang)}
-              </a>
-            </li>
-            <li>
-              <a
-                href="/downloads/SeteSete-Website.zip"
-                className="hover:text-kaki-soft"
-                download
-              >
-                {t(copy.footer.website, lang)}
-              </a>
             </li>
             <li>
               <a

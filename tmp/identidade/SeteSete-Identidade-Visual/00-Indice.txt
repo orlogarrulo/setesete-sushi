@@ -1,0 +1,19 @@
+Sete Sete — Identidade visual (kit gráfica)
+==========================================
+
+00-LEIA-ME.txt
+00-Indice.txt
+01-Manual-de-marca.pdf / .html
+02-Logos/          SVG + PNG RGB + PNG 300 dpi
+03-Cores/          Paleta, tokens, especificações
+04-Tipografia/     Cormorant Garamond + Outfit (OFL)
+05-Papelaria/      Cartão com sangria 3 mm, papel A4, sticker, saco
+06-Redes-sociais/  Avatar, post, story, capa
+07-Padroes/
+08-Ficha-tecnica.pdf
+
+Contacto
+Orlog Arrulo · Founder
++244 945-407-841
+orlog.arrulo@setesete.ao
+Luanda, Angola

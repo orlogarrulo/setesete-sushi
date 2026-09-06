@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { PRODUCTS, productById } from "@/lib/menu";
-import { WHATSAPP } from "@/lib/utils";
-import type { Lang } from "@/lib/menu";
+import { PRODUCTS } from "@/lib/menu";
 
 export type CartLine = { id: string; qty: number };
 
@@ -56,39 +54,3 @@ export const useCart = create<CartState>()(
     },
   ),
 );
-
-export function buildWhatsAppUrl(opts: {
-  lang: Lang;
-  name?: string;
-  phone?: string;
-  address?: string;
-  notes?: string;
-}) {
-  const { lang, name, phone, address, notes } = opts;
-  const lines = useCart.getState().lines;
-  const rows = lines
-    .map((l) => {
-      const p = productById(l.id);
-      if (!p) return null;
-      const price = p.price * l.qty;
-      return `• ${l.qty}× ${p.name[lang]} — ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} Kz`;
-    })
-    .filter(Boolean);
-  const total = useCart.getState().total();
-  const totalFmt = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  const header = lang === "pt" ? "Pedido Sete Sete" : "Sete Sete order";
-  const body = [
-    `*${header}*`,
-    name ? (lang === "pt" ? `Nome: ${name}` : `Name: ${name}`) : null,
-    phone ? (lang === "pt" ? `Telefone: ${phone}` : `Phone: ${phone}`) : null,
-    address ? (lang === "pt" ? `Morada: ${address}` : `Address: ${address}`) : null,
-    "",
-    ...rows,
-    "",
-    `*Total: ${totalFmt} Kz*`,
-    notes ? (lang === "pt" ? `Notas: ${notes}` : `Notes: ${notes}`) : null,
-  ]
-    .filter((x) => x !== null)
-    .join("\n");
-  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(body)}`;
-}

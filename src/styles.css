@@ -87,3 +87,26 @@
 @utility font-display {
   font-family: var(--font-display);
 }
+
+@media print {
+  @page {
+    size: A5;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    background: #fbfaf7 !important;
+  }
+
+  header,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .ticket-sheet {
+    box-shadow: none !important;
+    border: 1px solid color-mix(in oklab, #1a1714 10%, transparent);
+  }
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    .art { width: 1080px; height: 1350px; background: var(--nori); color: var(--rice); }
+    .bg { position: absolute; inset: 0; }
+    .bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+    .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(35,31,28,0.15) 0%, rgba(35,31,28,0.35) 40%, rgba(35,31,28,0.88) 100%); }
+    .inner { position: relative; height: 100%; padding: 64px 72px 72px; display: flex; flex-direction: column; }
+    .top { display: flex; align-items: center; gap: 20px; }
+    .top img { width: 84px; height: 84px; }
+    .word { font-size: 20px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; }
+    .tag { margin-top: 6px; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gari); }
+    .mid { margin-top: auto; }
+    .date { font-size: 16px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gari); }
+    h1 { margin-top: 16px; font-size: 96px; line-height: 0.9; }
+    p.lead { margin-top: 20px; font-size: 30px; font-family: "Cormorant Garamond", serif; font-style: italic; }
+    .foot { margin-top: 36px; font-size: 15px; letter-spacing: 0.26em; text-transform: uppercase; opacity: 0.75; }
+  </style>
+</head>
+<body>
+  <div class="art" id="shot">
+    <div class="bg"><img src="/public/photos/combinado.jpg" alt="" /></div>
+    <div class="veil"></div>
+    <div class="inner">
+      <div class="top">
+        <img src="/public/brand/selo.svg" alt="" />
+        <div>
+          <div class="word">Sete Sete</div>
+          <div class="tag">Sushi · Luanda</div>
+        </div>
+      </div>
+      <div class="mid">
+        <div class="date">03 de Outubro</div>
+        <h1 class="display">Estamos de volta.</h1>
+        <p class="lead">Mesma casa. Outra postura.</p>
+        <div class="foot">12h – 22h · no teu WhatsApp</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

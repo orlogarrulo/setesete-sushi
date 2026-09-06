@@ -1,20 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Minus, Plus } from "lucide-react";
-import { useState } from "react";
+import { Minus, Plus, Printer } from "lucide-react";
+import { useState, type FormEvent } from "react";
 import { Shell } from "@/components/shell.tsx";
+import { TicketSheet } from "@/components/ticket-sheet.tsx";
 import { copy, t } from "@/lib/copy";
 import { productById } from "@/lib/menu";
 import {
+  buildTicket,
+  buildWhatsAppUrl,
+  type Ticket,
+} from "@/lib/ticket";
+import {
   EMAIL,
-  FOUNDER_NAME,
-  FOUNDER_TITLE,
   formatKz,
   HOURS,
   INSTAGRAM,
+  PAY_METHODS,
+  type PayMethod,
   WHATSAPP,
   WHATSAPP_DISPLAY,
+  cn,
 } from "@/lib/utils";
-import { buildWhatsAppUrl, useCart } from "@/store/cart";
+import { useCart } from "@/store/cart";
 import { useLang } from "@/store/lang";
 
 export const Route = createFileRoute("/pedir")({ component: PedirPage });
@@ -25,30 +32,55 @@ function PedirPage() {
   const total = useCart((s) => s.total);
   const setQty = useCart((s) => s.setQty);
   const remove = useCart((s) => s.remove);
+  const clear = useCart((s) => s.clear);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
-  const [sent, setSent] = useState(false);
+  const [pay, setPay] = useState<PayMethod>("mcx");
+  const [receiptName, setReceiptName] = useState<string | undefined>();
+  const [ticket, setTicket] = useState<Ticket | null>(null);
 
-  const href = buildWhatsAppUrl({ lang, name, phone, address, notes });
   const empty = lines.length === 0;
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (empty) return;
+    if (pay === "transfer" && !receiptName) return;
+    const next = buildTicket({
+      lang,
+      name,
+      phone,
+      address,
+      notes,
+      pay,
+      receiptName,
+    });
+    setTicket(next);
+  }
+
+  function startNew() {
+    setTicket(null);
+    clear();
+    setNotes("");
+    setReceiptName(undefined);
+  }
 
   return (
     <Shell>
-      <main className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.9fr]">
-        <div>
+      <main className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.95fr]">
+        <div className="print:hidden">
           <p className="text-[11px] tracking-[0.28em] text-kaki uppercase">
             {t(copy.pedir.kicker, lang)}
           </p>
           <h1 className="mt-3 font-display text-4xl sm:text-5xl">
-            {t(copy.pedir.title, lang)}
+            {ticket ? t(copy.pedir.sent, lang) : t(copy.pedir.title, lang)}
           </h1>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-stone">
-            {t(copy.pedir.hint, lang)}
+            {ticket ? t(copy.pedir.sentBody, lang) : t(copy.pedir.hint, lang)}
           </p>
 
-          {empty ? (
+          {empty && !ticket ? (
             <div className="mt-10 rounded-xl border border-ink/8 bg-rice-warm p-8">
               <p className="text-stone">{t(copy.cart.empty, lang)}</p>
               <Link
@@ -60,57 +92,89 @@ function PedirPage() {
             </div>
           ) : (
             <ul className="mt-8 divide-y divide-ink/8 overflow-hidden rounded-xl bg-rice-warm">
-              {lines.map((l) => {
-                const p = productById(l.id);
-                if (!p) return null;
-                return (
-                  <li key={l.id} className="flex items-center gap-3 px-4 py-4 sm:px-5">
-                    <img
-                      src={p.image}
-                      alt=""
-                      className="size-16 shrink-0 rounded-md object-cover"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{p.name[lang]}</p>
-                      <p className="mt-0.5 text-sm tabular-nums text-kaki">
-                        {formatKz(p.price * l.qty)}
-                      </p>
-                      <div className="mt-2 flex items-center gap-2">
-                        <button
-                          type="button"
-                          className="grid size-9 place-items-center rounded-full border border-ink/10"
-                          onClick={() => setQty(l.id, l.qty - 1)}
-                          aria-label="−"
-                        >
-                          <Minus className="size-3.5" />
-                        </button>
-                        <span className="w-6 text-center text-sm tabular-nums">
-                          {l.qty}
-                        </span>
-                        <button
-                          type="button"
-                          className="grid size-9 place-items-center rounded-full border border-ink/10"
-                          onClick={() => setQty(l.id, l.qty + 1)}
-                          aria-label="+"
-                        >
-                          <Plus className="size-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => remove(l.id)}
-                          className="ml-auto text-xs text-stone underline-offset-2 hover:underline"
-                        >
-                          {lang === "pt" ? "Retirar" : "Remove"}
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
+              {ticket
+                ? ticket.lines.map((l) => {
+                    const p = productById(l.id);
+                    return (
+                      <li
+                        key={l.id}
+                        className="flex items-center gap-3 px-4 py-4 sm:px-5"
+                      >
+                        {p ? (
+                          <img
+                            src={p.image}
+                            alt=""
+                            className="size-16 shrink-0 rounded-md object-cover"
+                          />
+                        ) : null}
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium">{l.name}</p>
+                          <p className="mt-0.5 text-sm tabular-nums text-kaki">
+                            {formatKz(l.total)}
+                          </p>
+                          <p className="mt-1 text-xs text-stone">{l.qty} ×</p>
+                        </div>
+                      </li>
+                    );
+                  })
+                : lines.map((l) => {
+                    const p = productById(l.id);
+                    if (!p) return null;
+                    return (
+                      <li
+                        key={l.id}
+                        className="flex items-center gap-3 px-4 py-4 sm:px-5"
+                      >
+                        <img
+                          src={p.image}
+                          alt=""
+                          className="size-16 shrink-0 rounded-md object-cover"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium">
+                            {p.name[lang]}
+                          </p>
+                          <p className="mt-0.5 text-sm tabular-nums text-kaki">
+                            {formatKz(p.price * l.qty)}
+                          </p>
+                          <div className="mt-2 flex items-center gap-2">
+                            <button
+                              type="button"
+                              className="grid size-9 place-items-center rounded-full border border-ink/10"
+                              onClick={() => setQty(l.id, l.qty - 1)}
+                              aria-label="−"
+                            >
+                              <Minus className="size-3.5" />
+                            </button>
+                            <span className="w-6 text-center text-sm tabular-nums">
+                              {l.qty}
+                            </span>
+                            <button
+                              type="button"
+                              className="grid size-9 place-items-center rounded-full border border-ink/10"
+                              onClick={() => setQty(l.id, l.qty + 1)}
+                              aria-label="+"
+                            >
+                              <Plus className="size-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => remove(l.id)}
+                              className="ml-auto text-xs text-stone underline-offset-2 hover:underline"
+                            >
+                              {lang === "pt" ? "Retirar" : "Remove"}
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
               <li className="flex items-baseline justify-between px-5 py-4">
-                <span className="text-sm text-stone">{t(copy.cart.total, lang)}</span>
+                <span className="text-sm text-stone">
+                  {t(copy.cart.total, lang)}
+                </span>
                 <span className="font-display text-2xl tabular-nums">
-                  {formatKz(total())}
+                  {formatKz(ticket ? ticket.total : total())}
                 </span>
               </li>
             </ul>
@@ -169,42 +233,50 @@ function PedirPage() {
                 </a>
               </dd>
             </div>
-            <div className="border-t border-ink/8 pt-4">
-              <dt className="text-[11px] tracking-[0.18em] text-stone uppercase">
-                {FOUNDER_TITLE}
-              </dt>
-              <dd className="mt-1">{FOUNDER_NAME}</dd>
-            </div>
           </dl>
         </div>
 
-        {sent && !empty ? (
-          <div className="rounded-xl bg-rice-warm p-6 text-center shadow-[var(--shadow-border)] sm:p-8">
-            <p className="font-display text-3xl">{t(copy.pedir.sent, lang)}</p>
-            <p className="mt-3 text-sm leading-relaxed text-stone">
-              {t(copy.pedir.sentBody, lang)}
-            </p>
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-kaki px-6 text-sm font-semibold tracking-[0.12em] text-rice uppercase hover:bg-kaki-deep"
+        {ticket ? (
+          <div className="space-y-4">
+            <TicketSheet ticket={ticket} />
+            <div className="flex flex-col gap-3 print:hidden sm:flex-row">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 px-5 text-sm font-semibold tracking-[0.12em] uppercase"
+              >
+                <Printer className="size-4" />
+                {t(copy.pedir.print, lang)}
+              </button>
+              <a
+                href={buildWhatsAppUrl(ticket)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-kaki px-5 text-sm font-semibold tracking-[0.12em] text-rice uppercase hover:bg-kaki-deep"
+              >
+                {t(copy.pedir.again, lang)}
+              </a>
+            </div>
+            <button
+              type="button"
+              onClick={startNew}
+              className="print:hidden w-full text-center text-xs text-stone underline-offset-2 hover:underline"
             >
-              {t(copy.pedir.again, lang)}
-            </a>
-            <p className="mt-4 text-xs text-stone">
+              {t(copy.pedir.newOrder, lang)}
+            </button>
+            {ticket.pay === "transfer" ? (
+              <p className="print:hidden text-xs leading-relaxed text-stone">
+                {t(copy.pedir.receiptHint, lang)}
+              </p>
+            ) : null}
+            <p className="print:hidden text-xs text-stone">
               {lang === "pt" ? "Horário" : "Hours"} · {HOURS}
             </p>
           </div>
         ) : (
           <form
             className="rounded-xl bg-rice-warm p-6 shadow-[var(--shadow-border)] sm:p-8"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (empty) return;
-              window.open(href, "_blank", "noopener,noreferrer");
-              setSent(true);
-            }}
+            onSubmit={onSubmit}
           >
             <label className="block text-sm font-medium">
               {t(copy.pedir.name, lang)}
@@ -243,10 +315,63 @@ function PedirPage() {
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                rows={4}
+                rows={3}
                 className="mt-2 w-full rounded-lg border border-ink/10 bg-rice px-3 py-2 text-sm outline-none ring-kaki focus:ring-2"
               />
             </label>
+
+            <fieldset className="mt-6">
+              <legend className="text-sm font-medium">
+                {t(copy.pedir.pay, lang)}
+              </legend>
+              <div className="mt-3 grid gap-2">
+                {(Object.keys(PAY_METHODS) as PayMethod[]).map((key) => (
+                  <label
+                    key={key}
+                    className={cn(
+                      "flex cursor-pointer items-start gap-3 rounded-lg border px-3 py-3 transition",
+                      pay === key
+                        ? "border-kaki bg-kaki/5"
+                        : "border-ink/10 hover:border-ink/20",
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      name="pay"
+                      value={key}
+                      checked={pay === key}
+                      onChange={() => setPay(key)}
+                      className="mt-1 accent-kaki"
+                    />
+                    <span>
+                      <span className="block text-sm font-medium">
+                        {PAY_METHODS[key][lang]}
+                      </span>
+                      <span className="mt-0.5 block text-xs leading-relaxed text-stone">
+                        {PAY_METHODS[key].hint[lang]}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            {pay === "transfer" ? (
+              <label className="mt-5 block text-sm font-medium">
+                {t(copy.pedir.receipt, lang)}
+                <input
+                  required
+                  type="file"
+                  accept="application/pdf,.pdf"
+                  onChange={(e) => setReceiptName(e.target.files?.[0]?.name)}
+                  className="mt-2 block w-full text-sm file:mr-3 file:rounded-full file:border-0 file:bg-kaki file:px-4 file:py-2 file:text-xs file:font-semibold file:tracking-[0.12em] file:text-rice file:uppercase"
+                />
+                <span className="mt-2 block text-xs leading-relaxed text-stone">
+                  {t(copy.pedir.receiptHint, lang)}
+                </span>
+              </label>
+            ) : null}
+
             <button
               type="submit"
               disabled={empty}

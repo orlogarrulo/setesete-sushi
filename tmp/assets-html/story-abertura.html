@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    .art { width: 1080px; height: 1920px; background: var(--nori); color: var(--rice); }
+    .bg { position: absolute; inset: 0; }
+    .bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; opacity: 0.55; }
+    .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(35,31,28,0.25) 0%, rgba(35,31,28,0.55) 45%, rgba(35,31,28,0.92) 100%); }
+    .inner { position: relative; height: 100%; padding: 96px 80px 88px; display: flex; flex-direction: column; }
+    .top { display: flex; align-items: center; justify-content: space-between; }
+    .top img { width: 92px; height: 92px; }
+    .date { font-size: 16px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gari); }
+    .mid { margin-top: auto; }
+    .k { font-size: 18px; letter-spacing: 0.36em; text-transform: uppercase; color: var(--gari); }
+    h1 { margin-top: 18px; font-size: 128px; line-height: 0.88; }
+    p.lead { margin-top: 28px; font-size: 32px; font-family: "Cormorant Garamond", serif; font-style: italic; color: color-mix(in srgb, var(--rice) 88%, transparent); }
+    .foot { margin-top: 64px; font-size: 16px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--rice); opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div class="art" id="shot">
+    <div class="bg"><img src="/public/photos/hero-nigiri.jpg" alt="" /></div>
+    <div class="veil"></div>
+    <div class="inner">
+      <div class="top">
+        <img src="/public/brand/selo.svg" alt="" />
+        <div class="date">03.10.2026</div>
+      </div>
+      <div class="mid">
+        <div class="k">Luanda · recomeço</div>
+        <h1 class="display">Reabrimos.</h1>
+        <p class="lead">Sushi fresco, no teu WhatsApp.</p>
+        <div class="foot">Sete Sete · 12h – 22h</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

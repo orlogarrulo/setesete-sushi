@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CasaRouteImport } from './routes/casa'
-import { Route as IdentidadeRouteImport } from './routes/identidade'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as PedirRouteImport } from './routes/pedir'
 
@@ -23,11 +22,6 @@ const IndexRoute = IndexRouteImport.update({
 const CasaRoute = CasaRouteImport.update({
   id: '/casa',
   path: '/casa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IdentidadeRoute = IdentidadeRouteImport.update({
-  id: '/identidade',
-  path: '/identidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MenuRoute = MenuRouteImport.update({
@@ -44,14 +38,12 @@ const PedirRoute = PedirRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/casa': typeof CasaRoute
-  '/identidade': typeof IdentidadeRoute
   '/menu': typeof MenuRoute
   '/pedir': typeof PedirRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/casa': typeof CasaRoute
-  '/identidade': typeof IdentidadeRoute
   '/menu': typeof MenuRoute
   '/pedir': typeof PedirRoute
 }
@@ -59,22 +51,20 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/casa': typeof CasaRoute
-  '/identidade': typeof IdentidadeRoute
   '/menu': typeof MenuRoute
   '/pedir': typeof PedirRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/casa' | '/identidade' | '/menu' | '/pedir'
+  fullPaths: '/' | '/casa' | '/menu' | '/pedir'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/casa' | '/identidade' | '/menu' | '/pedir'
-  id: '__root__' | '/' | '/casa' | '/identidade' | '/menu' | '/pedir'
+  to: '/' | '/casa' | '/menu' | '/pedir'
+  id: '__root__' | '/' | '/casa' | '/menu' | '/pedir'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CasaRoute: typeof CasaRoute
-  IdentidadeRoute: typeof IdentidadeRoute
   MenuRoute: typeof MenuRoute
   PedirRoute: typeof PedirRoute
 }
@@ -93,13 +83,6 @@ declare module '@tanstack/react-router' {
       path: '/casa'
       fullPath: '/casa'
       preLoaderRoute: typeof CasaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/identidade': {
-      id: '/identidade'
-      path: '/identidade'
-      fullPath: '/identidade'
-      preLoaderRoute: typeof IdentidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/menu': {
@@ -122,7 +105,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CasaRoute: CasaRoute,
-  IdentidadeRoute: IdentidadeRoute,
   MenuRoute: MenuRoute,
   PedirRoute: PedirRoute,
 }
