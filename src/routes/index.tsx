@@ -140,6 +140,8 @@ function Home() {
                   key={c.id}
                   to="/menu"
                   search={{ cat: c.id }}
+                  hash={c.id}
+                  resetScroll={false}
                   className="group relative aspect-[3/4] overflow-hidden rounded-lg"
                 >
                   <img
@@ -175,6 +177,8 @@ function Home() {
                 key={p.id}
                 to="/menu"
                 search={{ cat: p.category }}
+                hash={p.category}
+                resetScroll={false}
                 className="group overflow-hidden rounded-xl bg-rice-warm shadow-[var(--shadow-border)]"
               >
                 <div className="relative aspect-[16/9] overflow-hidden">

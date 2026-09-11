@@ -1,7 +1,8 @@
+import { n as PRODUCTS, t as CATEGORIES } from "./menu-zEgjV5oi.mjs";
 import { b as require_jsx_runtime, v as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { s as ArrowRight } from "../_libs/lucide-react.mjs";
-import { b as useLang, c as PRODUCTS, h as formatKz, m as copy, o as Mark, t as CATEGORIES, u as Shell, v as t } from "./shell-Df4RzzmE.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-C4gP2T9Z.js
+import { a as Mark, c as Shell, f as copy, g as useLang, m as t, p as formatKz } from "./shell-uG93CiQk.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-B50dXKK8.js
 var import_jsx_runtime = require_jsx_runtime();
 function Home() {
 	const lang = useLang((s) => s.lang);
@@ -166,6 +167,8 @@ function Home() {
 						children: CATEGORIES.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 							to: "/menu",
 							search: { cat: c.id },
+							hash: c.id,
+							resetScroll: false,
 							className: "group relative aspect-[3/4] overflow-hidden rounded-lg",
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
@@ -206,6 +209,8 @@ function Home() {
 					children: featured.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 						to: "/menu",
 						search: { cat: p.category },
+						hash: p.category,
+						resetScroll: false,
 						className: "group overflow-hidden rounded-xl bg-rice-warm shadow-[var(--shadow-border)]",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "relative aspect-[16/9] overflow-hidden",

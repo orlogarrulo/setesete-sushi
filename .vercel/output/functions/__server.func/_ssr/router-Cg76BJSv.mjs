@@ -1,7 +1,8 @@
 import { i as __toESM } from "../_runtime.mjs";
+import { t as CATEGORIES } from "./menu-zEgjV5oi.mjs";
 import { _ as createRootRoute, b as require_jsx_runtime, g as createFileRoute, h as lazyRouteComponent, l as Scripts, m as Outlet, p as createRouter, u as HeadContent, v as Link, y as useRouter, z as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
-import { a as union, i as string, n as number, r as object, t as literal } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-DZqrTt3i.js
+import { a as string, i as object, n as literal, o as union, r as number, t as _enum } from "../_libs/zod.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/router-Cg76BJSv.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var __defProp = Object.defineProperty;
@@ -307,7 +308,7 @@ function PreviewHostBridge() {
 	}, [router]);
 	return null;
 }
-var styles_default = "/assets/styles-B0Sa-azL.css";
+var styles_default = "/assets/styles-fFR0_oVZ.css";
 var APP_NAME = "Sete Sete";
 var Route$4 = createRootRoute({
 	head: () => ({
@@ -381,17 +382,18 @@ var Route$4 = createRootRoute({
 		})]
 	})
 });
-var $$splitComponentImporter$3 = () => import("./routes-C4gP2T9Z.mjs");
+var $$splitComponentImporter$3 = () => import("./routes-B50dXKK8.mjs");
 var Route$3 = createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter$3, "component") });
-var $$splitComponentImporter$2 = () => import("./casa-B_p3cd3L.mjs");
+var $$splitComponentImporter$2 = () => import("./casa-DTs5X920.mjs");
 var Route$2 = createFileRoute("/casa")({ component: lazyRouteComponent($$splitComponentImporter$2, "component") });
-var $$splitComponentImporter$1 = () => import("./menu-CXlS0ZAk.mjs");
-var searchSchema = object({ cat: string().optional() });
+var $$splitComponentImporter$1 = () => import("./menu-C96W1QMX.mjs");
+var CAT_IDS = CATEGORIES.map((c) => c.id);
+var searchSchema = object({ cat: _enum(CAT_IDS).optional() });
 var Route$1 = createFileRoute("/menu")({
 	validateSearch: searchSchema,
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./pedir-D4vacUXP.mjs");
+var $$splitComponentImporter = () => import("./pedir-CBoYs1M6.mjs");
 var Route = createFileRoute("/pedir")({ component: lazyRouteComponent($$splitComponentImporter, "component") });
 var rootRouteChildren = {
 	IndexRoute: Route$3.update({

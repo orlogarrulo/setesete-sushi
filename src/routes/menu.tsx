@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ProductCard } from "@/components/product-card.tsx";
 import { Shell } from "@/components/shell.tsx";
 import { copy, t } from "@/lib/copy";
@@ -13,8 +13,10 @@ import { cn } from "@/lib/utils";
 import { useLang } from "@/store/lang";
 import { z } from "zod";
 
+const CAT_IDS = CATEGORIES.map((c) => c.id) as [CategoryId, ...CategoryId[]];
+
 const searchSchema = z.object({
-  cat: z.string().optional(),
+  cat: z.enum(CAT_IDS).optional(),
 });
 
 export const Route = createFileRoute("/menu")({
@@ -22,19 +24,60 @@ export const Route = createFileRoute("/menu")({
   component: MenuPage,
 });
 
+function stickyOffset() {
+  const bar = document.querySelector("header");
+  const tabs = document.querySelector(".sticky.z-30");
+  const headerH = bar instanceof HTMLElement ? bar.getBoundingClientRect().height : 64;
+  const tabsH = tabs instanceof HTMLElement ? tabs.getBoundingClientRect().height : 52;
+  return headerH + tabsH + 8;
+}
+
+function jumpToCategory(id: CategoryId) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const top = el.getBoundingClientRect().top + window.scrollY - stickyOffset();
+  window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+  return Math.abs(el.getBoundingClientRect().top - stickyOffset()) < 56;
+}
+
 function MenuPage() {
   const lang = useLang((s) => s.lang);
   const { cat } = Route.useSearch();
-  const fromSearch = CATEGORIES.some((c) => c.id === cat)
-    ? (cat as CategoryId)
-    : undefined;
-  const [active, setActive] = useState<CategoryId | undefined>(fromSearch);
+  const fromSearch = cat;
+  const [active, setActive] = useState<CategoryId>(fromSearch ?? "entradas");
+  const lockObserver = useRef(Boolean(fromSearch));
 
-  useEffect(() => {
-    if (!fromSearch) return;
-    const el = document.getElementById(fromSearch);
-    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  useLayoutEffect(() => {
+    if (!fromSearch) {
+      lockObserver.current = false;
+      return;
+    }
+    lockObserver.current = true;
     setActive(fromSearch);
+
+    let stopped = false;
+    const tick = () => {
+      if (stopped) return;
+      jumpToCategory(fromSearch);
+    };
+    tick();
+    const iv = window.setInterval(tick, 80);
+    const imgs = [...document.querySelectorAll("main img")];
+    imgs.forEach((img) => img.addEventListener("load", tick));
+
+    const stop = window.setTimeout(() => {
+      stopped = true;
+      window.clearInterval(iv);
+      lockObserver.current = false;
+      imgs.forEach((img) => img.removeEventListener("load", tick));
+    }, 2800);
+
+    return () => {
+      stopped = true;
+      window.clearInterval(iv);
+      window.clearTimeout(stop);
+      imgs.forEach((img) => img.removeEventListener("load", tick));
+    };
   }, [fromSearch]);
 
   useEffect(() => {
@@ -44,13 +87,14 @@ function MenuPage() {
     if (!nodes.length) return;
     const obs = new IntersectionObserver(
       (entries) => {
+        if (lockObserver.current) return;
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         const id = visible?.target.id as CategoryId | undefined;
         if (id) setActive(id);
       },
-      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.2, 0.5] },
+      { rootMargin: "-40% 0px -45% 0px", threshold: [0, 0.15, 0.4] },
     );
     nodes.forEach((n) => obs.observe(n));
     return () => obs.disconnect();
@@ -84,10 +128,20 @@ function MenuPage() {
         <div className="sticky top-16 z-30 border-b border-ink/8 bg-rice/90 backdrop-blur-md sm:top-[4.25rem]">
           <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-3 sm:px-6">
             {CATEGORIES.map((c) => (
-              <a
+              <Link
                 key={c.id}
-                href={`#${c.id}`}
-                onClick={() => setActive(c.id)}
+                to="/menu"
+                search={{ cat: c.id }}
+                hash={c.id}
+                resetScroll={false}
+                onClick={() => {
+                  lockObserver.current = true;
+                  setActive(c.id);
+                  window.setTimeout(() => {
+                    jumpToCategory(c.id);
+                    lockObserver.current = false;
+                  }, 0);
+                }}
                 className={cn(
                   "shrink-0 rounded-full px-3.5 py-2 text-[11px] font-medium tracking-[0.12em] whitespace-nowrap uppercase",
                   active === c.id
@@ -96,7 +150,7 @@ function MenuPage() {
                 )}
               >
                 {c.name[lang]}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -105,7 +159,7 @@ function MenuPage() {
           <section
             key={c.id}
             id={c.id}
-            className="scroll-mt-32 mx-auto max-w-6xl px-4 py-14 sm:px-6"
+            className="scroll-mt-36 mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:scroll-mt-40"
           >
             <div className="mb-8 flex items-end justify-between gap-4">
               <div>

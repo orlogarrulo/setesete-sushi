@@ -1,8 +1,9 @@
 import { i as __toESM } from "../_runtime.mjs";
+import { r as productById } from "./menu-zEgjV5oi.mjs";
 import { b as require_jsx_runtime, v as Link, z as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as Minus, i as Plus, r as Printer } from "../_libs/lucide-react.mjs";
-import { a as LINKEDIN, b as useLang, d as WHATSAPP, f as WHATSAPP_DISPLAY, g as productById, h as formatKz, i as INSTAGRAM, l as SITE, m as copy, n as EMAIL, o as Mark, p as cn, r as HOURS, s as PAY_METHODS, u as Shell, v as t, y as useCart } from "./shell-Df4RzzmE.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/pedir-D4vacUXP.js
+import { a as Mark, c as Shell, d as cn, f as copy, g as useLang, h as useCart, i as LINKEDIN, l as WHATSAPP, m as t, n as HOURS, o as PAY_METHODS, p as formatKz, r as INSTAGRAM, s as SITE, t as EMAIL, u as WHATSAPP_DISPLAY } from "./shell-uG93CiQk.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/pedir-CBoYs1M6.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function newTicketId(date = /* @__PURE__ */ new Date()) {

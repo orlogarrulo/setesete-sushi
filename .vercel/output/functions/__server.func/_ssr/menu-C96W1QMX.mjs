@@ -1,8 +1,9 @@
 import { i as __toESM } from "../_runtime.mjs";
-import { b as require_jsx_runtime, z as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
-import { _ as productsByCategory, b as useLang, c as PRODUCTS, h as formatKz, m as copy, p as cn, t as CATEGORIES, u as Shell, v as t, y as useCart } from "./shell-Df4RzzmE.mjs";
-import { n as Route$1 } from "./router-DZqrTt3i.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/menu-CXlS0ZAk.js
+import { i as productsByCategory, n as PRODUCTS, t as CATEGORIES } from "./menu-zEgjV5oi.mjs";
+import { b as require_jsx_runtime, v as Link, z as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
+import { c as Shell, d as cn, f as copy, g as useLang, h as useCart, m as t, p as formatKz } from "./shell-uG93CiQk.mjs";
+import { n as Route$1 } from "./router-Cg76BJSv.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/menu-C96W1QMX.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProductCard({ product }) {
@@ -64,31 +65,69 @@ function ProductCard({ product }) {
 		})]
 	});
 }
+function stickyOffset() {
+	const bar = document.querySelector("header");
+	const tabs = document.querySelector(".sticky.z-30");
+	return (bar instanceof HTMLElement ? bar.getBoundingClientRect().height : 64) + (tabs instanceof HTMLElement ? tabs.getBoundingClientRect().height : 52) + 8;
+}
+function jumpToCategory(id) {
+	const el = document.getElementById(id);
+	if (!el) return false;
+	const top = el.getBoundingClientRect().top + window.scrollY - stickyOffset();
+	window.scrollTo({
+		top: Math.max(0, top),
+		behavior: "auto"
+	});
+	return Math.abs(el.getBoundingClientRect().top - stickyOffset()) < 56;
+}
 function MenuPage() {
 	const lang = useLang((s) => s.lang);
 	const { cat } = Route$1.useSearch();
-	const fromSearch = CATEGORIES.some((c) => c.id === cat) ? cat : void 0;
-	const [active, setActive] = (0, import_react.useState)(fromSearch);
-	(0, import_react.useEffect)(() => {
-		if (!fromSearch) return;
-		document.getElementById(fromSearch)?.scrollIntoView({
-			behavior: "smooth",
-			block: "start"
-		});
+	const fromSearch = cat;
+	const [active, setActive] = (0, import_react.useState)(fromSearch ?? "entradas");
+	const lockObserver = (0, import_react.useRef)(Boolean(fromSearch));
+	(0, import_react.useLayoutEffect)(() => {
+		if (!fromSearch) {
+			lockObserver.current = false;
+			return;
+		}
+		lockObserver.current = true;
 		setActive(fromSearch);
+		let stopped = false;
+		const tick = () => {
+			if (stopped) return;
+			jumpToCategory(fromSearch);
+		};
+		tick();
+		const iv = window.setInterval(tick, 80);
+		const imgs = [...document.querySelectorAll("main img")];
+		imgs.forEach((img) => img.addEventListener("load", tick));
+		const stop = window.setTimeout(() => {
+			stopped = true;
+			window.clearInterval(iv);
+			lockObserver.current = false;
+			imgs.forEach((img) => img.removeEventListener("load", tick));
+		}, 2800);
+		return () => {
+			stopped = true;
+			window.clearInterval(iv);
+			window.clearTimeout(stop);
+			imgs.forEach((img) => img.removeEventListener("load", tick));
+		};
 	}, [fromSearch]);
 	(0, import_react.useEffect)(() => {
 		const nodes = CATEGORIES.map((c) => document.getElementById(c.id)).filter((el) => Boolean(el));
 		if (!nodes.length) return;
 		const obs = new IntersectionObserver((entries) => {
+			if (lockObserver.current) return;
 			const id = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]?.target.id;
 			if (id) setActive(id);
 		}, {
-			rootMargin: "-30% 0px -55% 0px",
+			rootMargin: "-40% 0px -45% 0px",
 			threshold: [
 				0,
-				.2,
-				.5
+				.15,
+				.4
 			]
 		});
 		nodes.forEach((n) => obs.observe(n));
@@ -127,9 +166,19 @@ function MenuPage() {
 			className: "sticky top-16 z-30 border-b border-ink/8 bg-rice/90 backdrop-blur-md sm:top-[4.25rem]",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-3 sm:px-6",
-				children: CATEGORIES.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-					href: `#${c.id}`,
-					onClick: () => setActive(c.id),
+				children: CATEGORIES.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+					to: "/menu",
+					search: { cat: c.id },
+					hash: c.id,
+					resetScroll: false,
+					onClick: () => {
+						lockObserver.current = true;
+						setActive(c.id);
+						window.setTimeout(() => {
+							jumpToCategory(c.id);
+							lockObserver.current = false;
+						}, 0);
+					},
 					className: cn("shrink-0 rounded-full px-3.5 py-2 text-[11px] font-medium tracking-[0.12em] whitespace-nowrap uppercase", active === c.id ? "bg-kaki text-rice" : "bg-ink/5 text-ink hover:bg-ink/10"),
 					children: c.name[lang]
 				}, c.id))
@@ -137,7 +186,7 @@ function MenuPage() {
 		}),
 		CATEGORIES.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 			id: c.id,
-			className: "scroll-mt-32 mx-auto max-w-6xl px-4 py-14 sm:px-6",
+			className: "scroll-mt-36 mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:scroll-mt-40",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "mb-8 flex items-end justify-between gap-4",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
