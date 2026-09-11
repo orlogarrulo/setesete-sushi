@@ -1,8 +1,8 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, v as Link, z as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as Minus, i as Plus, r as Printer } from "../_libs/lucide-react.mjs";
-import { a as LINKEDIN, b as useLang, d as WHATSAPP, f as WHATSAPP_DISPLAY, g as productById, h as formatKz, i as INSTAGRAM, l as SITE, m as copy, n as EMAIL, o as Mark, p as cn, r as HOURS, s as PAY_METHODS, u as Shell, v as t, y as useCart } from "./shell-DzREHeBc.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/pedir-DZvkipa5.js
+import { a as LINKEDIN, b as useLang, d as WHATSAPP, f as WHATSAPP_DISPLAY, g as productById, h as formatKz, i as INSTAGRAM, l as SITE, m as copy, n as EMAIL, o as Mark, p as cn, r as HOURS, s as PAY_METHODS, u as Shell, v as t, y as useCart } from "./shell-Df4RzzmE.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/pedir-D4vacUXP.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function newTicketId(date = /* @__PURE__ */ new Date()) {
@@ -442,7 +442,7 @@ function PedirPage() {
 									href: INSTAGRAM,
 									className: "hover:text-kaki",
 									target: "_blank",
-									rel: "noreferrer",
+									rel: "noopener noreferrer",
 									children: "@setesete.ao"
 								})
 							})]
@@ -458,7 +458,7 @@ function PedirPage() {
 									href: LINKEDIN,
 									className: "hover:text-kaki",
 									target: "_blank",
-									rel: "noreferrer",
+									rel: "noopener noreferrer",
 									children: "Sete Sete"
 								})
 							})]

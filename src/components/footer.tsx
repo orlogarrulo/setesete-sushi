@@ -5,6 +5,7 @@ import {
   EMAIL,
   INSTAGRAM,
   LINKEDIN,
+  MANO_URL,
   WHATSAPP,
   WHATSAPP_DISPLAY,
 } from "@/lib/utils";
@@ -99,9 +100,9 @@ export function Footer() {
               {lang === "pt" ? "Parceiro" : "Partner"}
             </p>
             <a
-              href="https://mano.ao"
+              href={MANO_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="mt-3 inline-flex items-center rounded-lg bg-rice px-5 py-4"
               aria-label="MANO"
             >
@@ -117,7 +118,7 @@ export function Footer() {
             <a
               href={INSTAGRAM}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               aria-label="Instagram Sete Sete"
               className="inline-flex min-h-12 items-center gap-2 rounded-full border border-rice/15 px-4 text-rice transition hover:border-kaki-soft hover:text-kaki-soft"
             >
@@ -129,7 +130,7 @@ export function Footer() {
             <a
               href={LINKEDIN}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               aria-label="LinkedIn Sete Sete"
               className="inline-flex min-h-12 items-center gap-2 rounded-full border border-rice/15 px-4 text-rice transition hover:border-kaki-soft hover:text-kaki-soft"
             >

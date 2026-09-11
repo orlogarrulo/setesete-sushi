@@ -228,7 +228,7 @@ function PedirPage() {
                   href={INSTAGRAM}
                   className="hover:text-kaki"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   @setesete.ao
                 </a>
@@ -243,7 +243,7 @@ function PedirPage() {
                   href={LINKEDIN}
                   className="hover:text-kaki"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   Sete Sete
                 </a>

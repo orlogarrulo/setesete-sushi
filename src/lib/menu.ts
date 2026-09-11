@@ -56,7 +56,7 @@ export const CATEGORIES: Category[] = [
       pt: "Selecção focada em salmão fresco.",
       en: "A selection built around fresh salmon.",
     },
-    image: "/photos/combinado.jpg",
+    image: "/photos/hero-capa.jpg",
   },
   {
     id: "combinados",
@@ -241,7 +241,7 @@ export const PRODUCTS: Product[] = [
     price: 24000,
     pieces: 16,
     prepMin: 15,
-    image: "/photos/combinado.jpg",
+    image: "/photos/combinado-close.jpg",
   },
   {
     id: "comb-26-salmao",
@@ -258,7 +258,7 @@ export const PRODUCTS: Product[] = [
     price: 39000,
     pieces: 26,
     prepMin: 20,
-    image: "/photos/combinado.jpg",
+    image: "/photos/hero-capa.jpg",
   },
   {
     id: "comb-32-salmao",
@@ -275,7 +275,7 @@ export const PRODUCTS: Product[] = [
     price: 48000,
     pieces: 32,
     prepMin: 25,
-    image: "/photos/combinado.jpg",
+    image: "/photos/combinado-close.jpg",
   },
   {
     id: "comb-45-salmao",
@@ -292,7 +292,7 @@ export const PRODUCTS: Product[] = [
     price: 67500,
     pieces: 45,
     prepMin: 35,
-    image: "/photos/combinado.jpg",
+    image: "/photos/hero-capa.jpg",
     flags: ["chef"],
   },
   {

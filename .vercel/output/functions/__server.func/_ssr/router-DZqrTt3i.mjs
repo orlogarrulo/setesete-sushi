@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { _ as createRootRoute, b as require_jsx_runtime, g as createFileRoute, h as lazyRouteComponent, l as Scripts, m as Outlet, p as createRouter, u as HeadContent, v as Link, y as useRouter, z as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as union, i as string, n as number, r as object, t as literal } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-cMZ81i90.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-DZqrTt3i.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var __defProp = Object.defineProperty;
@@ -307,7 +307,7 @@ function PreviewHostBridge() {
 	}, [router]);
 	return null;
 }
-var styles_default = "/assets/styles-CxnvhXvZ.css";
+var styles_default = "/assets/styles-B0Sa-azL.css";
 var APP_NAME = "Sete Sete";
 var Route$4 = createRootRoute({
 	head: () => ({
@@ -334,30 +334,29 @@ var Route$4 = createRootRoute({
 		links: [
 			{
 				rel: "icon",
-				href: "/favicon.ico",
-				sizes: "32x32"
-			},
-			{
-				rel: "icon",
 				type: "image/png",
 				sizes: "32x32",
-				href: "/favicon-32.png"
+				href: "/favicon-32.png?v=kamon3"
 			},
 			{
 				rel: "icon",
 				type: "image/png",
 				sizes: "48x48",
-				href: "/favicon-48.png"
+				href: "/favicon-48.png?v=kamon3"
 			},
 			{
 				rel: "icon",
 				type: "image/svg+xml",
-				href: "/favicon.svg"
+				href: "/favicon.svg?v=kamon3"
+			},
+			{
+				rel: "shortcut icon",
+				href: "/favicon.ico?v=kamon3"
 			},
 			{
 				rel: "apple-touch-icon",
 				sizes: "180x180",
-				href: "/apple-touch-icon.png"
+				href: "/apple-touch-icon.png?v=kamon3"
 			},
 			{
 				rel: "stylesheet",
@@ -382,17 +381,17 @@ var Route$4 = createRootRoute({
 		})]
 	})
 });
-var $$splitComponentImporter$3 = () => import("./routes-CruyISb8.mjs");
+var $$splitComponentImporter$3 = () => import("./routes-C4gP2T9Z.mjs");
 var Route$3 = createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter$3, "component") });
-var $$splitComponentImporter$2 = () => import("./casa-B8Fj5-He.mjs");
+var $$splitComponentImporter$2 = () => import("./casa-B_p3cd3L.mjs");
 var Route$2 = createFileRoute("/casa")({ component: lazyRouteComponent($$splitComponentImporter$2, "component") });
-var $$splitComponentImporter$1 = () => import("./menu-BD73eBUN.mjs");
+var $$splitComponentImporter$1 = () => import("./menu-CXlS0ZAk.mjs");
 var searchSchema = object({ cat: string().optional() });
 var Route$1 = createFileRoute("/menu")({
 	validateSearch: searchSchema,
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./pedir-DZvkipa5.mjs");
+var $$splitComponentImporter = () => import("./pedir-D4vacUXP.mjs");
 var Route = createFileRoute("/pedir")({ component: lazyRouteComponent($$splitComponentImporter, "component") });
 var rootRouteChildren = {
 	IndexRoute: Route$3.update({

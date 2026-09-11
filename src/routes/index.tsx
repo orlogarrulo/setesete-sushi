@@ -12,9 +12,7 @@ export const Route = createFileRoute("/")({ component: Home });
 function Home() {
   const lang = useLang((s) => s.lang);
   const featured = PRODUCTS.filter((p) =>
-    ["comb-16-salmao", "comb-26-salmao", "comb-32-salmao", "comb-45-salmao"].includes(
-      p.id,
-    ),
+    ["comb-45-salmao", "comb-16-salmao"].includes(p.id),
   );
 
   return (
@@ -22,11 +20,11 @@ function Home() {
       <main>
         <section className="relative min-h-[88dvh] overflow-hidden bg-nori text-rice">
           <img
-            src="/photos/hero-nigiri.jpg"
-            alt="Niguiris de salmão Sete Sete"
-            className="absolute inset-0 size-full object-cover opacity-80"
+            src="/photos/hero-capa.jpg"
+            alt="Huramaki de salmão Sete Sete"
+            className="absolute inset-0 size-full object-cover object-[20%_50%]"
           />
-          <div className="absolute inset-0 bg-linear-to-r from-nori/90 via-nori/55 to-nori/20" />
+          <div className="absolute inset-0 bg-linear-to-t from-nori via-nori/55 to-nori/20" />
           <div className="relative mx-auto flex min-h-[88dvh] max-w-6xl flex-col justify-end px-4 pb-16 sm:px-6 sm:pb-20">
             <Mark className="size-16 sm:size-20" alt="Kamon Sete Sete" />
             <p className="mt-6 text-[11px] font-medium tracking-[0.32em] text-kaki-soft uppercase">

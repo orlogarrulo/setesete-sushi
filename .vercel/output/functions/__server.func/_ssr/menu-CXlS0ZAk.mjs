@@ -1,8 +1,8 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, z as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
-import { _ as productsByCategory, b as useLang, c as PRODUCTS, h as formatKz, m as copy, p as cn, t as CATEGORIES, u as Shell, v as t, y as useCart } from "./shell-DzREHeBc.mjs";
-import { n as Route$1 } from "./router-cMZ81i90.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/menu-BD73eBUN.js
+import { _ as productsByCategory, b as useLang, c as PRODUCTS, h as formatKz, m as copy, p as cn, t as CATEGORIES, u as Shell, v as t, y as useCart } from "./shell-Df4RzzmE.mjs";
+import { n as Route$1 } from "./router-DZqrTt3i.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/menu-CXlS0ZAk.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProductCard({ product }) {

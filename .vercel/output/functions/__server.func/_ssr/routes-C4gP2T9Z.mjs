@@ -1,26 +1,21 @@
 import { b as require_jsx_runtime, v as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { s as ArrowRight } from "../_libs/lucide-react.mjs";
-import { b as useLang, c as PRODUCTS, h as formatKz, m as copy, o as Mark, t as CATEGORIES, u as Shell, v as t } from "./shell-DzREHeBc.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-CruyISb8.js
+import { b as useLang, c as PRODUCTS, h as formatKz, m as copy, o as Mark, t as CATEGORIES, u as Shell, v as t } from "./shell-Df4RzzmE.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-C4gP2T9Z.js
 var import_jsx_runtime = require_jsx_runtime();
 function Home() {
 	const lang = useLang((s) => s.lang);
-	const featured = PRODUCTS.filter((p) => [
-		"comb-16-salmao",
-		"comb-26-salmao",
-		"comb-32-salmao",
-		"comb-45-salmao"
-	].includes(p.id));
+	const featured = PRODUCTS.filter((p) => ["comb-45-salmao", "comb-16-salmao"].includes(p.id));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Shell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", { children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 			className: "relative min-h-[88dvh] overflow-hidden bg-nori text-rice",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-					src: "/photos/hero-nigiri.jpg",
-					alt: "Niguiris de salmão Sete Sete",
-					className: "absolute inset-0 size-full object-cover opacity-80"
+					src: "/photos/hero-capa.jpg",
+					alt: "Huramaki de salmão Sete Sete",
+					className: "absolute inset-0 size-full object-cover object-[20%_50%]"
 				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-linear-to-r from-nori/90 via-nori/55 to-nori/20" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-linear-to-t from-nori via-nori/55 to-nori/20" }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "relative mx-auto flex min-h-[88dvh] max-w-6xl flex-col justify-end px-4 pb-16 sm:px-6 sm:pb-20",
 					children: [

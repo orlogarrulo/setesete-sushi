@@ -4,7 +4,7 @@ import { t as clsx } from "../_libs/clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { a as Minus, i as Plus, n as ShoppingBag, o as Menu, t as X } from "../_libs/lucide-react.mjs";
 import { n as create, t as persist } from "../_libs/zustand.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/shell-DzREHeBc.js
+//#region node_modules/.nitro/vite/services/ssr/assets/shell-Df4RzzmE.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function cn(...inputs) {
@@ -18,7 +18,9 @@ var WHATSAPP = "244945407841";
 var WHATSAPP_DISPLAY = "+244 945 407 841";
 var EMAIL = "info@setesete.ao";
 var INSTAGRAM = "https://www.instagram.com/setesete.ao/";
-var LINKEDIN = "https://www.linkedin.com/company/sete-sete";
+/** Public company page (not the admin dashboard). */
+var LINKEDIN = "https://www.linkedin.com/company/135004198/";
+var MANO_URL = "https://shop.manoapp.com/pt";
 var HOURS = "12h – 22h";
 var SITE = "setesete.ao";
 var PAY_METHODS = {
@@ -428,7 +430,7 @@ var CATEGORIES = [
 			pt: "Selecção focada em salmão fresco.",
 			en: "A selection built around fresh salmon."
 		},
-		image: "/photos/combinado.jpg"
+		image: "/photos/hero-capa.jpg"
 	},
 	{
 		id: "combinados",
@@ -654,7 +656,7 @@ var PRODUCTS = [
 		price: 24e3,
 		pieces: 16,
 		prepMin: 15,
-		image: "/photos/combinado.jpg"
+		image: "/photos/combinado-close.jpg"
 	},
 	{
 		id: "comb-26-salmao",
@@ -674,7 +676,7 @@ var PRODUCTS = [
 		price: 39e3,
 		pieces: 26,
 		prepMin: 20,
-		image: "/photos/combinado.jpg"
+		image: "/photos/hero-capa.jpg"
 	},
 	{
 		id: "comb-32-salmao",
@@ -694,7 +696,7 @@ var PRODUCTS = [
 		price: 48e3,
 		pieces: 32,
 		prepMin: 25,
-		image: "/photos/combinado.jpg"
+		image: "/photos/combinado-close.jpg"
 	},
 	{
 		id: "comb-45-salmao",
@@ -714,7 +716,7 @@ var PRODUCTS = [
 		price: 67500,
 		pieces: 45,
 		prepMin: 35,
-		image: "/photos/combinado.jpg",
+		image: "/photos/hero-capa.jpg",
 		flags: ["chef"]
 	},
 	{
@@ -1621,9 +1623,9 @@ function Footer() {
 						className: "text-[11px] tracking-[0.22em] text-stone uppercase",
 						children: lang === "pt" ? "Parceiro" : "Partner"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-						href: "https://mano.ao",
+						href: MANO_URL,
 						target: "_blank",
-						rel: "noreferrer",
+						rel: "noopener noreferrer",
 						className: "mt-3 inline-flex items-center rounded-lg bg-rice px-5 py-4",
 						"aria-label": "MANO",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
@@ -1636,7 +1638,7 @@ function Footer() {
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
 							href: INSTAGRAM,
 							target: "_blank",
-							rel: "noreferrer",
+							rel: "noopener noreferrer",
 							"aria-label": "Instagram Sete Sete",
 							className: "inline-flex min-h-12 items-center gap-2 rounded-full border border-rice/15 px-4 text-rice transition hover:border-kaki-soft hover:text-kaki-soft",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(InstagramIcon, { className: "size-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -1646,7 +1648,7 @@ function Footer() {
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
 							href: LINKEDIN,
 							target: "_blank",
-							rel: "noreferrer",
+							rel: "noopener noreferrer",
 							"aria-label": "LinkedIn Sete Sete",
 							className: "inline-flex min-h-12 items-center gap-2 rounded-full border border-rice/15 px-4 text-rice transition hover:border-kaki-soft hover:text-kaki-soft",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LinkedInIcon, { className: "size-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
