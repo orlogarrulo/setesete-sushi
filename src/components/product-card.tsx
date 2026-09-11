@@ -40,14 +40,24 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="mt-1 line-clamp-1 text-xs text-stone/75">
           {product.ingredients[lang]}
         </p>
-        <div className="mt-3 flex items-center gap-3 text-[11px] tracking-[0.12em] text-stone uppercase">
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] tracking-[0.12em] text-stone uppercase">
           {product.pieces ? (
             <span>
-              {product.pieces} {t(copy.pieces, lang)}
+              {product.pieces}{" "}
+              {product.pieces === 1
+                ? lang === "pt"
+                  ? "peça"
+                  : "piece"
+                : t(copy.pieces, lang)}
             </span>
           ) : null}
-          <span>
-            {product.prepMin} {t(copy.min, lang)}
+          {product.prepMin > 0 ? (
+            <span>
+              {product.prepMin} {t(copy.min, lang)}
+            </span>
+          ) : null}
+          <span className="normal-case tracking-normal text-stone/80">
+            {t(copy.hashi, lang)}
           </span>
         </div>
         <button

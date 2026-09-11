@@ -125,6 +125,9 @@ export function buildOrderMessage(ticket: Ticket) {
     "",
     `*Total: ${formatKz(ticket.total)}*`,
     lang === "pt" ? `Pagamento: ${payLabel}` : `Payment: ${payLabel}`,
+    lang === "pt"
+      ? "Hashi incluídos no preço."
+      : "Chopsticks included in the price.",
     ...extra,
     ticket.notes
       ? lang === "pt"

@@ -19,7 +19,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Sete Sete — sushi fresco em Luanda. Pedidos no WhatsApp, das 12h às 22h. +244 945 407 841.",
+          "Sete Sete — sushi fresco em Luanda. 65 itens, hashi incluídos. Pedidos no WhatsApp, das 12h às 22h. +244 945 407 841.",
       },
       { name: "theme-color", content: "#E24A17" },
       { name: "msapplication-TileColor", content: "#E24A17" },

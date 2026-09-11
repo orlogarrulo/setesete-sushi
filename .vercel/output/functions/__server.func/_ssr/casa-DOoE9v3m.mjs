@@ -1,6 +1,6 @@
 import { b as require_jsx_runtime, v as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { a as Mark, c as Shell, f as copy, g as useLang, m as t } from "./shell-uG93CiQk.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/casa-DTs5X920.js
+import { m as copy, o as Mark, u as Shell, x as useLang, y as t } from "./shell-CpAW0sy3.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/casa-DOoE9v3m.js
 var import_jsx_runtime = require_jsx_runtime();
 function CasaPage() {
 	const lang = useLang((s) => s.lang);

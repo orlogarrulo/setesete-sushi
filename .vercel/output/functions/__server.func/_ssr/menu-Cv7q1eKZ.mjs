@@ -1,9 +1,8 @@
 import { i as __toESM } from "../_runtime.mjs";
-import { i as productsByCategory, n as PRODUCTS, t as CATEGORIES } from "./menu-zEgjV5oi.mjs";
 import { b as require_jsx_runtime, v as Link, z as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
-import { c as Shell, d as cn, f as copy, g as useLang, h as useCart, m as t, p as formatKz } from "./shell-uG93CiQk.mjs";
-import { n as Route$1 } from "./router-Cg76BJSv.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/menu-C96W1QMX.js
+import { _ as productsByCategory, b as useCart, c as PRODUCTS, h as formatKz, m as copy, p as cn, t as CATEGORIES, u as Shell, v as resolveCategory, x as useLang, y as t } from "./shell-CpAW0sy3.mjs";
+import { n as Route$1 } from "./router-L8YdgMJQ.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/menu-Cv7q1eKZ.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProductCard({ product }) {
@@ -44,16 +43,23 @@ function ProductCard({ product }) {
 					children: product.ingredients[lang]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mt-3 flex items-center gap-3 text-[11px] tracking-[0.12em] text-stone uppercase",
-					children: [product.pieces ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-						product.pieces,
-						" ",
-						t(copy.pieces, lang)
-					] }) : null, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-						product.prepMin,
-						" ",
-						t(copy.min, lang)
-					] })]
+					className: "mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] tracking-[0.12em] text-stone uppercase",
+					children: [
+						product.pieces ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+							product.pieces,
+							" ",
+							product.pieces === 1 ? lang === "pt" ? "peça" : "piece" : t(copy.pieces, lang)
+						] }) : null,
+						product.prepMin > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+							product.prepMin,
+							" ",
+							t(copy.min, lang)
+						] }) : null,
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "normal-case tracking-normal text-stone/80",
+							children: t(copy.hashi, lang)
+						})
+					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 					type: "button",
@@ -83,7 +89,7 @@ function jumpToCategory(id) {
 function MenuPage() {
 	const lang = useLang((s) => s.lang);
 	const { cat } = Route$1.useSearch();
-	const fromSearch = cat;
+	const fromSearch = resolveCategory(cat);
 	const [active, setActive] = (0, import_react.useState)(fromSearch ?? "entradas");
 	const lockObserver = (0, import_react.useRef)(Boolean(fromSearch));
 	(0, import_react.useLayoutEffect)(() => {
@@ -107,7 +113,7 @@ function MenuPage() {
 			window.clearInterval(iv);
 			lockObserver.current = false;
 			imgs.forEach((img) => img.removeEventListener("load", tick));
-		}, 2800);
+		}, 4e3);
 		return () => {
 			stopped = true;
 			window.clearInterval(iv);
@@ -156,7 +162,11 @@ function MenuPage() {
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "mt-4 max-w-lg text-sm text-rice/70",
-							children: lang === "pt" ? "Quarenta peças. Preços em Kwanzas. Preparação no momento." : "Forty pieces. Prices in Kwanzas. Made to order."
+							children: lang === "pt" ? "Catorze colecções, sessenta e cinco itens. Preços em Kwanzas. Preparação no momento." : "Fourteen collections, sixty-five items. Prices in Kwanzas. Made to order."
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "mt-3 text-[11px] tracking-[0.16em] text-kaki-soft uppercase",
+							children: t(copy.hashi, lang)
 						})
 					]
 				})

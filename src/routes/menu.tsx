@@ -8,15 +8,14 @@ import {
   type CategoryId,
   PRODUCTS,
   productsByCategory,
+  resolveCategory,
 } from "@/lib/menu";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/store/lang";
 import { z } from "zod";
 
-const CAT_IDS = CATEGORIES.map((c) => c.id) as [CategoryId, ...CategoryId[]];
-
 const searchSchema = z.object({
-  cat: z.enum(CAT_IDS).optional(),
+  cat: z.string().optional(),
 });
 
 export const Route = createFileRoute("/menu")({
@@ -43,7 +42,7 @@ function jumpToCategory(id: CategoryId) {
 function MenuPage() {
   const lang = useLang((s) => s.lang);
   const { cat } = Route.useSearch();
-  const fromSearch = cat;
+  const fromSearch = resolveCategory(cat);
   const [active, setActive] = useState<CategoryId>(fromSearch ?? "entradas");
   const lockObserver = useRef(Boolean(fromSearch));
 
@@ -70,7 +69,7 @@ function MenuPage() {
       window.clearInterval(iv);
       lockObserver.current = false;
       imgs.forEach((img) => img.removeEventListener("load", tick));
-    }, 2800);
+    }, 4000);
 
     return () => {
       stopped = true;
@@ -119,8 +118,11 @@ function MenuPage() {
             </h1>
             <p className="mt-4 max-w-lg text-sm text-rice/70">
               {lang === "pt"
-                ? "Quarenta peças. Preços em Kwanzas. Preparação no momento."
-                : "Forty pieces. Prices in Kwanzas. Made to order."}
+                ? "Catorze colecções, sessenta e cinco itens. Preços em Kwanzas. Preparação no momento."
+                : "Fourteen collections, sixty-five items. Prices in Kwanzas. Made to order."}
+            </p>
+            <p className="mt-3 text-[11px] tracking-[0.16em] text-kaki-soft uppercase">
+              {t(copy.hashi, lang)}
             </p>
           </div>
         </section>

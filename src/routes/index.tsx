@@ -12,7 +12,7 @@ export const Route = createFileRoute("/")({ component: Home });
 function Home() {
   const lang = useLang((s) => s.lang);
   const featured = PRODUCTS.filter((p) =>
-    ["comb-45-salmao", "comb-16-salmao"].includes(p.id),
+    ["SS-OUR-45", "SS-ASN-77"].includes(p.id),
   );
 
   return (
@@ -21,7 +21,7 @@ function Home() {
         <section className="relative min-h-[88dvh] overflow-hidden bg-nori text-rice">
           <img
             src="/photos/hero-capa.jpg"
-            alt="Huramaki de salmão Sete Sete"
+            alt="Uramaki de salmão Sete Sete"
             className="absolute inset-0 size-full object-cover object-[20%_50%]"
           />
           <div className="absolute inset-0 bg-linear-to-t from-nori via-nori/55 to-nori/20" />
@@ -60,7 +60,7 @@ function Home() {
         <section className="border-b border-ink/8 bg-rice-warm">
           <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px sm:grid-cols-4">
             {[
-              { n: "40+", l: lang === "pt" ? "peças no menu" : "menu pieces" },
+              { n: "65", l: lang === "pt" ? "itens no cardápio" : "menu items" },
               { n: "12–22h", l: lang === "pt" ? "todos os dias" : "every day" },
               { n: "Luanda", l: lang === "pt" ? "entrega" : "delivery" },
               { n: "WhatsApp", l: lang === "pt" ? "pedido directo" : "direct order" },
@@ -134,7 +134,7 @@ function Home() {
                 <ArrowRight className="size-4" />
               </Link>
             </div>
-            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 md:gap-4">
+            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 md:gap-4">
               {CATEGORIES.map((c) => (
                 <Link
                   key={c.id}
@@ -166,10 +166,12 @@ function Home() {
 
         <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
           <p className="text-[11px] font-medium tracking-[0.28em] text-kaki uppercase">
-            {lang === "pt" ? "Combinados premium" : "Premium sets"}
+            {lang === "pt" ? "Ouro e assinatura" : "Gold and signature"}
           </p>
           <h2 className="mt-3 font-display text-3xl sm:text-5xl">
-            {lang === "pt" ? "Salmão no centro da mesa." : "Salmon at the centre of the table."}
+            {lang === "pt"
+              ? "Só salmão, ou o 77 da casa."
+              : "Salmon only, or the house 77."}
           </h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {featured.map((p) => (

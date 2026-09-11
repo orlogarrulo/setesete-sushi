@@ -1,19 +1,18 @@
-import { n as PRODUCTS, t as CATEGORIES } from "./menu-zEgjV5oi.mjs";
 import { b as require_jsx_runtime, v as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { s as ArrowRight } from "../_libs/lucide-react.mjs";
-import { a as Mark, c as Shell, f as copy, g as useLang, m as t, p as formatKz } from "./shell-uG93CiQk.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-B50dXKK8.js
+import { c as PRODUCTS, h as formatKz, m as copy, o as Mark, t as CATEGORIES, u as Shell, x as useLang, y as t } from "./shell-CpAW0sy3.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-BGQUBWO1.js
 var import_jsx_runtime = require_jsx_runtime();
 function Home() {
 	const lang = useLang((s) => s.lang);
-	const featured = PRODUCTS.filter((p) => ["comb-45-salmao", "comb-16-salmao"].includes(p.id));
+	const featured = PRODUCTS.filter((p) => ["SS-OUR-45", "SS-ASN-77"].includes(p.id));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Shell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", { children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 			className: "relative min-h-[88dvh] overflow-hidden bg-nori text-rice",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
 					src: "/photos/hero-capa.jpg",
-					alt: "Huramaki de salmão Sete Sete",
+					alt: "Uramaki de salmão Sete Sete",
 					className: "absolute inset-0 size-full object-cover object-[20%_50%]"
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-linear-to-t from-nori via-nori/55 to-nori/20" }),
@@ -62,8 +61,8 @@ function Home() {
 				className: "mx-auto grid max-w-6xl grid-cols-2 gap-px sm:grid-cols-4",
 				children: [
 					{
-						n: "40+",
-						l: lang === "pt" ? "peças no menu" : "menu pieces"
+						n: "65",
+						l: lang === "pt" ? "itens no cardápio" : "menu items"
 					},
 					{
 						n: "12–22h",
@@ -163,7 +162,7 @@ function Home() {
 						})]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 md:gap-4",
+						className: "mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 md:gap-4",
 						children: CATEGORIES.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 							to: "/menu",
 							search: { cat: c.id },
@@ -198,11 +197,11 @@ function Home() {
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-[11px] font-medium tracking-[0.28em] text-kaki uppercase",
-					children: lang === "pt" ? "Combinados premium" : "Premium sets"
+					children: lang === "pt" ? "Ouro e assinatura" : "Gold and signature"
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 					className: "mt-3 font-display text-3xl sm:text-5xl",
-					children: lang === "pt" ? "Salmão no centro da mesa." : "Salmon at the centre of the table."
+					children: lang === "pt" ? "Só salmão, ou o 77 da casa." : "Salmon only, or the house 77."
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "mt-10 grid gap-6 sm:grid-cols-2",

@@ -15,8 +15,8 @@ export const copy = {
       en: "Fresh sushi, on your WhatsApp.",
     },
     sub: {
-      pt: "Peixe escolhido com rigor, arroz temperado no ponto, combinados para a mesa. Pedido directo — sem filas, sem aplicações extra.",
-      en: "Carefully chosen fish, rice seasoned to the grain, sets for the table. Order directly — no queues, no extra apps.",
+      pt: "Peixe escolhido com rigor, arroz temperado no ponto, combinados para a mesa. Hashi incluídos. Pedido directo — sem filas, sem aplicações extra.",
+      en: "Carefully chosen fish, rice seasoned to the grain, sets for the table. Chopsticks included. Order directly — no queues, no extra apps.",
     },
     ctaMenu: { pt: "Ver o menu", en: "See the menu" },
     ctaOrder: { pt: "Pedir agora", en: "Order now" },
@@ -43,10 +43,10 @@ export const copy = {
     },
   },
   menuTeaser: {
-    kicker: { pt: "Um menu extenso", en: "An extensive menu" },
+    kicker: { pt: "O cardápio", en: "The menu" },
     title: {
-      pt: "Mais de 40 peças. Combinados, hots, temakis, niguiris.",
-      en: "More than 40 pieces. Sets, hot rolls, temaki, nigiri.",
+      pt: "Sessenta e cinco itens. Ouro, Mesa, assinatura Luanda.",
+      en: "Sixty-five items. Gold, Table, Luanda signatures.",
     },
   },
   how: {
@@ -92,8 +92,8 @@ export const copy = {
     },
     send: { pt: "Gerar fatura", en: "Create invoice" },
     hint: {
-      pt: "Escolhe o pagamento, geras a fatura, e envias o resumo no WhatsApp. Confirmamos frescura, tempo e zona.",
-      en: "Choose payment, get the invoice, send the summary on WhatsApp. We confirm freshness, timing and area.",
+      pt: "Escolhe o pagamento, geras a fatura, e envias o resumo no WhatsApp. Hashi incluídos em todos os pratos. Confirmamos frescura, tempo e zona.",
+      en: "Choose payment, get the invoice, send the summary on WhatsApp. Chopsticks included with every dish. We confirm freshness, timing and area.",
     },
     sent: {
       pt: "Fatura pronta.",
@@ -120,8 +120,8 @@ export const copy = {
     total: { pt: "Total", en: "Total" },
     pay: { pt: "Pagamento", en: "Payment" },
     thanks: {
-      pt: "Obrigado. Preparação no momento.",
-      en: "Thank you. Made to order.",
+      pt: "Obrigado. Preparação no momento. Hashi incluídos no preço.",
+      en: "Thank you. Made to order. Chopsticks included in the price.",
     },
   },
   casa: {
@@ -141,8 +141,8 @@ export const copy = {
     },
     catalog: { pt: "O catálogo", en: "The catalogue" },
     catalogBody: {
-      pt: "O mesmo cardápio que chega à mesa — agora no ecrã, com preços em Kwanzas.",
-      en: "The same menu that reaches the table — now on screen, priced in Kwanzas.",
+      pt: "Catorze colecções, sessenta e cinco itens — o mesmo cardápio no WhatsApp, na MANO e no ecrã. Preços em Kwanzas. Hashi incluídos.",
+      en: "Fourteen collections, sixty-five items — the same menu on WhatsApp, MANO and the screen. Priced in Kwanzas. Chopsticks included.",
     },
   },
   footer: {
@@ -153,9 +153,15 @@ export const copy = {
     signature: { pt: "Assinatura", en: "Signature" },
     popular: { pt: "Mais pedido", en: "Most ordered" },
     highlight: { pt: "Destaque", en: "Featured" },
+    new: { pt: "Novo", en: "New" },
+    veg: { pt: "Vegetariano", en: "Vegetarian" },
   },
   pieces: { pt: "peças", en: "pieces" },
   min: { pt: "min", en: "min" },
+  hashi: {
+    pt: "Hashi incluídos no preço.",
+    en: "Chopsticks included in the price.",
+  },
   notFound: {
     title: { pt: "Esta página não existe.", en: "This page does not exist." },
     back: { pt: "Voltar ao início", en: "Back home" },

@@ -48,7 +48,7 @@ export const useCart = create<CartState>()(
         }, 0),
     }),
     {
-      name: "setesete-cart",
+      name: "setesete-cart-v2",
       partialize: (s) => ({ lines: s.lines }),
       skipHydration: true,
     },
