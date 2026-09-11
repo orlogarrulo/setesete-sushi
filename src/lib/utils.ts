@@ -9,17 +9,17 @@ export function formatKz(value: number) {
   return `${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} Kz`;
 }
 
-/** WhatsApp / pedidos — 9 dígitos angolanos (número original da casa). */
+/** WhatsApp / pedidos — número da casa. */
 export const WHATSAPP = "244945407841";
-/** Contacto público no site e na carta, conforme pedido. */
-export const WHATSAPP_DISPLAY = "+244 945 407 84";
+export const WHATSAPP_DISPLAY = "+244 945 407 841";
 export const EMAIL = "info@setesete.ao";
 export const INSTAGRAM = "https://www.instagram.com/setesete.ao/";
+export const LINKEDIN = "https://www.linkedin.com/company/sete-sete";
 export const HOURS = "12h – 22h";
 export const CITY = "Luanda";
 export const SITE = "setesete.ao";
 
-export const MCX_DISPLAY = "+244 945 407 84";
+export const MCX_DISPLAY = "+244 945 407 841";
 
 export type PayMethod = "mcx" | "transfer" | "cash";
 

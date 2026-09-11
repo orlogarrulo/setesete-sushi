@@ -62,7 +62,7 @@ function MenuPage() {
         <section className="relative overflow-hidden bg-nori text-rice">
           <img
             src="/photos/combinado.jpg"
-            alt=""
+            alt="Combinado Sete Sete"
             className="absolute inset-0 size-full object-cover opacity-35"
           />
           <div className="absolute inset-0 bg-nori/55" />

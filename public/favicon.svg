@@ -1,5 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <circle cx="8" cy="8" r="8" fill="#E24A17"/>
-  <path fill="#fff" d="M2 3h5v2H6v1H5v2H4v2H3v2H2v-2h1V8h1V6h1V5H2z"/>
-  <path fill="#fff" d="M9 3h5v2h-1v1h-1v2h-1v2h-1v2H9v-2h1V8h1V6h1V5H9z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Sete Sete">
+  <title>Sete Sete — kamon 77</title>
+  <rect width="32" height="32" rx="8" fill="#E24A17"/>
+  <g fill="none" stroke="#F4F0E8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 11.2 Q16 6.4 22.4 10.67 L14.93 24"/>
+    <path d="M24 20.8 Q16 25.6 9.6 21.33 L17.07 8"/>
+  </g>
 </svg>

@@ -19,28 +19,33 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Sete Sete — sushi fresco em Luanda. Pedidos no WhatsApp, das 12h às 22h.",
+          "Sete Sete — sushi fresco em Luanda. Pedidos no WhatsApp, das 12h às 22h. +244 945 407 841.",
       },
       { name: "theme-color", content: "#E24A17" },
+      { name: "msapplication-TileColor", content: "#E24A17" },
     ],
     links: [
+      { rel: "icon", href: "/favicon.ico", sizes: "32x32" },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "32x32",
+        href: "/favicon-32.png",
+      },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "48x48",
+        href: "/favicon-48.png",
+      },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      {
+        rel: "apple-touch-icon",
+        sizes: "180x180",
+        href: "/apple-touch-icon.png",
+      },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
-      {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
-      },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap",
-      },
     ],
   }),
   component: () => (

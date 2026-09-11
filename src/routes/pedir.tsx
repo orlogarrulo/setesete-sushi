@@ -15,6 +15,7 @@ import {
   formatKz,
   HOURS,
   INSTAGRAM,
+  LINKEDIN,
   PAY_METHODS,
   type PayMethod,
   WHATSAPP,
@@ -103,7 +104,7 @@ function PedirPage() {
                         {p ? (
                           <img
                             src={p.image}
-                            alt=""
+                            alt={l.name}
                             className="size-16 shrink-0 rounded-md object-cover"
                           />
                         ) : null}
@@ -127,7 +128,7 @@ function PedirPage() {
                       >
                         <img
                           src={p.image}
-                          alt=""
+                          alt={p.name[lang]}
                           className="size-16 shrink-0 rounded-md object-cover"
                         />
                         <div className="min-w-0 flex-1">
@@ -230,6 +231,21 @@ function PedirPage() {
                   rel="noreferrer"
                 >
                   @setesete.ao
+                </a>
+              </dd>
+            </div>
+            <div className="border-t border-ink/8 pt-4">
+              <dt className="text-[11px] tracking-[0.18em] text-stone uppercase">
+                LinkedIn
+              </dt>
+              <dd className="mt-1">
+                <a
+                  href={LINKEDIN}
+                  className="hover:text-kaki"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Sete Sete
                 </a>
               </dd>
             </div>

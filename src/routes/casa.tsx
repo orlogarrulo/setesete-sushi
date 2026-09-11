@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Mark } from "@/components/mark.tsx";
 import { Shell } from "@/components/shell.tsx";
 import { copy, t } from "@/lib/copy";
 import { useLang } from "@/store/lang";
@@ -13,7 +14,7 @@ function CasaPage() {
         <section className="relative overflow-hidden bg-nori text-rice">
           <img
             src="/photos/salmon.jpg"
-            alt=""
+            alt="Salmão fresco da casa"
             className="absolute inset-0 size-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-nori/50" />
@@ -38,11 +39,15 @@ function CasaPage() {
                 : "The seal — two sevens in circular symmetry — is a kamon. The upper curve is taste. The lower is the meeting. Not a copied arch: it is 77, our number, drawn as a Japanese crest."}
             </p>
           </div>
-          <img
-            src="/photos/rice.jpg"
-            alt=""
-            className="aspect-[4/3] w-full rounded-xl object-cover"
-          />
+          <figure className="grid place-items-center rounded-xl bg-nori px-8 py-14">
+            <Mark
+              className="size-40 sm:size-52"
+              alt="Kamon Sete Sete — dois setes em simetria circular"
+            />
+            <figcaption className="mt-6 text-center text-[11px] tracking-[0.22em] text-kaki-soft uppercase">
+              {lang === "pt" ? "Selo 77 · kamon" : "Seal 77 · kamon"}
+            </figcaption>
+          </figure>
         </section>
 
         <section className="bg-rice-warm py-20">
@@ -82,7 +87,7 @@ function CasaPage() {
           <figure>
             <img
               src="/photos/cozinha.jpg"
-              alt=""
+              alt="Cozinha Sete Sete — preparação no momento"
               className="aspect-[4/3] w-full rounded-xl object-cover"
             />
             <figcaption className="pt-4">
@@ -95,7 +100,7 @@ function CasaPage() {
           <figure>
             <img
               src="/photos/catalogo.jpg"
-              alt=""
+              alt="Catálogo Sete Sete"
               className="aspect-[4/3] w-full rounded-xl object-cover"
             />
             <figcaption className="pt-4">

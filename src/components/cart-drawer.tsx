@@ -61,7 +61,7 @@ export function CartDrawer() {
                   <li key={line.id} className="flex gap-3">
                     <img
                       src={p.image}
-                      alt=""
+                      alt={p.name[lang]}
                       className="size-20 shrink-0 rounded-md object-cover"
                     />
                     <div className="min-w-0 flex-1">

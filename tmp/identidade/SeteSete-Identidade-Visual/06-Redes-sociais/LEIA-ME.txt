@@ -1,6 +1,0 @@
-Redes sociais Sete Sete
-=======================
-avatar-1080.png        Foto de perfil (WhatsApp, Instagram, Facebook)
-post-1080.png          Publicação quadrada
-story-1080x1920.png    Story / Reels cover
-capa-1500x500.png      Capa Facebook / header

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { Mark } from "@/components/mark.tsx";
 import { Shell } from "@/components/shell.tsx";
 import { copy, t } from "@/lib/copy";
 import { CATEGORIES, PRODUCTS } from "@/lib/menu";
@@ -22,12 +23,13 @@ function Home() {
         <section className="relative min-h-[88dvh] overflow-hidden bg-nori text-rice">
           <img
             src="/photos/hero-nigiri.jpg"
-            alt=""
+            alt="Niguiris de salmão Sete Sete"
             className="absolute inset-0 size-full object-cover opacity-80"
           />
           <div className="absolute inset-0 bg-linear-to-r from-nori/90 via-nori/55 to-nori/20" />
           <div className="relative mx-auto flex min-h-[88dvh] max-w-6xl flex-col justify-end px-4 pb-16 sm:px-6 sm:pb-20">
-            <p className="text-[11px] font-medium tracking-[0.32em] text-kaki-soft uppercase">
+            <Mark className="size-16 sm:size-20" alt="Kamon Sete Sete" />
+            <p className="mt-6 text-[11px] font-medium tracking-[0.32em] text-kaki-soft uppercase">
               {t(copy.hero.kicker, lang)}
             </p>
             <h1 className="mt-4 font-display text-[18vw] leading-[0.85] tracking-tight sm:text-8xl md:text-9xl">
@@ -91,7 +93,7 @@ function Home() {
             <figure className="overflow-hidden rounded-xl">
               <img
                 src="/photos/rice.jpg"
-                alt=""
+                alt="Arroz de sushi temperado, grão a grão"
                 className="aspect-[3/2] w-full object-cover"
               />
               <figcaption className="pt-4">
@@ -104,7 +106,7 @@ function Home() {
             <figure className="overflow-hidden rounded-xl md:mt-12">
               <img
                 src="/photos/salmon.jpg"
-                alt=""
+                alt="Salmão fresco para niguiri"
                 className="aspect-[3/2] w-full object-cover"
               />
               <figcaption className="pt-4">
@@ -144,7 +146,7 @@ function Home() {
                 >
                   <img
                     src={c.image}
-                    alt=""
+                    alt={c.name[lang]}
                     className="size-full object-cover transition duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-nori/80 via-nori/10 to-transparent" />
@@ -180,7 +182,7 @@ function Home() {
                 <div className="relative aspect-[16/9] overflow-hidden">
                   <img
                     src={p.image}
-                    alt=""
+                    alt={p.name[lang]}
                     className="size-full object-cover transition duration-500 group-hover:scale-[1.03]"
                   />
                   {p.flags?.[0] && (
@@ -234,7 +236,7 @@ function Home() {
         <section className="relative overflow-hidden bg-nori py-24 text-center text-rice">
           <img
             src="/photos/combinado.jpg"
-            alt=""
+            alt="Combinado Sete Sete"
             className="absolute inset-0 size-full object-cover opacity-25"
           />
           <div className="relative mx-auto max-w-xl px-4">

@@ -1,6 +1,22 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/CormorantGaramond-Display.ttf") format("truetype");
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-UI.ttf") format("truetype");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-kaki: #e24a17;
   --color-kaki-deep: #b83310;
@@ -63,6 +79,12 @@
   img {
     outline: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent);
     outline-offset: -1px;
+  }
+
+  footer img,
+  img[src^="/brand/"],
+  img[src^="/partners/"] {
+    outline: none;
   }
 
   ::selection {

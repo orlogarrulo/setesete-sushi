@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <title>Sete Sete — ladrilho</title>
-  <rect width="80" height="80" fill="#E24A17"/>
-  <g fill="none" stroke="#F4F0E8" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.22">
-    <circle cx="40" cy="40" r="28"/>
-    <path d="M 5.840000000000003 15.920000000000002 Q 26.0 4.399999999999999 44.72 14.480000000000004 L 26.0 47.599999999999994"/><path d="M 46.16 36.08 Q 26.0 47.599999999999994 7.280000000000001 37.519999999999996 L 26.0 4.399999999999999"/>
-  </g>
-</svg>

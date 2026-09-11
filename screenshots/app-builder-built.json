@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Sete Sete",
+      "hasCanvas": false,
+      "bodyTextLen": 1996,
+      "bodyTextHash": "8dece328f09f88560e95e814dc564a3417fe28bf02627aa4672862e422b19a3b",
+      "bodyTextPrefix": "SETE SETE NO TEU WHATSAPP INÍCIO A CASA MENU PT EN ENCOMENDAR LU",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Sete Sete",
+      "hasCanvas": false,
+      "bodyTextLen": 1960,
+      "bodyTextHash": "bacc7619a2f009de5a9b159a3dff0d87d35e6bd23127e931791663563502ca60",
+      "bodyTextPrefix": "SETE SETE NO TEU WHATSAPP LUANDA · 12H – 22H Sete Sete Sushi fre",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}
