@@ -14,7 +14,6 @@ import {
 } from "recharts";
 import { getDashboard } from "@/lib/ops.functions";
 import { KPI_COPY } from "@/lib/ops";
-import { readStaffPin } from "@/lib/staff";
 import { formatKz } from "@/lib/utils";
 
 export const Route = createFileRoute("/ops/")({
@@ -28,9 +27,7 @@ function OpsDashboard() {
   const [err, setErr] = useState("");
 
   useEffect(() => {
-    const pin = readStaffPin();
-    if (!pin) return;
-    void getDashboard({ data: { pin } })
+    void getDashboard()
       .then(setData)
       .catch((e: unknown) => setErr(e instanceof Error ? e.message : "Erro"));
   }, []);

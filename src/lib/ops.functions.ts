@@ -7,7 +7,6 @@ import {
   firstName,
   remainingMinutes,
   routeProgress,
-  STAFF_PIN,
   type CustomerRow,
   type OrderEvent,
   type OrderRow,
@@ -119,8 +118,30 @@ function mapOrder(row: OrderDb): OrderRow {
   };
 }
 
-function requirePin(pin: string) {
-  if (pin !== STAFF_PIN) throw new Error("PIN inválido.");
+async function requireStaff() {
+  const { requireStaff: check } = await import("@/lib/staff-session");
+  check();
+}
+
+function dbFail(err: unknown): never {
+  const msg = err instanceof Error ? err.message : String(err);
+  console.error("[ops] db", err);
+  if (/ENOENT|pglite|ECONNREFUSED|connect|DATABASE/i.test(msg)) {
+    throw new Error(
+      "A casa não consegue ligar à base neste momento. Tenta de novo daqui a um instante.",
+    );
+  }
+  throw err instanceof Error ? err : new Error(msg);
+}
+
+async function sqlReady() {
+  try {
+    const sql = await getSql();
+    await ensureSeeded(sql);
+    return sql;
+  } catch (err) {
+    dbFail(err);
+  }
 }
 
 function newId(prefix: string) {
@@ -447,8 +468,7 @@ export const createOrder = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    const sql = await sqlReady();
     const zone = zoneById(data.zone) ?? resolveZone(data.zone);
     const dest = jitter(zone, data.phone + data.id);
     const phoneKey = digitsPhone(data.phone);
@@ -484,8 +504,7 @@ export const createOrder = createServerFn({ method: "POST" })
 export const getTracking = createServerFn({ method: "GET" })
   .validator(z.object({ token: z.string().min(4).max(64) }))
   .handler(async ({ data }) => {
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    const sql = await sqlReady();
     const rows = await sql<OrderDb>`select * from orders where track_token = ${data.token} limit 1`;
     if (!rows[0]) return null;
     return toPublic(sql, rows[0]);
@@ -494,30 +513,39 @@ export const getTracking = createServerFn({ method: "GET" })
 export const lookupInvoice = createServerFn({ method: "GET" })
   .validator(z.object({ id: z.string().min(4).max(40) }))
   .handler(async ({ data }) => {
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    const sql = await sqlReady();
     const rows = await sql<{ track_token: string }>`select track_token from orders where id = ${data.id.trim()} limit 1`;
     if (!rows[0]) return null;
     return { token: rows[0].track_token };
   });
 
-export const verifyStaffPin = createServerFn({ method: "POST" })
-  .validator(z.object({ pin: z.string() }))
+export const staffSession = createServerFn({ method: "GET" }).handler(async () => {
+  const { readStaffSession } = await import("@/lib/staff-session");
+  return { ok: readStaffSession() };
+});
+
+export const loginStaff = createServerFn({ method: "POST" })
+  .validator(z.object({ user: z.string().min(1).max(40), password: z.string().min(1).max(80) }))
   .handler(async ({ data }) => {
-    return { ok: data.pin === STAFF_PIN };
+    const { attemptStaffLogin } = await import("@/lib/staff-session");
+    return attemptStaffLogin(data.user, data.password);
   });
+
+export const logoutStaff = createServerFn({ method: "POST" }).handler(async () => {
+  const { clearStaffCookie } = await import("@/lib/staff-session");
+  clearStaffCookie();
+  return { ok: true };
+});
 
 export const listOrders = createServerFn({ method: "GET" })
   .validator(
     z.object({
-      pin: z.string(),
       status: z.string().optional(),
     }),
   )
   .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    await requireStaff();
+    const sql = await sqlReady();
     const rows = data.status
       ? await sql<OrderDb>`select * from orders where status = ${data.status} order by created_at desc`
       : await sql<OrderDb>`select * from orders order by created_at desc`;
@@ -525,11 +553,10 @@ export const listOrders = createServerFn({ method: "GET" })
   });
 
 export const getOrder = createServerFn({ method: "GET" })
-  .validator(z.object({ pin: z.string(), id: z.string() }))
+  .validator(z.object({ id: z.string() }))
   .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    await requireStaff();
+    const sql = await sqlReady();
     const rows = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
     if (!rows[0]) return null;
     const pub = await toPublic(sql, rows[0]);
@@ -539,7 +566,6 @@ export const getOrder = createServerFn({ method: "GET" })
 export const setOrderStatus = createServerFn({ method: "POST" })
   .validator(
     z.object({
-      pin: z.string(),
       id: z.string(),
       status: z.enum([
         "received",
@@ -555,9 +581,8 @@ export const setOrderStatus = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    await requireStaff();
+    const sql = await sqlReady();
     const rows = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
     if (!rows[0]) throw new Error("Encomenda não encontrada.");
     const now = iso(new Date());
@@ -591,15 +616,13 @@ export const setOrderStatus = createServerFn({ method: "POST" })
 export const listCustomers = createServerFn({ method: "GET" })
   .validator(
     z.object({
-      pin: z.string(),
       q: z.string().optional().default(""),
       tag: z.string().optional().default(""),
     }),
   )
   .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    await requireStaff();
+    const sql = await sqlReady();
     const rows = await sql<CustomerDb>`select * from customers order by last_order_at desc, created_at desc`;
     const stats = await sql<{
       customer_id: string;
@@ -638,11 +661,10 @@ export const listCustomers = createServerFn({ method: "GET" })
   });
 
 export const getCustomer = createServerFn({ method: "GET" })
-  .validator(z.object({ pin: z.string(), id: z.string() }))
+  .validator(z.object({ id: z.string() }))
   .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    await requireStaff();
+    const sql = await sqlReady();
     const rows = await sql<CustomerDb>`select * from customers where id = ${data.id} limit 1`;
     if (!rows[0]) return null;
     const r = rows[0];
@@ -679,7 +701,6 @@ export const getCustomer = createServerFn({ method: "GET" })
 export const upsertCustomer = createServerFn({ method: "POST" })
   .validator(
     z.object({
-      pin: z.string(),
       name: z.string().min(2).max(80),
       phone: z.string().min(6).max(24),
       zone: z.string().max(40).optional().default(""),
@@ -688,9 +709,8 @@ export const upsertCustomer = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    await requireStaff();
+    const sql = await sqlReady();
     const id = `c_${digitsPhone(data.phone) || newId("c")}`;
     const now = iso(new Date());
     const existing = await sql<{ id: string }>`select id from customers where id = ${id}`;
@@ -708,16 +728,14 @@ export const upsertCustomer = createServerFn({ method: "POST" })
 export const addCrmNote = createServerFn({ method: "POST" })
   .validator(
     z.object({
-      pin: z.string(),
       customerId: z.string(),
       body: z.string().min(2).max(400),
       author: z.string().max(40).optional().default("Casa"),
     }),
   )
   .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    await requireStaff();
+    const sql = await sqlReady();
     await sql`insert into crm_notes (customer_id, body, author) values (${data.customerId}, ${data.body}, ${data.author ?? "Casa"})`;
     return { ok: true };
   });
@@ -725,25 +743,20 @@ export const addCrmNote = createServerFn({ method: "POST" })
 export const setCustomerTags = createServerFn({ method: "POST" })
   .validator(
     z.object({
-      pin: z.string(),
       id: z.string(),
       tags: z.array(z.string()),
     }),
   )
   .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+    await requireStaff();
+    const sql = await sqlReady();
     await sql`update customers set tags = ${JSON.stringify(data.tags)} where id = ${data.id}`;
     return { ok: true };
   });
 
-export const getDashboard = createServerFn({ method: "GET" })
-  .validator(z.object({ pin: z.string() }))
-  .handler(async ({ data }) => {
-    requirePin(data.pin);
-    const sql = await getSql();
-    await ensureSeeded(sql);
+export const getDashboard = createServerFn({ method: "GET" }).handler(async () => {
+    await requireStaff();
+    const sql = await sqlReady();
     const orders = (await sql<OrderDb>`select * from orders`).map(mapOrder);
     const customers = await sql<CustomerDb>`select * from customers`;
     const now = new Date();

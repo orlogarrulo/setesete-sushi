@@ -1,14 +1,15 @@
-const KEY = "setesete-ops-pin";
+const KEY = "setesete-ops-gate";
 
-export function readStaffPin() {
-  if (typeof window === "undefined") return "";
-  return sessionStorage.getItem(KEY) ?? "";
+export function isStaffUiAuthed() {
+  if (typeof window === "undefined") return false;
+  return sessionStorage.getItem(KEY) === "1";
 }
 
-export function writeStaffPin(pin: string) {
-  sessionStorage.setItem(KEY, pin);
+export function markStaffUiAuthed() {
+  sessionStorage.setItem(KEY, "1");
 }
 
-export function clearStaffPin() {
+export function clearStaffUi() {
   sessionStorage.removeItem(KEY);
+  sessionStorage.removeItem("setesete-ops-pin");
 }

@@ -1,8 +1,6 @@
 import type { Lang } from "@/lib/menu";
 import type { PayMethod } from "@/lib/utils";
 
-export const STAFF_PIN = "7700";
-
 export const ORDER_STATUSES = [
   "received",
   "confirmed",

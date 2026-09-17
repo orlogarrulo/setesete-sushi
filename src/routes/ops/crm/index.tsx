@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { ZONES } from "@/lib/geo";
 import { CRM_TAGS, type CustomerRow } from "@/lib/ops";
 import { listCustomers, upsertCustomer } from "@/lib/ops.functions";
-import { readStaffPin } from "@/lib/staff";
 import { formatKz, cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ops/crm/")({
@@ -21,9 +20,7 @@ function CrmPage() {
   const [zone, setZone] = useState(ZONES[0].id);
 
   const load = useCallback(async () => {
-    const pin = readStaffPin();
-    if (!pin) return;
-    const list = await listCustomers({ data: { pin, q, tag } });
+    const list = await listCustomers({ data: { q, tag } });
     setRows(list);
   }, [q, tag]);
 
@@ -36,9 +33,7 @@ function CrmPage() {
 
   async function onCreate(e: FormEvent) {
     e.preventDefault();
-    const pin = readStaffPin();
-    if (!pin) return;
-    await upsertCustomer({ data: { pin, name, phone, zone, notes: "", tags: ["novo"] } });
+    await upsertCustomer({ data: { name, phone, zone, notes: "", tags: ["novo"] } });
     setName("");
     setPhone("");
     setOpen(false);

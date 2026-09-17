@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { CRM_TAGS, STATUS_META, type CustomerRow, type OrderRow } from "@/lib/ops";
 import { addCrmNote, getCustomer, setCustomerTags } from "@/lib/ops.functions";
-import { readStaffPin } from "@/lib/staff";
 import { formatKz, cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ops/crm/$id")({
@@ -20,9 +19,7 @@ function CustomerDetail() {
   const [note, setNote] = useState("");
 
   const load = useCallback(async () => {
-    const pin = readStaffPin();
-    if (!pin) return;
-    const row = await getCustomer({ data: { pin, id } });
+    const row = await getCustomer({ data: { id } });
     setData(row);
   }, [id]);
 
@@ -34,23 +31,20 @@ function CustomerDetail() {
   if (data === null) return <p className="text-sm text-kaki">Cliente não encontrado.</p>;
 
   async function toggleTag(tag: string) {
-    const pin = readStaffPin();
-    if (!pin) return;
     const current = data;
     if (!current) return;
     const tags = current.tags.includes(tag)
       ? current.tags.filter((t) => t !== tag)
       : [...current.tags, tag];
-    await setCustomerTags({ data: { pin, id: current.id, tags } });
+    await setCustomerTags({ data: { id: current.id, tags } });
     await load();
   }
 
   async function onNote(e: FormEvent) {
     e.preventDefault();
-    const pin = readStaffPin();
     const current = data;
-    if (!pin || !current || !note.trim()) return;
-    await addCrmNote({ data: { pin, customerId: current.id, body: note.trim() } });
+    if (!current || !note.trim()) return;
+    await addCrmNote({ data: { customerId: current.id, body: note.trim() } });
     setNote("");
     await load();
   }

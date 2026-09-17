@@ -35,8 +35,8 @@ function CasaPage() {
             </p>
             <p className="mt-6 text-base leading-relaxed text-stone sm:text-lg">
               {lang === "pt"
-                ? "A cozinha está em Talatona — o ponto A de todas as rotas. Cada encomenda sai daqui rumo à tua zona, com um link para seguir o caminho. A equipa gere o serviço no back-office da casa."
-                : "The kitchen is in Talatona — point A of every route. Each order leaves here for your area, with a link to follow the path. The team runs the service from the house back-office."}
+                ? "A cozinha está em Talatona — o ponto A de todas as rotas. Cada encomenda sai daqui rumo à tua zona, com um link para seguir o caminho."
+                : "The kitchen is in Talatona — point A of every route. Each order leaves here for your area, with a link to follow the path."}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -44,12 +44,6 @@ function CasaPage() {
                 className="inline-flex min-h-11 items-center rounded-full bg-kaki px-5 text-sm font-semibold tracking-[0.12em] text-rice uppercase hover:bg-kaki-deep"
               >
                 {t(copy.nav.track, lang)}
-              </Link>
-              <Link
-                to="/ops"
-                className="inline-flex min-h-11 items-center rounded-full border border-ink/15 px-5 text-sm font-semibold tracking-[0.12em] uppercase"
-              >
-                {lang === "pt" ? "Back-office" : "Back-office"}
               </Link>
             </div>
           </div>

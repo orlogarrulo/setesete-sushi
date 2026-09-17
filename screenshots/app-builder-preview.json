@@ -1,5 +1,5 @@
 {
-  "url": "http://127.0.0.1:8080/menu",
+  "url": "http://127.0.0.1:8080/ops",
   "viewports": {
     "desktop": {
       "width": 1280,
@@ -7,9 +7,9 @@
       "status": 200,
       "title": "Sete Sete",
       "hasCanvas": false,
-      "bodyTextLen": 13502,
-      "bodyTextHash": "65c0397897df8e55426bb703ac110dca90a3c8a7560c16fc4dfde29b6b7af5c9",
-      "bodyTextPrefix": "SETE SETE NO TEU WHATSAPP INÍCIO A CASA MENU SEGUIR PT EN ENCOME",
+      "bodyTextLen": 38,
+      "bodyTextHash": "356e6b72c092aa7f0b8ead7209197d9a32af1b9eabf55d5ec71bddeb1b9633de",
+      "bodyTextPrefix": "A casa UTILIZADOR PALAVRA-PASSE ENTRAR",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
@@ -21,9 +21,9 @@
       "status": 200,
       "title": "Sete Sete",
       "hasCanvas": false,
-      "bodyTextLen": 13347,
-      "bodyTextHash": "dd8613337d4a41c25f9e05c2f4a687c713797b60401e770c2d5f73a7d6150212",
-      "bodyTextPrefix": "SETE SETE NO TEU WHATSAPP CARDÁPIO Menu Catorze colecções, sesse",
+      "bodyTextLen": 38,
+      "bodyTextHash": "356e6b72c092aa7f0b8ead7209197d9a32af1b9eabf55d5ec71bddeb1b9633de",
+      "bodyTextPrefix": "A casa UTILIZADOR PALAVRA-PASSE ENTRAR",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],

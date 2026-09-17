@@ -12,7 +12,6 @@ import {
   type OrderStatus,
 } from "@/lib/ops";
 import { getOrder, setOrderStatus } from "@/lib/ops.functions";
-import { readStaffPin } from "@/lib/staff";
 import { formatKz, cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ops/encomendas/$id")({
@@ -32,9 +31,7 @@ function OrderDetail() {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    const pin = readStaffPin();
-    if (!pin) return;
-    const row = await getOrder({ data: { pin, id } });
+    const row = await getOrder({ data: { id } });
     setOrder(row);
   }, [id]);
 
@@ -61,11 +58,9 @@ function OrderDetail() {
   const next = nextStatus(order.status);
 
   async function setStatus(status: OrderStatus) {
-    const pin = readStaffPin();
-    if (!pin) return;
     setBusy(true);
     try {
-      await setOrderStatus({ data: { pin, id: order!.id, status, note: "" } });
+      await setOrderStatus({ data: { id: order!.id, status, note: "" } });
       await load();
     } finally {
       setBusy(false);

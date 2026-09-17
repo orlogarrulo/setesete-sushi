@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FLOW, STATUS_META, nextStatus, type OrderRow, type OrderStatus } from "@/lib/ops";
 import { listOrders, setOrderStatus } from "@/lib/ops.functions";
-import { readStaffPin } from "@/lib/staff";
 import { formatKz, cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ops/encomendas/")({
@@ -23,9 +22,7 @@ function EncomendasPage() {
   const [busy, setBusy] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const pin = readStaffPin();
-    if (!pin) return;
-    const rows = await listOrders({ data: { pin } });
+    const rows = await listOrders({ data: {} });
     setOrders(rows);
   }, []);
 
@@ -41,12 +38,11 @@ function EncomendasPage() {
   );
 
   async function advance(order: OrderRow) {
-    const pin = readStaffPin();
     const next = nextStatus(order.status);
-    if (!pin || !next) return;
+    if (!next) return;
     setBusy(order.id);
     try {
-      await setOrderStatus({ data: { pin, id: order.id, status: next, note: "" } });
+      await setOrderStatus({ data: { id: order.id, status: next, note: "" } });
       await load();
     } finally {
       setBusy(null);
