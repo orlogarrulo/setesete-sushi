@@ -6,6 +6,7 @@ export const copy = {
     casa: { pt: "A casa", en: "The house" },
     menu: { pt: "Menu", en: "Menu" },
     order: { pt: "Encomendar", en: "Order" },
+    track: { pt: "Seguir", en: "Track" },
   },
   hero: {
     kicker: { pt: "Luanda · 12h – 22h", en: "Luanda · 12:00 – 22:00" },
@@ -62,10 +63,10 @@ export const copy = {
       pt: "Multicaixa Express, transferência ou dinheiro. Geras a fatura e envias no WhatsApp.",
       en: "Multicaixa Express, transfer or cash. You get the invoice and send it on WhatsApp.",
     },
-    s3t: { pt: "Recebe", en: "Receive" },
+    s3t: { pt: "Segue", en: "Track" },
     s3: {
-      pt: "Preparação no momento. Entrega em Luanda, 12h às 22h.",
-      en: "Made to order. Delivery across Luanda, 12:00 to 22:00.",
+      pt: "Recebes um link. Vês a encomenda sair da cozinha (A) até à tua porta (B).",
+      en: "You get a link. Watch the order leave the kitchen (A) to your door (B).",
     },
   },
   cart: {
@@ -82,7 +83,13 @@ export const copy = {
     title: { pt: "Fecha o pedido. Gera a fatura.", en: "Close the order. Get the invoice." },
     name: { pt: "Nome", en: "Name" },
     phone: { pt: "Telefone / WhatsApp", en: "Phone / WhatsApp" },
-    address: { pt: "Morada / zona", en: "Address / area" },
+    address: { pt: "Morada / referências", en: "Address / landmarks" },
+    area: { pt: "Zona", en: "Area" },
+    trackCta: { pt: "Seguir a encomenda", en: "Track the order" },
+    trackHint: {
+      pt: "Partilha este link. A casa actualiza o estado; tu vês o caminho.",
+      en: "Share this link. The house updates the status; you see the route.",
+    },
     notes: { pt: "Notas (opcional)", en: "Notes (optional)" },
     pay: { pt: "Pagamento", en: "Payment" },
     receipt: { pt: "Comprovativo PDF", en: "PDF receipt" },
@@ -108,8 +115,8 @@ export const copy = {
     newOrder: { pt: "Novo pedido", en: "New order" },
     hours: { pt: "Todos os dias, 12h – 22h", en: "Every day, 12:00 – 22:00" },
     zone: {
-      pt: "Entrega em Luanda. Diz a zona — confirmamos tempo e taxa.",
-      en: "Delivery across Luanda. Tell us the area — we confirm time and fee.",
+      pt: "Entrega em Luanda. Escolhe a zona — confirmamos tempo e taxa. O seguimento mostra A → B.",
+      en: "Delivery across Luanda. Pick the area — we confirm time and fee. Tracking shows A → B.",
     },
   },
   ticket: {

@@ -75,6 +75,16 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link to="/seguir" className="hover:text-kaki-soft">
+                {t(copy.nav.track, lang)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/ops" className="hover:text-kaki-soft">
+                {lang === "pt" ? "Equipa · casa" : "Staff · house"}
+              </Link>
+            </li>
+            <li>
               <a
                 href={`https://wa.me/${WHATSAPP}`}
                 target="_blank"

@@ -52,7 +52,7 @@ export const CATEGORIES: Category[] = [
       pt: "O primeiro gesto. Fritos precisos, gyozas, edamame.",
       en: "The first gesture. Precise fried bites, gyoza, edamame.",
     },
-    image: "/photos/tempura.jpg",
+    image: "/photos/menu/SS-ENT-01.jpg",
   },
   {
     id: "combinados-ouro",
@@ -62,7 +62,7 @@ export const CATEGORIES: Category[] = [
       pt: "Só salmão. A linha premium da casa.",
       en: "Salmon only. The house premium line.",
     },
-    image: "/photos/hero-capa.jpg",
+    image: "/photos/menu/SS-OUR-45.jpg",
   },
   {
     id: "combinados-mesa",
@@ -72,7 +72,7 @@ export const CATEGORIES: Category[] = [
       pt: "Mix do dia. Melhor custo para partilhar.",
       en: "The day's mix. Best value for sharing.",
     },
-    image: "/photos/combinado.jpg",
+    image: "/photos/menu/SS-MES-45.jpg",
   },
   {
     id: "assinatura",
@@ -82,7 +82,7 @@ export const CATEGORIES: Category[] = [
       pt: "77, Ilha, Talatona, Família Domingo.",
       en: "77, Ilha, Talatona, Sunday family.",
     },
-    image: "/photos/combinado-close.jpg",
+    image: "/photos/menu/SS-ASN-77.jpg",
   },
   {
     id: "temakis",
@@ -92,7 +92,7 @@ export const CATEGORIES: Category[] = [
       pt: "Um cone, uma mão, comer já.",
       en: "One cone, one hand, eat now.",
     },
-    image: "/photos/temaki.jpg",
+    image: "/photos/menu/SS-TMK-77.jpg",
   },
   {
     id: "hots",
@@ -102,7 +102,7 @@ export const CATEGORIES: Category[] = [
       pt: "Empanados, quentes, o favorito de Luanda.",
       en: "Panko-fried, hot — Luanda's favourite.",
     },
-    image: "/photos/hot.jpg",
+    image: "/photos/menu/SS-HOT-FL.jpg",
   },
   {
     id: "gunkan",
@@ -112,7 +112,7 @@ export const CATEGORIES: Category[] = [
       pt: "Barcos pequenos, sabor concentrado.",
       en: "Small boats, concentrated flavour.",
     },
-    image: "/photos/gunkan.jpg",
+    image: "/photos/menu/SS-GNK-77.jpg",
   },
   {
     id: "uramaki",
@@ -122,7 +122,7 @@ export const CATEGORIES: Category[] = [
       pt: "Rolos invertidos, 8 peças.",
       en: "Inside-out rolls, 8 pieces.",
     },
-    image: "/photos/uramaki.jpg",
+    image: "/photos/menu/SS-URA-77.jpg",
   },
   {
     id: "nigiri",
@@ -132,7 +132,7 @@ export const CATEGORIES: Category[] = [
       pt: "Duas peças. O corte limpo.",
       en: "Two pieces. The clean cut.",
     },
-    image: "/photos/nigiri.jpg",
+    image: "/photos/menu/SS-NIG-SL.jpg",
   },
   {
     id: "hosomaki",
@@ -142,7 +142,7 @@ export const CATEGORIES: Category[] = [
       pt: "Rolo fino, 8 peças.",
       en: "Thin rolls, 8 pieces.",
     },
-    image: "/photos/hosomaki.jpg",
+    image: "/photos/menu/SS-HOS-SL.jpg",
   },
   {
     id: "yakissoba",
@@ -152,7 +152,7 @@ export const CATEGORIES: Category[] = [
       pt: "Wok quente. O mais pedido da casa no camarão.",
       en: "Hot wok. Prawn is the house bestseller.",
     },
-    image: "/photos/cozinha.jpg",
+    image: "/photos/menu/SS-YAK-EB.jpg",
   },
   {
     id: "meio-dia",
@@ -162,7 +162,7 @@ export const CATEGORIES: Category[] = [
       pt: "12h–16h, dias úteis. Escritório e almoço curto.",
       en: "12:00–16:00, weekdays. Office and a short lunch.",
     },
-    image: "/photos/catalogo.jpg",
+    image: "/photos/menu/SS-MID-SL.jpg",
   },
   {
     id: "bebidas",
@@ -172,7 +172,7 @@ export const CATEGORIES: Category[] = [
       pt: "Água, chá, sumos. Hashi já vai no prato.",
       en: "Water, tea, juices. Chopsticks already in the dish.",
     },
-    image: "/photos/catalogo-mesa.jpg",
+    image: "/photos/menu/SS-BEB-SJ.jpg",
   },
   {
     id: "doces",
@@ -182,7 +182,7 @@ export const CATEGORIES: Category[] = [
       pt: "Mochi e cheesecake yuzu. Fechar a mesa.",
       en: "Mochi and yuzu cheesecake. Close the table.",
     },
-    image: "/photos/capa-catalogo.jpg",
+    image: "/photos/menu/SS-DOC-MO.jpg",
   },
 ];
 
@@ -218,7 +218,7 @@ export const PRODUCTS: Product[] = [
     price: 7800,
     pieces: 6,
     prepMin: 9,
-    image: "/photos/tempura.jpg",
+    image: "/photos/menu/SS-ENT-01.jpg",
   },
   {
     id: "SS-ENT-02",
@@ -236,7 +236,7 @@ export const PRODUCTS: Product[] = [
     price: 5500,
     pieces: 4,
     prepMin: 9,
-    image: "/photos/tempura.jpg",
+    image: "/photos/menu/SS-ENT-02.jpg",
   },
   {
     id: "SS-ENT-03",
@@ -254,7 +254,7 @@ export const PRODUCTS: Product[] = [
     price: 4500,
     pieces: 3,
     prepMin: 10,
-    image: "/photos/tempura.jpg",
+    image: "/photos/menu/SS-ENT-03.jpg",
   },
   {
     id: "SS-ENT-04",
@@ -272,7 +272,7 @@ export const PRODUCTS: Product[] = [
     price: 4500,
     pieces: 3,
     prepMin: 10,
-    image: "/photos/tempura.jpg",
+    image: "/photos/menu/SS-ENT-04.jpg",
   },
   {
     id: "SS-ENT-05",
@@ -290,7 +290,7 @@ export const PRODUCTS: Product[] = [
     price: 6000,
     pieces: 4,
     prepMin: 15,
-    image: "/photos/legumes.jpg",
+    image: "/photos/menu/SS-ENT-05.jpg",
     flags: ["veg"],
   },
   {
@@ -308,7 +308,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 3500,
     prepMin: 6,
-    image: "/photos/legumes.jpg",
+    image: "/photos/menu/SS-ENT-06.jpg",
     flags: ["new"],
   },
   {
@@ -327,7 +327,7 @@ export const PRODUCTS: Product[] = [
     price: 6500,
     pieces: 5,
     prepMin: 12,
-    image: "/photos/tempura.jpg",
+    image: "/photos/menu/SS-ENT-07.jpg",
     flags: ["new"],
   },
   {
@@ -346,7 +346,7 @@ export const PRODUCTS: Product[] = [
     price: 24000,
     pieces: 16,
     prepMin: 15,
-    image: "/photos/combinado-close.jpg",
+    image: "/photos/menu/SS-OUR-16.jpg",
     flags: ["highlight"],
   },
   {
@@ -365,7 +365,7 @@ export const PRODUCTS: Product[] = [
     price: 39000,
     pieces: 26,
     prepMin: 20,
-    image: "/photos/hero-capa.jpg",
+    image: "/photos/menu/SS-OUR-26.jpg",
     flags: ["highlight"],
   },
   {
@@ -384,7 +384,7 @@ export const PRODUCTS: Product[] = [
     price: 48000,
     pieces: 32,
     prepMin: 25,
-    image: "/photos/combinado-close.jpg",
+    image: "/photos/menu/SS-OUR-32.jpg",
     flags: ["highlight"],
   },
   {
@@ -403,7 +403,7 @@ export const PRODUCTS: Product[] = [
     price: 67500,
     pieces: 45,
     prepMin: 35,
-    image: "/photos/hero-capa.jpg",
+    image: "/photos/menu/SS-OUR-45.jpg",
     flags: ["chef"],
   },
   {
@@ -422,7 +422,7 @@ export const PRODUCTS: Product[] = [
     price: 18000,
     pieces: 16,
     prepMin: 15,
-    image: "/photos/combinado.jpg",
+    image: "/photos/menu/SS-MES-16.jpg",
   },
   {
     id: "SS-MES-26",
@@ -440,7 +440,7 @@ export const PRODUCTS: Product[] = [
     price: 29500,
     pieces: 26,
     prepMin: 20,
-    image: "/photos/combinado.jpg",
+    image: "/photos/menu/SS-MES-26.jpg",
   },
   {
     id: "SS-MES-32",
@@ -458,7 +458,7 @@ export const PRODUCTS: Product[] = [
     price: 36000,
     pieces: 32,
     prepMin: 25,
-    image: "/photos/combinado.jpg",
+    image: "/photos/menu/SS-MES-32.jpg",
   },
   {
     id: "SS-MES-45",
@@ -476,7 +476,7 @@ export const PRODUCTS: Product[] = [
     price: 50000,
     pieces: 45,
     prepMin: 35,
-    image: "/photos/combinado.jpg",
+    image: "/photos/menu/SS-MES-45.jpg",
   },
   {
     id: "SS-ASN-77",
@@ -494,7 +494,7 @@ export const PRODUCTS: Product[] = [
     price: 42000,
     pieces: 24,
     prepMin: 22,
-    image: "/photos/combinado-close.jpg",
+    image: "/photos/menu/SS-ASN-77.jpg",
     flags: ["chef", "signature"],
   },
   {
@@ -513,7 +513,7 @@ export const PRODUCTS: Product[] = [
     price: 28000,
     pieces: 20,
     prepMin: 18,
-    image: "/photos/salmon.jpg",
+    image: "/photos/menu/SS-ASN-IL.jpg",
     flags: ["new"],
   },
   {
@@ -532,7 +532,7 @@ export const PRODUCTS: Product[] = [
     price: 44000,
     pieces: 30,
     prepMin: 24,
-    image: "/photos/catalogo.jpg",
+    image: "/photos/menu/SS-ASN-TL.jpg",
     flags: ["new"],
   },
   {
@@ -551,7 +551,7 @@ export const PRODUCTS: Product[] = [
     price: 85000,
     pieces: 60,
     prepMin: 45,
-    image: "/photos/combinado.jpg",
+    image: "/photos/menu/SS-ASN-FM.jpg",
     flags: ["new"],
   },
   {
@@ -570,7 +570,7 @@ export const PRODUCTS: Product[] = [
     price: 4500,
     pieces: 1,
     prepMin: 6,
-    image: "/photos/temaki.jpg",
+    image: "/photos/menu/SS-TMK-SL.jpg",
   },
   {
     id: "SS-TMK-AT",
@@ -588,7 +588,7 @@ export const PRODUCTS: Product[] = [
     price: 4500,
     pieces: 1,
     prepMin: 6,
-    image: "/photos/temaki.jpg",
+    image: "/photos/menu/SS-TMK-AT.jpg",
   },
   {
     id: "SS-TMK-77",
@@ -606,7 +606,7 @@ export const PRODUCTS: Product[] = [
     price: 5500,
     pieces: 1,
     prepMin: 7,
-    image: "/photos/temaki.jpg",
+    image: "/photos/menu/SS-TMK-77.jpg",
     flags: ["chef", "signature"],
   },
   {
@@ -625,7 +625,7 @@ export const PRODUCTS: Product[] = [
     price: 5500,
     pieces: 1,
     prepMin: 7,
-    image: "/photos/temaki.jpg",
+    image: "/photos/menu/SS-TMK-MG.jpg",
     flags: ["new"],
   },
   {
@@ -644,7 +644,7 @@ export const PRODUCTS: Product[] = [
     price: 5800,
     pieces: 1,
     prepMin: 8,
-    image: "/photos/temaki.jpg",
+    image: "/photos/menu/SS-TMK-CR.jpg",
     flags: ["new"],
   },
   {
@@ -663,7 +663,7 @@ export const PRODUCTS: Product[] = [
     price: 11000,
     pieces: 8,
     prepMin: 12,
-    image: "/photos/hot.jpg",
+    image: "/photos/menu/SS-HOT-FL.jpg",
   },
   {
     id: "SS-HOT-GS",
@@ -681,7 +681,7 @@ export const PRODUCTS: Product[] = [
     price: 12000,
     pieces: 8,
     prepMin: 12,
-    image: "/photos/hot.jpg",
+    image: "/photos/menu/SS-HOT-GS.jpg",
     flags: ["highlight"],
   },
   {
@@ -700,7 +700,7 @@ export const PRODUCTS: Product[] = [
     price: 9500,
     pieces: 8,
     prepMin: 12,
-    image: "/photos/hot.jpg",
+    image: "/photos/menu/SS-HOT-FR.jpg",
   },
   {
     id: "SS-HOT-ST",
@@ -718,7 +718,7 @@ export const PRODUCTS: Product[] = [
     price: 9000,
     pieces: 8,
     prepMin: 12,
-    image: "/photos/hot.jpg",
+    image: "/photos/menu/SS-HOT-ST.jpg",
   },
   {
     id: "SS-HOT-CF",
@@ -736,7 +736,7 @@ export const PRODUCTS: Product[] = [
     price: 12000,
     pieces: 8,
     prepMin: 13,
-    image: "/photos/hot.jpg",
+    image: "/photos/menu/SS-HOT-CF.jpg",
     flags: ["chef"],
   },
   {
@@ -755,7 +755,7 @@ export const PRODUCTS: Product[] = [
     price: 11500,
     pieces: 8,
     prepMin: 13,
-    image: "/photos/hot.jpg",
+    image: "/photos/menu/SS-HOT-LD.jpg",
     flags: ["new", "signature"],
   },
   {
@@ -774,7 +774,7 @@ export const PRODUCTS: Product[] = [
     price: 12000,
     pieces: 6,
     prepMin: 10,
-    image: "/photos/gunkan.jpg",
+    image: "/photos/menu/SS-GNK-77.jpg",
     flags: ["chef", "signature"],
   },
   {
@@ -793,7 +793,7 @@ export const PRODUCTS: Product[] = [
     price: 6500,
     pieces: 4,
     prepMin: 8,
-    image: "/photos/gunkan.jpg",
+    image: "/photos/menu/SS-GNK-SL.jpg",
   },
   {
     id: "SS-GNK-AT",
@@ -811,7 +811,7 @@ export const PRODUCTS: Product[] = [
     price: 6000,
     pieces: 4,
     prepMin: 8,
-    image: "/photos/gunkan.jpg",
+    image: "/photos/menu/SS-GNK-AT.jpg",
   },
   {
     id: "SS-GNK-SP",
@@ -829,7 +829,7 @@ export const PRODUCTS: Product[] = [
     price: 5500,
     pieces: 4,
     prepMin: 8,
-    image: "/photos/gunkan.jpg",
+    image: "/photos/menu/SS-GNK-SP.jpg",
   },
   {
     id: "SS-GNK-EB",
@@ -847,7 +847,7 @@ export const PRODUCTS: Product[] = [
     price: 7000,
     pieces: 4,
     prepMin: 9,
-    image: "/photos/gunkan.jpg",
+    image: "/photos/menu/SS-GNK-EB.jpg",
     flags: ["highlight"],
   },
   {
@@ -866,7 +866,7 @@ export const PRODUCTS: Product[] = [
     price: 10300,
     pieces: 8,
     prepMin: 10,
-    image: "/photos/uramaki.jpg",
+    image: "/photos/menu/SS-URA-CA.jpg",
   },
   {
     id: "SS-URA-TN",
@@ -884,7 +884,7 @@ export const PRODUCTS: Product[] = [
     price: 10100,
     pieces: 8,
     prepMin: 10,
-    image: "/photos/uramaki.jpg",
+    image: "/photos/menu/SS-URA-TN.jpg",
   },
   {
     id: "SS-URA-EB",
@@ -902,7 +902,7 @@ export const PRODUCTS: Product[] = [
     price: 10500,
     pieces: 8,
     prepMin: 10,
-    image: "/photos/uramaki.jpg",
+    image: "/photos/menu/SS-URA-EB.jpg",
   },
   {
     id: "SS-URA-FL",
@@ -920,7 +920,7 @@ export const PRODUCTS: Product[] = [
     price: 10300,
     pieces: 8,
     prepMin: 10,
-    image: "/photos/hero-capa.jpg",
+    image: "/photos/menu/SS-URA-FL.jpg",
   },
   {
     id: "SS-URA-77",
@@ -938,7 +938,7 @@ export const PRODUCTS: Product[] = [
     price: 13000,
     pieces: 8,
     prepMin: 12,
-    image: "/photos/uramaki.jpg",
+    image: "/photos/menu/SS-URA-77.jpg",
     flags: ["chef", "signature"],
   },
   {
@@ -957,7 +957,7 @@ export const PRODUCTS: Product[] = [
     price: 10800,
     pieces: 8,
     prepMin: 10,
-    image: "/photos/uramaki.jpg",
+    image: "/photos/menu/SS-URA-MG.jpg",
     flags: ["new"],
   },
   {
@@ -976,7 +976,7 @@ export const PRODUCTS: Product[] = [
     price: 11200,
     pieces: 8,
     prepMin: 11,
-    image: "/photos/uramaki.jpg",
+    image: "/photos/menu/SS-URA-CC.jpg",
     flags: ["new"],
   },
   {
@@ -995,7 +995,7 @@ export const PRODUCTS: Product[] = [
     price: 3500,
     pieces: 2,
     prepMin: 5,
-    image: "/photos/salmon.jpg",
+    image: "/photos/menu/SS-NIG-SL.jpg",
   },
   {
     id: "SS-NIG-AT",
@@ -1013,7 +1013,7 @@ export const PRODUCTS: Product[] = [
     price: 3800,
     pieces: 2,
     prepMin: 5,
-    image: "/photos/nigiri.jpg",
+    image: "/photos/menu/SS-NIG-AT.jpg",
   },
   {
     id: "SS-NIG-EB",
@@ -1031,7 +1031,7 @@ export const PRODUCTS: Product[] = [
     price: 4000,
     pieces: 2,
     prepMin: 5,
-    image: "/photos/nigiri.jpg",
+    image: "/photos/menu/SS-NIG-EB.jpg",
   },
   {
     id: "SS-NIG-UN",
@@ -1049,7 +1049,7 @@ export const PRODUCTS: Product[] = [
     price: 4500,
     pieces: 2,
     prepMin: 6,
-    image: "/photos/nigiri.jpg",
+    image: "/photos/menu/SS-NIG-UN.jpg",
     flags: ["new"],
   },
   {
@@ -1068,7 +1068,7 @@ export const PRODUCTS: Product[] = [
     price: 6500,
     pieces: 8,
     prepMin: 7,
-    image: "/photos/hosomaki.jpg",
+    image: "/photos/menu/SS-HOS-SL.jpg",
   },
   {
     id: "SS-HOS-AT",
@@ -1086,7 +1086,7 @@ export const PRODUCTS: Product[] = [
     price: 6800,
     pieces: 8,
     prepMin: 7,
-    image: "/photos/hosomaki.jpg",
+    image: "/photos/menu/SS-HOS-AT.jpg",
   },
   {
     id: "SS-HOS-PP",
@@ -1104,7 +1104,7 @@ export const PRODUCTS: Product[] = [
     price: 4500,
     pieces: 8,
     prepMin: 6,
-    image: "/photos/hosomaki.jpg",
+    image: "/photos/menu/SS-HOS-PP.jpg",
     flags: ["veg"],
   },
   {
@@ -1123,7 +1123,7 @@ export const PRODUCTS: Product[] = [
     price: 5000,
     pieces: 8,
     prepMin: 6,
-    image: "/photos/hosomaki.jpg",
+    image: "/photos/menu/SS-HOS-MG.jpg",
     flags: ["new"],
   },
   {
@@ -1141,7 +1141,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 10000,
     prepMin: 14,
-    image: "/photos/cozinha.jpg",
+    image: "/photos/menu/SS-YAK-EB.jpg",
     flags: ["popular"],
   },
   {
@@ -1159,7 +1159,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 9500,
     prepMin: 14,
-    image: "/photos/cozinha.jpg",
+    image: "/photos/menu/SS-YAK-CR.jpg",
   },
   {
     id: "SS-YAK-FR",
@@ -1176,7 +1176,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 8500,
     prepMin: 13,
-    image: "/photos/cozinha.jpg",
+    image: "/photos/menu/SS-YAK-FR.jpg",
   },
   {
     id: "SS-YAK-MX",
@@ -1193,7 +1193,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 11000,
     prepMin: 15,
-    image: "/photos/cozinha.jpg",
+    image: "/photos/menu/SS-YAK-MX.jpg",
     flags: ["new"],
   },
   {
@@ -1211,7 +1211,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 14500,
     prepMin: 16,
-    image: "/photos/catalogo.jpg",
+    image: "/photos/menu/SS-MID-SL.jpg",
     flags: ["new"],
   },
   {
@@ -1229,7 +1229,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 12500,
     prepMin: 15,
-    image: "/photos/hot.jpg",
+    image: "/photos/menu/SS-MID-FR.jpg",
     flags: ["new"],
   },
   {
@@ -1247,7 +1247,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 22000,
     prepMin: 18,
-    image: "/photos/catalogo-mesa.jpg",
+    image: "/photos/menu/SS-MID-BX.jpg",
     flags: ["new"],
   },
   {
@@ -1265,7 +1265,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 1000,
     prepMin: 0,
-    image: "/photos/catalogo-mesa.jpg",
+    image: "/photos/menu/SS-BEB-AG.jpg",
     flags: ["new"],
   },
   {
@@ -1283,7 +1283,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 1500,
     prepMin: 0,
-    image: "/photos/catalogo-mesa.jpg",
+    image: "/photos/menu/SS-BEB-RF.jpg",
     flags: ["new"],
   },
   {
@@ -1301,7 +1301,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 2000,
     prepMin: 3,
-    image: "/photos/rice.jpg",
+    image: "/photos/menu/SS-BEB-CH.jpg",
     flags: ["new"],
   },
   {
@@ -1319,7 +1319,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 2500,
     prepMin: 4,
-    image: "/photos/catalogo-mesa.jpg",
+    image: "/photos/menu/SS-BEB-GJ.jpg",
     flags: ["new"],
   },
   {
@@ -1337,7 +1337,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 2500,
     prepMin: 4,
-    image: "/photos/catalogo-mesa.jpg",
+    image: "/photos/menu/SS-BEB-SJ.jpg",
     flags: ["new"],
   },
   {
@@ -1355,7 +1355,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 800,
     prepMin: 1,
-    image: "/photos/catalogo-mesa.jpg",
+    image: "/photos/menu/SS-EXT-XS.jpg",
     flags: ["new"],
   },
   {
@@ -1374,7 +1374,7 @@ export const PRODUCTS: Product[] = [
     price: 4000,
     pieces: 2,
     prepMin: 0,
-    image: "/photos/rice.jpg",
+    image: "/photos/menu/SS-DOC-MO.jpg",
     flags: ["new"],
   },
   {
@@ -1392,7 +1392,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 5500,
     prepMin: 0,
-    image: "/photos/capa-catalogo.jpg",
+    image: "/photos/menu/SS-DOC-CZ.jpg",
     flags: ["new"],
   },
 ];

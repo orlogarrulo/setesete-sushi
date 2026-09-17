@@ -6,7 +6,7 @@
  ╭────────── [Build Info] ─────────────╮
  │                                     │
  │  - Build Directory: .vercel/output  │
- │  - Date: 9/11/2026, 12:02:16 AM     │
+ │  - Date: 9/17/2026, 2:22:36 PM      │
  │  - Nitro Version: 3.0.260610-beta   │
  │  - Nitro Preset: vercel             │
  │                                     │
@@ -21,37 +21,7 @@
  ╭────────── [Build Info] ─────────────╮
  │                                     │
  │  - Build Directory: .vercel/output  │
- │  - Date: 9/11/2026, 5:24:35 AM      │
- │  - Nitro Version: 3.0.260610-beta   │
- │  - Nitro Preset: vercel             │
- │                                     │
- ╰─────────────────────────────────────╯
-
-  ➜  Local:   http://127.0.0.1:8081/
-
-> preview
-> node scripts/with-app-env.mjs vite preview
-
-
- ╭────────── [Build Info] ─────────────╮
- │                                     │
- │  - Build Directory: .vercel/output  │
- │  - Date: 9/11/2026, 5:58:29 AM      │
- │  - Nitro Version: 3.0.260610-beta   │
- │  - Nitro Preset: vercel             │
- │                                     │
- ╰─────────────────────────────────────╯
-
-  ➜  Local:   http://127.0.0.1:8081/
-
-> preview
-> node scripts/with-app-env.mjs vite preview
-
-
- ╭────────── [Build Info] ─────────────╮
- │                                     │
- │  - Build Directory: .vercel/output  │
- │  - Date: 9/11/2026, 6:18:40 AM      │
+ │  - Date: 9/17/2026, 6:00:18 PM      │
  │  - Nitro Version: 3.0.260610-beta   │
  │  - Nitro Preset: vercel             │
  │                                     │

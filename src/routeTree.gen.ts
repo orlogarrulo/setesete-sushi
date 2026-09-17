@@ -12,7 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CasaRouteImport } from './routes/casa'
 import { Route as MenuRouteImport } from './routes/menu'
+import { Route as OpsRouteRouteImport } from './routes/ops/route'
 import { Route as PedirRouteImport } from './routes/pedir'
+import { Route as OpsIndexRouteImport } from './routes/ops/index'
+import { Route as SeguirIndexRouteImport } from './routes/seguir/index'
+import { Route as SeguirTokenRouteImport } from './routes/seguir/$token'
+import { Route as OpsCrmIndexRouteImport } from './routes/ops/crm/index'
+import { Route as OpsCrmIdRouteImport } from './routes/ops/crm/$id'
+import { Route as OpsEncomendasIndexRouteImport } from './routes/ops/encomendas/index'
+import { Route as OpsEncomendasIdRouteImport } from './routes/ops/encomendas/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,44 +37,146 @@ const MenuRoute = MenuRouteImport.update({
   path: '/menu',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpsRouteRoute = OpsRouteRouteImport.update({
+  id: '/ops',
+  path: '/ops',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PedirRoute = PedirRouteImport.update({
   id: '/pedir',
   path: '/pedir',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpsIndexRoute = OpsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OpsRouteRoute,
+} as any)
+const SeguirIndexRoute = SeguirIndexRouteImport.update({
+  id: '/seguir/',
+  path: '/seguir/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeguirTokenRoute = SeguirTokenRouteImport.update({
+  id: '/seguir/$token',
+  path: '/seguir/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpsCrmIndexRoute = OpsCrmIndexRouteImport.update({
+  id: '/crm/',
+  path: '/crm/',
+  getParentRoute: () => OpsRouteRoute,
+} as any)
+const OpsCrmIdRoute = OpsCrmIdRouteImport.update({
+  id: '/crm/$id',
+  path: '/crm/$id',
+  getParentRoute: () => OpsRouteRoute,
+} as any)
+const OpsEncomendasIndexRoute = OpsEncomendasIndexRouteImport.update({
+  id: '/encomendas/',
+  path: '/encomendas/',
+  getParentRoute: () => OpsRouteRoute,
+} as any)
+const OpsEncomendasIdRoute = OpsEncomendasIdRouteImport.update({
+  id: '/encomendas/$id',
+  path: '/encomendas/$id',
+  getParentRoute: () => OpsRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ops': typeof OpsRouteRouteWithChildren
   '/casa': typeof CasaRoute
   '/menu': typeof MenuRoute
   '/pedir': typeof PedirRoute
+  '/seguir/$token': typeof SeguirTokenRoute
+  '/ops/': typeof OpsIndexRoute
+  '/seguir/': typeof SeguirIndexRoute
+  '/ops/crm/$id': typeof OpsCrmIdRoute
+  '/ops/encomendas/$id': typeof OpsEncomendasIdRoute
+  '/ops/crm/': typeof OpsCrmIndexRoute
+  '/ops/encomendas/': typeof OpsEncomendasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/casa': typeof CasaRoute
   '/menu': typeof MenuRoute
   '/pedir': typeof PedirRoute
+  '/seguir/$token': typeof SeguirTokenRoute
+  '/ops': typeof OpsIndexRoute
+  '/seguir': typeof SeguirIndexRoute
+  '/ops/crm/$id': typeof OpsCrmIdRoute
+  '/ops/encomendas/$id': typeof OpsEncomendasIdRoute
+  '/ops/crm': typeof OpsCrmIndexRoute
+  '/ops/encomendas': typeof OpsEncomendasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ops': typeof OpsRouteRouteWithChildren
   '/casa': typeof CasaRoute
   '/menu': typeof MenuRoute
   '/pedir': typeof PedirRoute
+  '/seguir/$token': typeof SeguirTokenRoute
+  '/ops/': typeof OpsIndexRoute
+  '/seguir/': typeof SeguirIndexRoute
+  '/ops/crm/$id': typeof OpsCrmIdRoute
+  '/ops/encomendas/$id': typeof OpsEncomendasIdRoute
+  '/ops/crm/': typeof OpsCrmIndexRoute
+  '/ops/encomendas/': typeof OpsEncomendasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/casa' | '/menu' | '/pedir'
+  fullPaths:
+    | '/'
+    | '/ops'
+    | '/casa'
+    | '/menu'
+    | '/pedir'
+    | '/seguir/$token'
+    | '/ops/'
+    | '/seguir/'
+    | '/ops/crm/$id'
+    | '/ops/encomendas/$id'
+    | '/ops/crm/'
+    | '/ops/encomendas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/casa' | '/menu' | '/pedir'
-  id: '__root__' | '/' | '/casa' | '/menu' | '/pedir'
+  to:
+    | '/'
+    | '/casa'
+    | '/menu'
+    | '/pedir'
+    | '/seguir/$token'
+    | '/ops'
+    | '/seguir'
+    | '/ops/crm/$id'
+    | '/ops/encomendas/$id'
+    | '/ops/crm'
+    | '/ops/encomendas'
+  id:
+    | '__root__'
+    | '/'
+    | '/ops'
+    | '/casa'
+    | '/menu'
+    | '/pedir'
+    | '/seguir/$token'
+    | '/ops/'
+    | '/seguir/'
+    | '/ops/crm/$id'
+    | '/ops/encomendas/$id'
+    | '/ops/crm/'
+    | '/ops/encomendas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OpsRouteRoute: typeof OpsRouteRouteWithChildren
   CasaRoute: typeof CasaRoute
   MenuRoute: typeof MenuRoute
   PedirRoute: typeof PedirRoute
+  SeguirTokenRoute: typeof SeguirTokenRoute
+  SeguirIndexRoute: typeof SeguirIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,6 +202,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MenuRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ops': {
+      id: '/ops'
+      path: '/ops'
+      fullPath: '/ops'
+      preLoaderRoute: typeof OpsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pedir': {
       id: '/pedir'
       path: '/pedir'
@@ -99,14 +216,86 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PedirRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ops/': {
+      id: '/ops/'
+      path: '/'
+      fullPath: '/ops/'
+      preLoaderRoute: typeof OpsIndexRouteImport
+      parentRoute: typeof OpsRouteRoute
+    }
+    '/seguir/': {
+      id: '/seguir/'
+      path: '/seguir'
+      fullPath: '/seguir/'
+      preLoaderRoute: typeof SeguirIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seguir/$token': {
+      id: '/seguir/$token'
+      path: '/seguir/$token'
+      fullPath: '/seguir/$token'
+      preLoaderRoute: typeof SeguirTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ops/crm/': {
+      id: '/ops/crm/'
+      path: '/crm'
+      fullPath: '/ops/crm/'
+      preLoaderRoute: typeof OpsCrmIndexRouteImport
+      parentRoute: typeof OpsRouteRoute
+    }
+    '/ops/crm/$id': {
+      id: '/ops/crm/$id'
+      path: '/crm/$id'
+      fullPath: '/ops/crm/$id'
+      preLoaderRoute: typeof OpsCrmIdRouteImport
+      parentRoute: typeof OpsRouteRoute
+    }
+    '/ops/encomendas/': {
+      id: '/ops/encomendas/'
+      path: '/encomendas'
+      fullPath: '/ops/encomendas/'
+      preLoaderRoute: typeof OpsEncomendasIndexRouteImport
+      parentRoute: typeof OpsRouteRoute
+    }
+    '/ops/encomendas/$id': {
+      id: '/ops/encomendas/$id'
+      path: '/encomendas/$id'
+      fullPath: '/ops/encomendas/$id'
+      preLoaderRoute: typeof OpsEncomendasIdRouteImport
+      parentRoute: typeof OpsRouteRoute
+    }
   }
 }
 
+interface OpsRouteRouteChildren {
+  OpsIndexRoute: typeof OpsIndexRoute
+  OpsCrmIdRoute: typeof OpsCrmIdRoute
+  OpsEncomendasIdRoute: typeof OpsEncomendasIdRoute
+  OpsCrmIndexRoute: typeof OpsCrmIndexRoute
+  OpsEncomendasIndexRoute: typeof OpsEncomendasIndexRoute
+}
+
+const OpsRouteRouteChildren: OpsRouteRouteChildren = {
+  OpsIndexRoute: OpsIndexRoute,
+  OpsCrmIdRoute: OpsCrmIdRoute,
+  OpsEncomendasIdRoute: OpsEncomendasIdRoute,
+  OpsCrmIndexRoute: OpsCrmIndexRoute,
+  OpsEncomendasIndexRoute: OpsEncomendasIndexRoute,
+}
+
+const OpsRouteRouteWithChildren = OpsRouteRoute._addFileChildren(
+  OpsRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OpsRouteRoute: OpsRouteRouteWithChildren,
   CasaRoute: CasaRoute,
   MenuRoute: MenuRoute,
   PedirRoute: PedirRoute,
+  SeguirTokenRoute: SeguirTokenRoute,
+  SeguirIndexRoute: SeguirIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

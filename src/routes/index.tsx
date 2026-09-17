@@ -217,7 +217,7 @@ function Home() {
             <h2 className="mt-3 max-w-xl font-display text-3xl sm:text-5xl">
               {t(copy.how.title, lang)}
             </h2>
-            <ol className="mt-12 grid gap-8 md:grid-cols-3">
+            <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 [copy.how.s1t, copy.how.s1],
                 [copy.how.s2t, copy.how.s2],

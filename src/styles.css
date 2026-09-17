@@ -45,6 +45,9 @@
     0 0 0 1px color-mix(in oklab, #1a1714 6%, transparent),
     0 1px 2px -1px color-mix(in oklab, #1a1714 6%, transparent),
     0 2px 8px 0 color-mix(in oklab, #1a1714 4%, transparent);
+  --shadow-border-hover:
+    0 0 0 1px color-mix(in oklab, #1a1714 10%, transparent),
+    0 4px 16px -2px color-mix(in oklab, #1a1714 10%, transparent);
 }
 
 @layer base {
@@ -108,6 +111,31 @@
 
 @utility font-display {
   font-family: var(--font-display);
+}
+
+@keyframes courier-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+.courier-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: courier-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .courier-pulse,
+  .route-dash {
+    animation: none !important;
+  }
 }
 
 @media print {

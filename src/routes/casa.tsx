@@ -35,9 +35,23 @@ function CasaPage() {
             </p>
             <p className="mt-6 text-base leading-relaxed text-stone sm:text-lg">
               {lang === "pt"
-                ? "O selo — dois setes em simetria circular — é um kamon. A curva de cima é o sabor. A de baixo é o encontro. Não é um arco copiado: é 77, o nosso número, desenhado como um brasão japonês."
-                : "The seal — two sevens in circular symmetry — is a kamon. The upper curve is taste. The lower is the meeting. Not a copied arch: it is 77, our number, drawn as a Japanese crest."}
+                ? "A cozinha está em Talatona — o ponto A de todas as rotas. Cada encomenda sai daqui rumo à tua zona, com um link para seguir o caminho. A equipa gere o serviço no back-office da casa."
+                : "The kitchen is in Talatona — point A of every route. Each order leaves here for your area, with a link to follow the path. The team runs the service from the house back-office."}
             </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                to="/seguir"
+                className="inline-flex min-h-11 items-center rounded-full bg-kaki px-5 text-sm font-semibold tracking-[0.12em] text-rice uppercase hover:bg-kaki-deep"
+              >
+                {t(copy.nav.track, lang)}
+              </Link>
+              <Link
+                to="/ops"
+                className="inline-flex min-h-11 items-center rounded-full border border-ink/15 px-5 text-sm font-semibold tracking-[0.12em] uppercase"
+              >
+                {lang === "pt" ? "Back-office" : "Back-office"}
+              </Link>
+            </div>
           </div>
           <figure className="grid place-items-center rounded-xl bg-nori px-8 py-14">
             <Mark

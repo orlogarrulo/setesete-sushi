@@ -16,12 +16,15 @@ export type Ticket = {
   name: string;
   phone: string;
   address: string;
+  zone?: string;
   notes: string;
   pay: PayMethod;
   receiptName?: string;
   lines: TicketLine[];
   total: number;
   lang: Lang;
+  trackToken?: string;
+  trackUrl?: string;
 };
 
 export function newTicketId(date = new Date()) {
@@ -37,6 +40,7 @@ export function buildTicket(opts: {
   name: string;
   phone: string;
   address: string;
+  zone?: string;
   notes: string;
   pay: PayMethod;
   receiptName?: string;
@@ -62,6 +66,7 @@ export function buildTicket(opts: {
     name: opts.name.trim(),
     phone: opts.phone.trim(),
     address: opts.address.trim(),
+    zone: opts.zone,
     notes: opts.notes.trim(),
     pay: opts.pay,
     receiptName: opts.receiptName,
@@ -133,6 +138,11 @@ export function buildOrderMessage(ticket: Ticket) {
       ? lang === "pt"
         ? `Notas: ${ticket.notes}`
         : `Notes: ${ticket.notes}`
+      : null,
+    ticket.trackUrl
+      ? lang === "pt"
+        ? `Seguir encomenda: ${ticket.trackUrl}`
+        : `Track order: ${ticket.trackUrl}`
       : null,
   ]
     .filter((x) => x !== null)

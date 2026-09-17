@@ -11,6 +11,7 @@ const LINKS = [
   { to: "/", key: "home" as const },
   { to: "/casa", key: "casa" as const },
   { to: "/menu", key: "menu" as const },
+  { to: "/seguir", key: "track" as const },
 ];
 
 export function Header() {

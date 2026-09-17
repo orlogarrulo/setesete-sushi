@@ -4,7 +4,9 @@ import { useState, type FormEvent } from "react";
 import { Shell } from "@/components/shell.tsx";
 import { TicketSheet } from "@/components/ticket-sheet.tsx";
 import { copy, t } from "@/lib/copy";
+import { ZONES, zoneById } from "@/lib/geo";
 import { productById } from "@/lib/menu";
+import { createOrder } from "@/lib/ops.functions";
 import {
   buildTicket,
   buildWhatsAppUrl,
@@ -37,26 +39,54 @@ function PedirPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [zone, setZone] = useState(ZONES[0].id);
   const [notes, setNotes] = useState("");
   const [pay, setPay] = useState<PayMethod>("mcx");
   const [receiptName, setReceiptName] = useState<string | undefined>();
   const [ticket, setTicket] = useState<Ticket | null>(null);
+  const [busy, setBusy] = useState(false);
 
   const empty = lines.length === 0;
+  const zoneName = zoneById(zone)?.name ?? zone;
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (empty) return;
     if (pay === "transfer" && !receiptName) return;
+    const fullAddress = `${address.trim()}, ${zoneName}`;
     const next = buildTicket({
       lang,
       name,
       phone,
-      address,
+      address: fullAddress,
+      zone: zoneName,
       notes,
       pay,
       receiptName,
     });
+    setBusy(true);
+    try {
+      const saved = await createOrder({
+        data: {
+          id: next.id,
+          name: next.name,
+          phone: next.phone,
+          address: fullAddress,
+          zone,
+          notes: next.notes,
+          pay: next.pay,
+          receiptName: next.receiptName,
+          items: next.lines,
+          total: next.total,
+        },
+      });
+      next.trackToken = saved.trackToken;
+      next.trackUrl = `${window.location.origin}/seguir/${saved.trackToken}`;
+    } catch {
+      /* invoice still prints; tracking is best-effort */
+    } finally {
+      setBusy(false);
+    }
     setTicket(next);
   }
 
@@ -255,6 +285,21 @@ function PedirPage() {
         {ticket ? (
           <div className="space-y-4">
             <TicketSheet ticket={ticket} />
+            {ticket.trackToken ? (
+              <div className="print:hidden rounded-xl bg-rice-warm p-5 shadow-[var(--shadow-border)]">
+                <p className="text-[11px] tracking-[0.18em] text-kaki uppercase">
+                  {lang === "pt" ? "Ponto A → ponto B" : "Point A → point B"}
+                </p>
+                <p className="mt-2 text-sm text-stone">{t(copy.pedir.trackHint, lang)}</p>
+                <Link
+                  to="/seguir/$token"
+                  params={{ token: ticket.trackToken }}
+                  className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-nori px-5 text-sm font-semibold tracking-[0.12em] text-rice uppercase"
+                >
+                  {t(copy.pedir.trackCta, lang)}
+                </Link>
+              </div>
+            ) : null}
             <div className="flex flex-col gap-3 print:hidden sm:flex-row">
               <button
                 type="button"
@@ -292,7 +337,7 @@ function PedirPage() {
         ) : (
           <form
             className="rounded-xl bg-rice-warm p-6 shadow-[var(--shadow-border)] sm:p-8"
-            onSubmit={onSubmit}
+            onSubmit={(e) => void onSubmit(e)}
           >
             <label className="block text-sm font-medium">
               {t(copy.pedir.name, lang)}
@@ -317,12 +362,28 @@ function PedirPage() {
               />
             </label>
             <label className="mt-5 block text-sm font-medium">
+              {t(copy.pedir.area, lang)}
+              <select
+                required
+                value={zone}
+                onChange={(e) => setZone(e.target.value)}
+                className="mt-2 min-h-11 w-full rounded-lg border border-ink/10 bg-rice px-3 text-sm outline-none ring-kaki focus:ring-2"
+              >
+                {ZONES.map((z) => (
+                  <option key={z.id} value={z.id}>
+                    {z.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="mt-5 block text-sm font-medium">
               {t(copy.pedir.address, lang)}
               <input
                 required
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 autoComplete="street-address"
+                placeholder={lang === "pt" ? "Rua, prédio, referências" : "Street, building, landmarks"}
                 className="mt-2 min-h-11 w-full rounded-lg border border-ink/10 bg-rice px-3 text-sm outline-none ring-kaki focus:ring-2"
               />
             </label>
@@ -390,10 +451,14 @@ function PedirPage() {
 
             <button
               type="submit"
-              disabled={empty}
+              disabled={empty || busy}
               className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full bg-kaki text-sm font-semibold tracking-[0.12em] text-rice uppercase hover:bg-kaki-deep disabled:opacity-40"
             >
-              {t(copy.pedir.send, lang)}
+              {busy
+                ? lang === "pt"
+                  ? "A gerar…"
+                  : "Creating…"
+                : t(copy.pedir.send, lang)}
             </button>
           </form>
         )}

@@ -1,0 +1,1 @@
+var e=`setesete-ops-pin`;function t(){return typeof window>`u`?``:sessionStorage.getItem(e)??``}function n(t){sessionStorage.setItem(e,t)}function r(){sessionStorage.removeItem(e)}export{t as n,n as r,r as t};
