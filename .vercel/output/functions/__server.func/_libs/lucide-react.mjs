@@ -160,6 +160,26 @@ var Copy = createLucideIcon("copy", [["rect", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var FileCheck = createLucideIcon("file-check", [
+	["path", {
+		d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z",
+		key: "1rqfz7"
+	}],
+	["path", {
+		d: "M14 2v4a2 2 0 0 0 2 2h4",
+		key: "tnqrlb"
+	}],
+	["path", {
+		d: "m9 15 2 2 4-4",
+		key: "1grp1n"
+	}]
+]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var LayoutDashboard = createLucideIcon("layout-dashboard", [
 	["rect", {
 		width: "7",
@@ -404,4 +424,4 @@ var X = createLucideIcon("x", [["path", {
 	key: "d8bk6v"
 }]]);
 //#endregion
-export { Share2 as a, Minus as c, LayoutDashboard as d, Copy as f, ArrowRight as h, ShoppingBag as i, Menu as l, Check as m, Users as n, Printer as o, ClipboardList as p, TriangleAlert as r, Plus as s, X as t, LogOut as u };
+export { Share2 as a, Minus as c, LayoutDashboard as d, FileCheck as f, ArrowRight as g, Check as h, ShoppingBag as i, Menu as l, ClipboardList as m, Users as n, Printer as o, Copy as p, TriangleAlert as r, Plus as s, X as t, LogOut as u };

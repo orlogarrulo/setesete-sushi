@@ -1,5 +1,5 @@
 import { productById, type Lang } from "@/lib/menu";
-import { formatKz, WHATSAPP, type PayMethod } from "@/lib/utils";
+import { formatKz, IBAN, MCX_NUMBER, WHATSAPP, type PayMethod } from "@/lib/utils";
 import { useCart } from "@/store/cart";
 
 export type TicketLine = {
@@ -104,18 +104,19 @@ export function buildOrderMessage(ticket: Ticket) {
           : "Cash on delivery";
 
   const extra: string[] = [];
+  extra.push(
+    lang === "pt"
+      ? `Comprovativo: ${ticket.receiptName ?? "anexado na encomenda"}`
+      : `Proof: ${ticket.receiptName ?? "attached to the order"}`,
+  );
   if (ticket.pay === "transfer") {
-    extra.push(
-      lang === "pt"
-        ? `Comprovativo: ${ticket.receiptName ?? "anexar PDF nesta conversa"}`
-        : `Receipt: ${ticket.receiptName ?? "please attach the PDF here"}`,
-    );
+    extra.push(`IBAN: ${IBAN}`);
   }
   if (ticket.pay === "mcx") {
     extra.push(
       lang === "pt"
-        ? `Referência Multicaixa Express: ${ticket.id}`
-        : `Multicaixa Express reference: ${ticket.id}`,
+        ? `Multicaixa Express: ${MCX_NUMBER} · ref. ${ticket.id}`
+        : `Multicaixa Express: ${MCX_NUMBER} · ref. ${ticket.id}`,
     );
   }
 
@@ -149,6 +150,15 @@ export function buildOrderMessage(ticket: Ticket) {
     .join("\n");
 }
 
+export function clientWhatsAppDigits(phone: string) {
+  let d = phone.replace(/\D/g, "");
+  if (d.startsWith("00")) d = d.slice(2);
+  if (d.startsWith("0") && d.length === 10) d = d.slice(1);
+  if (d.length === 9 && d.startsWith("9")) d = `244${d}`;
+  return d;
+}
+
 export function buildWhatsAppUrl(ticket: Ticket) {
-  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildOrderMessage(ticket))}`;
+  const n = clientWhatsAppDigits(ticket.phone) || WHATSAPP;
+  return `https://wa.me/${n}?text=${encodeURIComponent(buildOrderMessage(ticket))}`;
 }

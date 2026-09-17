@@ -98,7 +98,7 @@ export function TicketSheet({ ticket }: { ticket: Ticket }) {
             {t(copy.ticket.pay, lang)}
           </p>
           <p className="mt-1 text-sm font-medium">{pay[lang]}</p>
-          {ticket.pay === "transfer" && ticket.receiptName ? (
+          {ticket.receiptName ? (
             <p className="mt-1 text-xs text-stone">{ticket.receiptName}</p>
           ) : null}
           {ticket.pay === "mcx" ? (

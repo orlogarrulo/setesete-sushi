@@ -1,5 +1,5 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { ClipboardList, LayoutDashboard, LogOut, Users } from "lucide-react";
+import { ClipboardList, FileCheck, LayoutDashboard, LogOut, Users } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { Mark } from "@/components/mark.tsx";
 import { loginStaff, logoutStaff, staffSession } from "@/lib/ops.functions";
@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { to: "/ops", label: "Painel", icon: LayoutDashboard, exact: true },
   { to: "/ops/encomendas", label: "Encomendas", icon: ClipboardList, exact: false },
+  { to: "/ops/comprovativos", label: "Comprovativos", icon: FileCheck, exact: false },
   { to: "/ops/crm", label: "CRM", icon: Users, exact: false },
 ];
 
@@ -66,7 +67,7 @@ export function OpsShell() {
     return (
       <div className="flex min-h-dvh flex-col items-center justify-center bg-nori px-4 text-rice">
         <Mark invert className="size-16" alt="Sete Sete" />
-        <h1 className="mt-8 font-display text-4xl">A casa</h1>
+        <h1 className="mt-8 font-display text-4xl">Backoffice</h1>
         <form onSubmit={(e) => void onSubmit(e)} className="mt-8 w-full max-w-xs space-y-4">
           <label className="block text-xs tracking-[0.16em] text-stone uppercase">
             Utilizador
@@ -106,7 +107,7 @@ export function OpsShell() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link to="/ops" className="flex items-center gap-2">
             <Mark invert className="size-9" alt="" />
-            <span className="text-sm font-semibold tracking-[0.16em] uppercase">Casa</span>
+            <span className="text-sm font-semibold tracking-[0.16em] uppercase">Backoffice</span>
           </Link>
           <nav className="flex items-center gap-1">
             {NAV.map((n) => {

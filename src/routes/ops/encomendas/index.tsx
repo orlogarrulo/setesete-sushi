@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { FLOW, STATUS_META, nextStatus, type OrderRow, type OrderStatus } from "@/lib/ops";
-import { listOrders, setOrderStatus } from "@/lib/ops.functions";
+import { findOrders, listOrders, setOrderStatus } from "@/lib/ops.functions";
 import { formatKz, cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ops/encomendas/")({
@@ -17,9 +17,13 @@ const COLS: { id: string; title: string; statuses: OrderStatus[] }[] = [
 ];
 
 function EncomendasPage() {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
+  const [lookup, setLookup] = useState("");
+  const [lookupErr, setLookupErr] = useState("");
+  const [hits, setHits] = useState<OrderRow[] | null>(null);
 
   const load = useCallback(async () => {
     const rows = await listOrders({ data: {} });
@@ -59,9 +63,62 @@ function EncomendasPage() {
         <p className="text-sm text-stone">{live.length} em curso</p>
       </div>
       <p className="mt-3 max-w-2xl text-sm text-stone">
-        Avança o estado. Quando marcas «em rota», o cliente vê o estafeta a sair
-        do ponto A (Talatona) rumo ao destino B. O link de seguimento está em cada ficha.
+        Verifica a fatura pela referência (SS-…). O comprovativo fica ligado ao
+        telefone do cliente. Avança o estado quando o pagamento estiver certo.
       </p>
+
+      <form
+        className="mt-6 flex flex-col gap-2 sm:flex-row"
+        onSubmit={(e: FormEvent) => {
+          e.preventDefault();
+          const q = lookup.trim();
+          if (q.length < 2) return;
+          setLookupErr("");
+          void findOrders({ data: { q } })
+            .then((rows) => {
+              if (rows.length === 1) {
+                void navigate({ to: "/ops/encomendas/$id", params: { id: rows[0].id } });
+                return;
+              }
+              setHits(rows);
+              if (rows.length === 0) setLookupErr("Nenhuma encomenda com essa referência ou telefone.");
+            })
+            .catch((er: unknown) => setLookupErr(er instanceof Error ? er.message : "Erro"));
+        }}
+      >
+        <input
+          value={lookup}
+          onChange={(e) => setLookup(e.target.value)}
+          placeholder="Referência da fatura ou telefone"
+          className="min-h-12 flex-1 rounded-full border border-rice/15 bg-nori px-4 text-sm text-rice outline-none ring-kaki focus:ring-2"
+        />
+        <button
+          type="submit"
+          className="min-h-12 rounded-full bg-kaki px-5 text-xs font-semibold tracking-[0.14em] text-rice uppercase"
+        >
+          Verificar
+        </button>
+      </form>
+      {lookupErr ? <p className="mt-2 text-sm text-kaki">{lookupErr}</p> : null}
+      {hits && hits.length > 1 ? (
+        <ul className="mt-4 space-y-2">
+          {hits.map((o) => (
+            <li key={o.id}>
+              <Link
+                to="/ops/encomendas/$id"
+                params={{ id: o.id }}
+                className="flex items-center justify-between rounded-lg bg-rice/6 px-4 py-3 text-sm hover:bg-rice/10"
+              >
+                <span>
+                  <span className="font-medium">{o.id}</span>
+                  <span className="ml-2 text-stone">{o.customerName} · {o.phone}</span>
+                </span>
+                <span className="tabular-nums text-kaki-soft">{formatKz(o.total)}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
       <div className="mt-8 flex gap-3 overflow-x-auto pb-4">
         {COLS.map((col) => {
@@ -94,6 +151,15 @@ function EncomendasPage() {
                         <p className="text-xs text-stone">{o.zone}</p>
                         <p className="mt-1 text-sm tabular-nums text-kaki-soft">
                           {formatKz(o.total)}
+                        </p>
+                        <p className="mt-1 text-[10px] tracking-[0.12em] uppercase">
+                          {o.payVerified ? (
+                            <span className="text-kaki-soft">Pago verificado</span>
+                          ) : o.hasReceipt ? (
+                            <span className="text-stone">Comprovativo · a verificar</span>
+                          ) : (
+                            <span className="text-kaki">Sem comprovativo</span>
+                          )}
                         </p>
                       </Link>
                       {nextStatus(o.status) ? (

@@ -111,6 +111,9 @@ export type OrderRow = {
   notes: string;
   pay: PayMethod;
   receiptName: string | null;
+  hasReceipt: boolean;
+  payVerified: boolean;
+  payVerifiedAt: string | null;
   status: OrderStatus;
   total: number;
   items: TicketItem[];

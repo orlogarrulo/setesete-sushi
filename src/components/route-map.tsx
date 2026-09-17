@@ -139,11 +139,6 @@ export function RouteMap({ origin, dest, progress, moving = false }: Props) {
           </g>
         ) : null}
       </svg>
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
-        <LegendDot letter="A" title={origin.name} sub={origin.zone} />
-        <LegendDot letter="B" title={dest.zone} sub={dest.name} align="right" />
-      </div>
     </div>
   );
 }
@@ -173,27 +168,5 @@ function Pin({ x, y, label, sub }: { x: number; y: number; label: string; sub: s
         {sub.toUpperCase()}
       </text>
     </g>
-  );
-}
-
-function LegendDot({
-  letter,
-  title,
-  sub,
-  align,
-}: {
-  letter: string;
-  title: string;
-  sub: string;
-  align?: "right";
-}) {
-  return (
-    <div className={align === "right" ? "text-right" : undefined}>
-      <p className="text-[10px] tracking-[0.2em] text-kaki-soft uppercase">
-        {letter} · {letter === "A" ? "Partida" : "Destino"}
-      </p>
-      <p className="mt-1 max-w-40 truncate text-sm text-rice">{title}</p>
-      <p className="max-w-40 truncate text-xs text-stone">{sub}</p>
-    </div>
   );
 }

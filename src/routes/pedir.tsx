@@ -7,6 +7,7 @@ import { copy, t } from "@/lib/copy";
 import { ZONES, zoneById } from "@/lib/geo";
 import { productById } from "@/lib/menu";
 import { createOrder } from "@/lib/ops.functions";
+import { fileToReceipt } from "@/lib/receipt-file";
 import {
   buildTicket,
   buildWhatsAppUrl,
@@ -14,6 +15,8 @@ import {
 } from "@/lib/ticket";
 import {
   EMAIL,
+  IBAN,
+  MCX_NUMBER,
   formatKz,
   HOURS,
   INSTAGRAM,
@@ -43,6 +46,8 @@ function PedirPage() {
   const [notes, setNotes] = useState("");
   const [pay, setPay] = useState<PayMethod>("mcx");
   const [receiptName, setReceiptName] = useState<string | undefined>();
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [formError, setFormError] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -52,7 +57,11 @@ function PedirPage() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (empty) return;
-    if (pay === "transfer" && !receiptName) return;
+    if (!receiptFile) {
+      setFormError(lang === "pt" ? "Anexa o comprovativo de pagamento." : "Attach the payment proof.");
+      return;
+    }
+    setFormError("");
     const fullAddress = `${address.trim()}, ${zoneName}`;
     const next = buildTicket({
       lang,
@@ -65,7 +74,10 @@ function PedirPage() {
       receiptName,
     });
     setBusy(true);
+    const popup = window.open("about:blank", "_blank");
     try {
+      const receipt = await fileToReceipt(receiptFile);
+      next.receiptName = receipt.name;
       const saved = await createOrder({
         data: {
           id: next.id,
@@ -75,19 +87,26 @@ function PedirPage() {
           zone,
           notes: next.notes,
           pay: next.pay,
-          receiptName: next.receiptName,
+          receiptName: receipt.name,
+          receipt,
           items: next.lines,
           total: next.total,
         },
       });
       next.trackToken = saved.trackToken;
       next.trackUrl = `${window.location.origin}/seguir/${saved.trackToken}`;
-    } catch {
-      /* invoice still prints; tracking is best-effort */
+    } catch (e: unknown) {
+      setFormError(e instanceof Error ? e.message : lang === "pt" ? "Não foi possível confirmar." : "Could not confirm.");
+      popup?.close();
+      setBusy(false);
+      return;
     } finally {
       setBusy(false);
     }
     setTicket(next);
+    const wa = buildWhatsAppUrl(next);
+    if (popup) popup.location.href = wa;
+    else window.open(wa, "_blank", "noopener,noreferrer");
   }
 
   function startNew() {
@@ -95,6 +114,7 @@ function PedirPage() {
     clear();
     setNotes("");
     setReceiptName(undefined);
+    setReceiptFile(null);
   }
 
   return (
@@ -424,6 +444,16 @@ function PedirPage() {
                       <span className="block text-sm font-medium">
                         {PAY_METHODS[key][lang]}
                       </span>
+                      {key === "mcx" ? (
+                        <span className="mt-1 block font-mono text-sm tracking-wide text-ink">
+                          {MCX_NUMBER}
+                        </span>
+                      ) : null}
+                      {key === "transfer" ? (
+                        <span className="mt-1 block break-all font-mono text-xs tracking-wide text-ink">
+                          {IBAN}
+                        </span>
+                      ) : null}
                       <span className="mt-0.5 block text-xs leading-relaxed text-stone">
                         {PAY_METHODS[key].hint[lang]}
                       </span>
@@ -433,21 +463,25 @@ function PedirPage() {
               </div>
             </fieldset>
 
-            {pay === "transfer" ? (
-              <label className="mt-5 block text-sm font-medium">
-                {t(copy.pedir.receipt, lang)}
-                <input
-                  required
-                  type="file"
-                  accept="application/pdf,.pdf"
-                  onChange={(e) => setReceiptName(e.target.files?.[0]?.name)}
-                  className="mt-2 block w-full text-sm file:mr-3 file:rounded-full file:border-0 file:bg-kaki file:px-4 file:py-2 file:text-xs file:font-semibold file:tracking-[0.12em] file:text-rice file:uppercase"
-                />
-                <span className="mt-2 block text-xs leading-relaxed text-stone">
-                  {t(copy.pedir.receiptHint, lang)}
-                </span>
-              </label>
-            ) : null}
+            <label className="mt-5 block text-sm font-medium">
+              {t(copy.pedir.receipt, lang)}
+              <input
+                required
+                type="file"
+                accept="image/jpeg,image/png,image/webp,application/pdf,.pdf,.jpg,.jpeg,.png,.webp"
+                onChange={(e) => {
+                  const f = e.target.files?.[0] ?? null;
+                  setReceiptFile(f);
+                  setReceiptName(f?.name);
+                }}
+                className="mt-2 block w-full text-sm file:mr-3 file:rounded-full file:border-0 file:bg-kaki file:px-4 file:py-2 file:text-xs file:font-semibold file:tracking-[0.12em] file:text-rice file:uppercase"
+              />
+              <span className="mt-2 block text-xs leading-relaxed text-stone">
+                {t(copy.pedir.receiptHint, lang)}
+              </span>
+            </label>
+
+            {formError ? <p className="mt-3 text-sm text-kaki">{formError}</p> : null}
 
             <button
               type="submit"

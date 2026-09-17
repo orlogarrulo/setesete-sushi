@@ -92,7 +92,7 @@ export function issueStaffCookie() {
   setCookie(COOKIE, token, {
     path: "/",
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "lax",
     secure,
     maxAge: MAX_AGE,
   });
@@ -102,7 +102,7 @@ export function clearStaffCookie() {
   setCookie(COOKIE, "", {
     path: "/",
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: 0,
   });
 }

@@ -40,6 +40,8 @@ type OrderDb = {
   notes: string;
   pay: string;
   receipt_name: string | null;
+  pay_verified?: boolean | number | string | null;
+  pay_verified_at?: string | null;
   status: string;
   total: number;
   items_json: string;
@@ -106,6 +108,9 @@ function mapOrder(row: OrderDb): OrderRow {
     notes: row.notes,
     pay: row.pay as PayMethod,
     receiptName: row.receipt_name,
+    hasReceipt: Boolean(row.receipt_name),
+    payVerified: Boolean(row.pay_verified),
+    payVerifiedAt: asIso(row.pay_verified_at),
     status: row.status as OrderStatus,
     total: Number(row.total),
     items: parseItems(row.items_json),
@@ -452,6 +457,38 @@ const itemSchema = z.object({
   total: z.number(),
 });
 
+const receiptSchema = z.object({
+  name: z.string().min(1).max(160),
+  mime: z.enum(["image/jpeg", "image/png", "image/webp", "application/pdf"]),
+  dataB64: z.string().min(40).max(2_800_000),
+});
+
+async function markReceiptFlags(sql: Sql, orders: OrderRow[]) {
+  if (orders.length === 0) return orders;
+  const recs = await sql<{ order_id: string }>`select distinct order_id from receipts`;
+  const has = new Set(recs.map((r) => r.order_id));
+  return orders.map((o) => ({ ...o, hasReceipt: has.has(o.id) || Boolean(o.receiptName) }));
+}
+
+async function saveReceipt(
+  sql: Sql,
+  opts: {
+    orderId: string;
+    customerId: string;
+    phone: string;
+    name: string;
+    mime: string;
+    dataB64: string;
+  },
+) {
+  const id = newId("rc");
+  const bytes = Math.round((opts.dataB64.length * 3) / 4);
+  await sql`insert into receipts (id, order_id, customer_id, phone, filename, mime, bytes, data_b64)
+    values (${id}, ${opts.orderId}, ${opts.customerId}, ${opts.phone}, ${opts.name}, ${opts.mime}, ${bytes}, ${opts.dataB64})`;
+  await sql`update orders set receipt_name = ${opts.name} where id = ${opts.orderId}`;
+  return id;
+}
+
 export const createOrder = createServerFn({ method: "POST" })
   .validator(
     z.object({
@@ -462,7 +499,8 @@ export const createOrder = createServerFn({ method: "POST" })
       zone: z.string().min(1).max(40),
       notes: z.string().max(400).optional().default(""),
       pay: z.enum(["mcx", "transfer", "cash"]),
-      receiptName: z.string().max(120).optional(),
+      receiptName: z.string().max(160).optional(),
+      receipt: receiptSchema,
       items: z.array(itemSchema).min(1),
       total: z.number(),
     }),
@@ -491,13 +529,21 @@ export const createOrder = createServerFn({ method: "POST" })
     await sql`insert into orders (
       id, track_token, customer_id, customer_name, phone, address, zone,
       origin_lat, origin_lng, dest_lat, dest_lng, notes, pay, receipt_name,
-      status, total, items_json, eta_min, courier_name, created_at, updated_at
+      status, total, items_json, eta_min, courier_name, created_at, updated_at, pay_verified
     ) values (
       ${data.id}, ${token}, ${customerId}, ${data.name}, ${data.phone}, ${data.address}, ${zone.name},
-      ${KITCHEN.lat}, ${KITCHEN.lng}, ${dest.lat}, ${dest.lng}, ${data.notes ?? ""}, ${data.pay}, ${data.receiptName ?? null},
-      ${"received"}, ${data.total}, ${JSON.stringify(data.items)}, ${eta}, ${null}, ${now}, ${now}
+      ${KITCHEN.lat}, ${KITCHEN.lng}, ${dest.lat}, ${dest.lng}, ${data.notes ?? ""}, ${data.pay}, ${data.receipt.name},
+      ${"received"}, ${data.total}, ${JSON.stringify(data.items)}, ${eta}, ${null}, ${now}, ${now}, ${false}
     )`;
-    await addEvent(sql, data.id, "received", "Pedido chegou pelo site.");
+    await saveReceipt(sql, {
+      orderId: data.id,
+      customerId,
+      phone: data.phone,
+      name: data.receipt.name,
+      mime: data.receipt.mime,
+      dataB64: data.receipt.dataB64,
+    });
+    await addEvent(sql, data.id, "received", "Pedido chegou pelo site. Comprovativo anexado.");
     return { id: data.id, trackToken: token, etaMin: eta, zone: zone.name };
   });
 
@@ -549,7 +595,7 @@ export const listOrders = createServerFn({ method: "GET" })
     const rows = data.status
       ? await sql<OrderDb>`select * from orders where status = ${data.status} order by created_at desc`
       : await sql<OrderDb>`select * from orders order by created_at desc`;
-    return rows.map(mapOrder);
+    return markReceiptFlags(sql, rows.map(mapOrder));
   });
 
 export const getOrder = createServerFn({ method: "GET" })
@@ -560,7 +606,9 @@ export const getOrder = createServerFn({ method: "GET" })
     const rows = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
     if (!rows[0]) return null;
     const pub = await toPublic(sql, rows[0]);
-    return { ...mapOrder(rows[0]), events: pub.events, progress: pub.progress, remainingMin: pub.remainingMin };
+    const mapped = mapOrder(rows[0]);
+    const [withFlag] = await markReceiptFlags(sql, [mapped]);
+    return { ...withFlag, events: pub.events, progress: pub.progress, remainingMin: pub.remainingMin };
   });
 
 export const setOrderStatus = createServerFn({ method: "POST" })
@@ -752,6 +800,153 @@ export const setCustomerTags = createServerFn({ method: "POST" })
     const sql = await sqlReady();
     await sql`update customers set tags = ${JSON.stringify(data.tags)} where id = ${data.id}`;
     return { ok: true };
+  });
+
+export const findOrders = createServerFn({ method: "GET" })
+  .validator(z.object({ q: z.string().min(2).max(40) }))
+  .handler(async ({ data }) => {
+    await requireStaff();
+    const sql = await sqlReady();
+    const q = data.q.trim();
+    const rows = await sql<OrderDb>`
+      select * from orders
+      where id ilike ${"%" + q + "%"}
+         or phone ilike ${"%" + q + "%"}
+         or customer_name ilike ${"%" + q + "%"}
+      order by created_at desc
+      limit 20`;
+    return markReceiptFlags(sql, rows.map(mapOrder));
+  });
+
+export const listReceipts = createServerFn({ method: "GET" })
+  .validator(
+    z.object({
+      q: z.string().optional().default(""),
+      pending: z.boolean().optional().default(false),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await requireStaff();
+    const sql = await sqlReady();
+    type Row = {
+      id: string;
+      order_id: string;
+      customer_id: string;
+      phone: string;
+      filename: string;
+      mime: string;
+      bytes: number;
+      created_at: string;
+      customer_name: string;
+      pay: string;
+      total: number;
+      pay_verified: boolean | number | string | null;
+      status: string;
+    };
+    const rows = await sql<Row>`
+      select r.id, r.order_id, r.customer_id, r.phone, r.filename, r.mime, r.bytes, r.created_at,
+             o.customer_name, o.pay, o.total, o.pay_verified, o.status
+      from receipts r
+      join orders o on o.id = r.order_id
+      order by r.created_at desc
+      limit 80`;
+    const q = data.q.trim().toLowerCase();
+    const phoneQ = digitsPhone(data.q);
+    return rows
+      .filter((r) => {
+        if (data.pending && Boolean(r.pay_verified)) return false;
+        if (!q) return true;
+        return (
+          r.order_id.toLowerCase().includes(q) ||
+          r.phone.toLowerCase().includes(q) ||
+          r.customer_name.toLowerCase().includes(q) ||
+          (phoneQ.length >= 6 && digitsPhone(r.phone).includes(phoneQ))
+        );
+      })
+      .map((r) => ({
+        id: r.id,
+        orderId: r.order_id,
+        customerId: r.customer_id,
+        phone: r.phone,
+        filename: r.filename,
+        mime: r.mime,
+        bytes: Number(r.bytes),
+        createdAt: asIso(r.created_at) ?? "",
+        customerName: r.customer_name,
+        pay: r.pay,
+        total: Number(r.total),
+        payVerified: Boolean(r.pay_verified),
+        status: r.status,
+      }));
+  });
+
+export const getReceipt = createServerFn({ method: "GET" })
+  .validator(z.object({ orderId: z.string().min(4) }))
+  .handler(async ({ data }) => {
+    await requireStaff();
+    const sql = await sqlReady();
+    const rows = await sql<{
+      id: string;
+      order_id: string;
+      customer_id: string;
+      phone: string;
+      filename: string;
+      mime: string;
+      bytes: number;
+      data_b64: string;
+      created_at: string;
+    }>`select * from receipts where order_id = ${data.orderId} order by created_at desc`;
+    return rows.map((r) => ({
+      id: r.id,
+      orderId: r.order_id,
+      customerId: r.customer_id,
+      phone: r.phone,
+      filename: r.filename,
+      mime: r.mime,
+      bytes: Number(r.bytes),
+      dataB64: r.data_b64,
+      createdAt: asIso(r.created_at) ?? "",
+    }));
+  });
+
+export const attachReceipt = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      orderId: z.string().min(4),
+      receipt: receiptSchema,
+    }),
+  )
+  .handler(async ({ data }) => {
+    await requireStaff();
+    const sql = await sqlReady();
+    const rows = await sql<OrderDb>`select * from orders where id = ${data.orderId} limit 1`;
+    if (!rows[0]) throw new Error("Encomenda não encontrada.");
+    await saveReceipt(sql, {
+      orderId: rows[0].id,
+      customerId: rows[0].customer_id,
+      phone: rows[0].phone,
+      name: data.receipt.name,
+      mime: data.receipt.mime,
+      dataB64: data.receipt.dataB64,
+    });
+    await addEvent(sql, rows[0].id, rows[0].status, "Comprovativo anexado pela casa.");
+    return { ok: true };
+  });
+
+export const verifyPayment = createServerFn({ method: "POST" })
+  .validator(z.object({ id: z.string().min(4), ok: z.boolean() }))
+  .handler(async ({ data }) => {
+    await requireStaff();
+    const sql = await sqlReady();
+    const now = iso(new Date());
+    if (data.ok) {
+      await sql`update orders set pay_verified = ${true}, pay_verified_at = ${now}, updated_at = ${now} where id = ${data.id}`;
+      await addEvent(sql, data.id, "confirmed", "Pagamento verificado pela casa.");
+    } else {
+      await sql`update orders set pay_verified = ${false}, pay_verified_at = ${null}, updated_at = ${now} where id = ${data.id}`;
+    }
+    const rows = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
+    return rows[0] ? mapOrder(rows[0]) : null;
   });
 
 export const getDashboard = createServerFn({ method: "GET" }).handler(async () => {

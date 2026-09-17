@@ -17,6 +17,7 @@ import { Route as PedirRouteImport } from './routes/pedir'
 import { Route as OpsIndexRouteImport } from './routes/ops/index'
 import { Route as SeguirIndexRouteImport } from './routes/seguir/index'
 import { Route as SeguirTokenRouteImport } from './routes/seguir/$token'
+import { Route as OpsComprovativosIndexRouteImport } from './routes/ops/comprovativos/index'
 import { Route as OpsCrmIndexRouteImport } from './routes/ops/crm/index'
 import { Route as OpsCrmIdRouteImport } from './routes/ops/crm/$id'
 import { Route as OpsEncomendasIndexRouteImport } from './routes/ops/encomendas/index'
@@ -62,6 +63,11 @@ const SeguirTokenRoute = SeguirTokenRouteImport.update({
   path: '/seguir/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpsComprovativosIndexRoute = OpsComprovativosIndexRouteImport.update({
+  id: '/comprovativos/',
+  path: '/comprovativos/',
+  getParentRoute: () => OpsRouteRoute,
+} as any)
 const OpsCrmIndexRoute = OpsCrmIndexRouteImport.update({
   id: '/crm/',
   path: '/crm/',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/seguir/': typeof SeguirIndexRoute
   '/ops/crm/$id': typeof OpsCrmIdRoute
   '/ops/encomendas/$id': typeof OpsEncomendasIdRoute
+  '/ops/comprovativos/': typeof OpsComprovativosIndexRoute
   '/ops/crm/': typeof OpsCrmIndexRoute
   '/ops/encomendas/': typeof OpsEncomendasIndexRoute
 }
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/seguir': typeof SeguirIndexRoute
   '/ops/crm/$id': typeof OpsCrmIdRoute
   '/ops/encomendas/$id': typeof OpsEncomendasIdRoute
+  '/ops/comprovativos': typeof OpsComprovativosIndexRoute
   '/ops/crm': typeof OpsCrmIndexRoute
   '/ops/encomendas': typeof OpsEncomendasIndexRoute
 }
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/seguir/': typeof SeguirIndexRoute
   '/ops/crm/$id': typeof OpsCrmIdRoute
   '/ops/encomendas/$id': typeof OpsEncomendasIdRoute
+  '/ops/comprovativos/': typeof OpsComprovativosIndexRoute
   '/ops/crm/': typeof OpsCrmIndexRoute
   '/ops/encomendas/': typeof OpsEncomendasIndexRoute
 }
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/seguir/'
     | '/ops/crm/$id'
     | '/ops/encomendas/$id'
+    | '/ops/comprovativos/'
     | '/ops/crm/'
     | '/ops/encomendas/'
   fileRoutesByTo: FileRoutesByTo
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/seguir'
     | '/ops/crm/$id'
     | '/ops/encomendas/$id'
+    | '/ops/comprovativos'
     | '/ops/crm'
     | '/ops/encomendas'
   id:
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/seguir/'
     | '/ops/crm/$id'
     | '/ops/encomendas/$id'
+    | '/ops/comprovativos/'
     | '/ops/crm/'
     | '/ops/encomendas/'
   fileRoutesById: FileRoutesById
@@ -237,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SeguirTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ops/comprovativos/': {
+      id: '/ops/comprovativos/'
+      path: '/comprovativos'
+      fullPath: '/ops/comprovativos/'
+      preLoaderRoute: typeof OpsComprovativosIndexRouteImport
+      parentRoute: typeof OpsRouteRoute
+    }
     '/ops/crm/': {
       id: '/ops/crm/'
       path: '/crm'
@@ -272,6 +291,7 @@ interface OpsRouteRouteChildren {
   OpsIndexRoute: typeof OpsIndexRoute
   OpsCrmIdRoute: typeof OpsCrmIdRoute
   OpsEncomendasIdRoute: typeof OpsEncomendasIdRoute
+  OpsComprovativosIndexRoute: typeof OpsComprovativosIndexRoute
   OpsCrmIndexRoute: typeof OpsCrmIndexRoute
   OpsEncomendasIndexRoute: typeof OpsEncomendasIndexRoute
 }
@@ -280,6 +300,7 @@ const OpsRouteRouteChildren: OpsRouteRouteChildren = {
   OpsIndexRoute: OpsIndexRoute,
   OpsCrmIdRoute: OpsCrmIdRoute,
   OpsEncomendasIdRoute: OpsEncomendasIdRoute,
+  OpsComprovativosIndexRoute: OpsComprovativosIndexRoute,
   OpsCrmIndexRoute: OpsCrmIndexRoute,
   OpsEncomendasIndexRoute: OpsEncomendasIndexRoute,
 }

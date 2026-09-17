@@ -7,9 +7,9 @@
       "status": 200,
       "title": "Sete Sete",
       "hasCanvas": false,
-      "bodyTextLen": 9,
-      "bodyTextHash": "3dfdcc5a5930e297af590b5be993cb740d857ac0706e60a8373397e53f12522b",
-      "bodyTextPrefix": "SETE SETE",
+      "bodyTextLen": 42,
+      "bodyTextHash": "166b3e0816d1f70e021d058d81378904268f9172f57f95e79f065df9053c8691",
+      "bodyTextPrefix": "Backoffice UTILIZADOR PALAVRA-PASSE ENTRAR",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
@@ -32,10 +32,5 @@
   },
   "brandWarnings": [],
   "authWarnings": [],
-  "verdictFile": "/workspace/screenshots/app-builder-built.json",
-  "divergesFromBaseline": true,
-  "baselineReasons": [
-    "desktop: body text collapsed (38 -> 9 chars)",
-    "mobile: body text collapsed (38 -> 9 chars)"
-  ]
+  "verdictFile": "/workspace/screenshots/app-builder-built.json"
 }

@@ -11,7 +11,8 @@ import {
   type OrderRow,
   type OrderStatus,
 } from "@/lib/ops";
-import { getOrder, setOrderStatus } from "@/lib/ops.functions";
+import { getOrder, getReceipt, setOrderStatus, verifyPayment, attachReceipt } from "@/lib/ops.functions";
+import { fileToReceipt } from "@/lib/receipt-file";
 import { formatKz, cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ops/encomendas/$id")({
@@ -29,10 +30,17 @@ function OrderDetail() {
   const [order, setOrder] = useState<Detail | null | undefined>(undefined);
   const [copied, setCopied] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [proofs, setProofs] = useState<
+    { id: string; mime: string; filename: string; dataB64: string; phone: string }[]
+  >([]);
 
   const load = useCallback(async () => {
     const row = await getOrder({ data: { id } });
     setOrder(row);
+    if (row) {
+      const recs = await getReceipt({ data: { orderId: row.id } });
+      setProofs(recs);
+    }
   }, [id]);
 
   useEffect(() => {
@@ -170,6 +178,78 @@ function OrderDetail() {
           ) : null}
           <p className="mt-2 text-xs text-stone">Tel. {order.phone}</p>
           {order.notes ? <p className="mt-2 text-xs text-stone">Notas: {order.notes}</p> : null}
+
+          <section className="mt-8 rounded-xl bg-rice/5 p-4">
+            <p className="text-[11px] tracking-[0.16em] text-stone uppercase">
+              Comprovativo · {order.id}
+            </p>
+            <p className="mt-1 text-sm text-stone">Ligado ao WhatsApp {order.phone}</p>
+            <p className="mt-2 text-xs tracking-[0.12em] uppercase">
+              {order.payVerified ? (
+                <span className="text-kaki-soft">Pagamento verificado</span>
+              ) : (
+                <span className="text-kaki">Aguardando verificação</span>
+              )}
+            </p>
+            <div className="mt-4 space-y-3">
+              {proofs.length === 0 ? (
+                <p className="text-sm text-stone">Ainda sem ficheiro nesta ficha.</p>
+              ) : (
+                proofs.map((p) => (
+                  <figure key={p.id} className="overflow-hidden rounded-lg bg-nori">
+                    {p.mime.startsWith("image/") ? (
+                      <img
+                        src={`data:${p.mime};base64,${p.dataB64}`}
+                        alt={`Comprovativo ${order.id}`}
+                        className="max-h-80 w-full object-contain"
+                      />
+                    ) : (
+                      <iframe
+                        title={p.filename}
+                        src={`data:${p.mime};base64,${p.dataB64}`}
+                        className="h-80 w-full bg-rice"
+                      />
+                    )}
+                    <figcaption className="px-3 py-2 text-xs text-stone">
+                      {p.filename} · {p.phone}
+                    </figcaption>
+                  </figure>
+                ))
+              )}
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button
+                type="button"
+                disabled={busy || order.payVerified}
+                onClick={() => {
+                  setBusy(true);
+                  void verifyPayment({ data: { id: order.id, ok: true } })
+                    .then(() => load())
+                    .finally(() => setBusy(false));
+                }}
+                className="min-h-11 rounded-full bg-kaki px-4 text-xs font-semibold tracking-[0.12em] text-rice uppercase disabled:opacity-40"
+              >
+                Confirmar pagamento
+              </button>
+              <label className="inline-flex min-h-11 cursor-pointer items-center rounded-full border border-rice/15 px-4 text-xs font-semibold tracking-[0.12em] uppercase">
+                Anexar outro
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,application/pdf"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (!f) return;
+                    setBusy(true);
+                    void fileToReceipt(f)
+                      .then((receipt) => attachReceipt({ data: { orderId: order.id, receipt } }))
+                      .then(() => load())
+                      .finally(() => setBusy(false));
+                  }}
+                />
+              </label>
+            </div>
+          </section>
 
           <Link
             to="/ops/crm/$id"
