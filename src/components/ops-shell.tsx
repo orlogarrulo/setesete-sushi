@@ -133,13 +133,18 @@ export function OpsShell() {
               const active = n.exact
                 ? pathname === n.to || pathname === `${n.to}/`
                 : pathname.startsWith(n.to);
+              const mark = n.to === "/ops/motoboys" || n.to === "/ops/manual";
               return (
                 <Link
                   key={n.to}
                   to={n.to}
                   className={cn(
                     "inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 text-[11px] font-semibold tracking-[0.1em] uppercase",
-                    active ? "bg-kaki text-rice" : "text-rice/80 hover:bg-rice/8 hover:text-rice",
+                    active
+                      ? "bg-kaki text-rice"
+                      : mark
+                        ? "border border-kaki text-kaki-soft hover:bg-kaki hover:text-rice"
+                        : "text-rice/80 hover:bg-rice/8 hover:text-rice",
                   )}
                 >
                   <n.icon className="size-3.5" />
@@ -150,6 +155,9 @@ export function OpsShell() {
           </div>
         </nav>
       </header>
+      <p className="bg-kaki px-4 py-2.5 text-center text-[11px] font-semibold tracking-[0.16em] text-rice uppercase">
+        Motoboys · Manual PDF · Enviar rota — na faixa de cima
+      </p>
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         <Outlet />
       </div>

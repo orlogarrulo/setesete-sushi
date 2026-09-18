@@ -1,0 +1,17 @@
+node_modules
+dist
+.output
+.vercel
+.tanstack
+.grok
+.project_id
+.node_modules.lock
+screenshots
+artifacts
+attachments
+*.log
+.env
+.env.local
+.env.*.local
+.DS_Store
+Thumbs.db
