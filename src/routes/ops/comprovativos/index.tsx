@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
+import { ExportBar } from "@/components/export-bar.tsx";
 import { listReceipts, verifyPayment } from "@/lib/ops.functions";
 import { formatKz, cn } from "@/lib/utils";
 
@@ -30,7 +31,25 @@ function ProofsPage() {
   return (
     <div>
       <p className="text-[11px] tracking-[0.28em] text-kaki-soft uppercase">Pagamentos</p>
-      <h1 className="mt-2 font-display text-4xl">Comprovativos</h1>
+      <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
+        <h1 className="font-display text-4xl">Comprovativos</h1>
+        <ExportBar
+          title="Comprovativos Sete Sete"
+          filename="setesete-comprovativos"
+          orientation="landscape"
+          headers={["Fatura", "Cliente", "Telefone", "Pagamento", "Ficheiro", "Total Kz", "Verificado", "Data"]}
+          rows={rows.map((r) => [
+            r.orderId,
+            r.customerName,
+            r.phone,
+            r.pay,
+            r.filename,
+            r.total,
+            r.payVerified ? "sim" : "não",
+            r.createdAt.replace("T", " ").slice(0, 16),
+          ])}
+        />
+      </div>
       <p className="mt-3 max-w-2xl text-sm text-stone">
         Cada ficheiro fica associado à referência da fatura e ao telefone /whatsapp
         do cliente. Verifica aqui antes de a cozinha avançar.

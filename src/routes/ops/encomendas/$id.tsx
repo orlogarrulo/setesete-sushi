@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Copy } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { ExportBar } from "@/components/export-bar.tsx";
 import { RouteMap } from "@/components/route-map.tsx";
 import { KITCHEN } from "@/lib/geo";
 import {
@@ -95,7 +96,29 @@ function OrderDetail() {
             {order.zone} · {order.address}
           </p>
         </div>
-        <p className="font-display text-3xl tabular-nums">{formatKz(order.total)}</p>
+        <div className="flex flex-col items-end gap-3">
+          <p className="font-display text-3xl tabular-nums">{formatKz(order.total)}</p>
+          <ExportBar
+            title={`Fatura ${order.id}`}
+            filename={`fatura-${order.id}`}
+            orientation="portrait"
+            headers={["Campo", "Valor"]}
+            rows={[
+              ["Fatura", order.id],
+              ["Cliente", order.customerName],
+              ["Telefone", order.phone],
+              ["Zona", order.zone],
+              ["Morada", order.address],
+              ["Estado", STATUS_META[order.status].pt],
+              ["Pagamento", order.pay],
+              ["Total Kz", order.total],
+              ["Comprovativo", order.hasReceipt ? order.receiptName ?? "sim" : "não"],
+              ["Pago", order.payVerified ? "verificado" : "pendente"],
+              ["Criada", order.createdAt.replace("T", " ").slice(0, 16)],
+              ...order.items.map((l) => [`${l.qty}× ${l.name}`, formatKz(l.total)]),
+            ]}
+          />
+        </div>
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-2">

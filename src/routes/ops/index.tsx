@@ -12,6 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { ExportBar } from "@/components/export-bar.tsx";
 import { getDashboard } from "@/lib/ops.functions";
 import { KPI_COPY } from "@/lib/ops";
 import { formatKz } from "@/lib/utils";
@@ -47,7 +48,21 @@ function OpsDashboard() {
   return (
     <div>
       <p className="text-[11px] tracking-[0.28em] text-kaki-soft uppercase">Painel</p>
-      <h1 className="mt-2 font-display text-4xl">O dia da casa</h1>
+      <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
+        <h1 className="font-display text-4xl">O dia da casa</h1>
+        <ExportBar
+          title="Painel Sete Sete"
+          filename="setesete-painel"
+          orientation="landscape"
+          headers={["Secção", "Item", "Valor"]}
+          rows={[
+            ...cards.map((c) => ["KPI", c.label, c.value]),
+            ...data.topProducts.map((p) => ["Top peças", p.name, `${p.qty} × ${formatKz(p.revenue)}`]),
+            ...data.zones.map((z) => ["Zonas", z.zone, `${z.orders} ped. · ${formatKz(z.revenue)}`]),
+            ...data.daily.map((d) => ["14 dias", d.day, `${d.orders} ped. · ${formatKz(d.revenue)}`]),
+          ]}
+        />
+      </div>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone">
         Seis números que bastam para gerir o serviço: receita, carga, ticket,
         ciclo, pontualidade e recorrência. O resto é detalhe — zonas, produtos,

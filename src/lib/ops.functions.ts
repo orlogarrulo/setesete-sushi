@@ -500,7 +500,8 @@ export const createOrder = createServerFn({ method: "POST" })
       notes: z.string().max(400).optional().default(""),
       pay: z.enum(["mcx", "transfer", "cash"]),
       receiptName: z.string().max(160).optional(),
-      receipt: receiptSchema,
+      receipt: receiptSchema.optional(),
+      afterHours: z.boolean().optional().default(false),
       items: z.array(itemSchema).min(1),
       total: z.number(),
     }),
@@ -532,18 +533,25 @@ export const createOrder = createServerFn({ method: "POST" })
       status, total, items_json, eta_min, courier_name, created_at, updated_at, pay_verified
     ) values (
       ${data.id}, ${token}, ${customerId}, ${data.name}, ${data.phone}, ${data.address}, ${zone.name},
-      ${KITCHEN.lat}, ${KITCHEN.lng}, ${dest.lat}, ${dest.lng}, ${data.notes ?? ""}, ${data.pay}, ${data.receipt.name},
+      ${KITCHEN.lat}, ${KITCHEN.lng}, ${dest.lat}, ${dest.lng}, ${data.notes ?? ""}, ${data.pay}, ${data.receipt?.name ?? null},
       ${"received"}, ${data.total}, ${JSON.stringify(data.items)}, ${eta}, ${null}, ${now}, ${now}, ${false}
     )`;
-    await saveReceipt(sql, {
-      orderId: data.id,
-      customerId,
-      phone: data.phone,
-      name: data.receipt.name,
-      mime: data.receipt.mime,
-      dataB64: data.receipt.dataB64,
-    });
-    await addEvent(sql, data.id, "received", "Pedido chegou pelo site. Comprovativo anexado.");
+    if (data.receipt) {
+      await saveReceipt(sql, {
+        orderId: data.id,
+        customerId,
+        phone: data.phone,
+        name: data.receipt.name,
+        mime: data.receipt.mime,
+        dataB64: data.receipt.dataB64,
+      });
+    }
+    const note = data.afterHours
+      ? "Pedido fora do horário. A confirmar na abertura, por ordem de chegada."
+      : data.receipt
+        ? "Pedido chegou pelo site. Comprovativo anexado."
+        : "Pedido chegou pelo site. Fatura gerada — a aguardar pagamento.";
+    await addEvent(sql, data.id, "received", note);
     return { id: data.id, trackToken: token, etaMin: eta, zone: zone.name };
   });
 
@@ -907,6 +915,29 @@ export const getReceipt = createServerFn({ method: "GET" })
       dataB64: r.data_b64,
       createdAt: asIso(r.created_at) ?? "",
     }));
+  });
+
+export const submitOrderReceipt = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      token: z.string().min(4).max(64),
+      receipt: receiptSchema,
+    }),
+  )
+  .handler(async ({ data }) => {
+    const sql = await sqlReady();
+    const rows = await sql<OrderDb>`select * from orders where track_token = ${data.token} limit 1`;
+    if (!rows[0]) throw new Error("Encomenda não encontrada.");
+    await saveReceipt(sql, {
+      orderId: rows[0].id,
+      customerId: rows[0].customer_id,
+      phone: rows[0].phone,
+      name: data.receipt.name,
+      mime: data.receipt.mime,
+      dataB64: data.receipt.dataB64,
+    });
+    await addEvent(sql, rows[0].id, rows[0].status, "Comprovativo enviado pelo cliente.");
+    return { ok: true };
   });
 
 export const attachReceipt = createServerFn({ method: "POST" })

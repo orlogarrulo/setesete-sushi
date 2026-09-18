@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Minus, Plus, Printer } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
+import { ClosedNotice } from "@/components/closed-notice.tsx";
 import { Shell } from "@/components/shell.tsx";
 import { TicketSheet } from "@/components/ticket-sheet.tsx";
 import { copy, t } from "@/lib/copy";
 import { ZONES, zoneById } from "@/lib/geo";
+import { isHouseOpen } from "@/lib/hours";
 import { productById } from "@/lib/menu";
-import { createOrder } from "@/lib/ops.functions";
+import { createOrder, submitOrderReceipt } from "@/lib/ops.functions";
 import { fileToReceipt } from "@/lib/receipt-file";
 import {
   buildTicket,
@@ -50,18 +52,27 @@ function PedirPage() {
   const [formError, setFormError] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [busy, setBusy] = useState(false);
+  const [proofOk, setProofOk] = useState(false);
+  const waRef = useRef<HTMLAnchorElement>(null);
+  const closed = !isHouseOpen();
 
   const empty = lines.length === 0;
   const zoneName = zoneById(zone)?.name ?? zone;
+  const needsProof = pay !== "cash";
+
+  function openWhatsApp(next: Ticket) {
+    const wa = buildWhatsAppUrl(next);
+    if (window.self !== window.top) return wa;
+    const popup = window.open(wa, "setesete-wa", "noopener,noreferrer");
+    if (popup && popup !== window) return wa;
+    return wa;
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (empty) return;
-    if (!receiptFile) {
-      setFormError(lang === "pt" ? "Anexa o comprovativo de pagamento." : "Attach the payment proof.");
-      return;
-    }
     setFormError("");
+    const afterHours = !isHouseOpen();
     const fullAddress = `${address.trim()}, ${zoneName}`;
     const next = buildTicket({
       lang,
@@ -71,13 +82,11 @@ function PedirPage() {
       zone: zoneName,
       notes,
       pay,
-      receiptName,
+      afterHours,
     });
+    setTicket(next);
     setBusy(true);
-    const popup = window.open("about:blank", "_blank");
     try {
-      const receipt = await fileToReceipt(receiptFile);
-      next.receiptName = receipt.name;
       const saved = await createOrder({
         data: {
           id: next.id,
@@ -87,26 +96,50 @@ function PedirPage() {
           zone,
           notes: next.notes,
           pay: next.pay,
-          receiptName: receipt.name,
-          receipt,
+          afterHours,
           items: next.lines,
           total: next.total,
         },
       });
       next.trackToken = saved.trackToken;
       next.trackUrl = `${window.location.origin}/seguir/${saved.trackToken}`;
-    } catch (e: unknown) {
-      setFormError(e instanceof Error ? e.message : lang === "pt" ? "Não foi possível confirmar." : "Could not confirm.");
-      popup?.close();
-      setBusy(false);
-      return;
+      setTicket({ ...next });
+    } catch (err: unknown) {
+      setFormError(
+        err instanceof Error
+          ? err.message
+          : lang === "pt"
+            ? "Fatura gerada. O seguimento pode falhar — confirma no WhatsApp."
+            : "Invoice created. Tracking may fail — confirm on WhatsApp.",
+      );
     } finally {
       setBusy(false);
     }
-    setTicket(next);
-    const wa = buildWhatsAppUrl(next);
-    if (popup) popup.location.href = wa;
-    else window.open(wa, "_blank", "noopener,noreferrer");
+    openWhatsApp(next);
+  }
+
+  async function onSendProof() {
+    if (!ticket?.trackToken || !receiptFile) {
+      setFormError(
+        lang === "pt"
+          ? "Anexa o comprovativo de pagamento."
+          : "Attach the payment proof.",
+      );
+      return;
+    }
+    setBusy(true);
+    setFormError("");
+    try {
+      const receipt = await fileToReceipt(receiptFile);
+      await submitOrderReceipt({ data: { token: ticket.trackToken, receipt } });
+      setReceiptName(receipt.name);
+      setProofOk(true);
+      setTicket({ ...ticket, receiptName: receipt.name });
+    } catch (err: unknown) {
+      setFormError(err instanceof Error ? err.message : "Não foi possível enviar o comprovativo.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   function startNew() {
@@ -115,6 +148,8 @@ function PedirPage() {
     setNotes("");
     setReceiptName(undefined);
     setReceiptFile(null);
+    setProofOk(false);
+    setFormError("");
   }
 
   return (
@@ -127,9 +162,11 @@ function PedirPage() {
           <h1 className="mt-3 font-display text-4xl sm:text-5xl">
             {ticket ? t(copy.pedir.sent, lang) : t(copy.pedir.title, lang)}
           </h1>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-stone">
-            {ticket ? t(copy.pedir.sentBody, lang) : t(copy.pedir.hint, lang)}
-          </p>
+          {ticket ? (
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-stone">
+              {t(copy.pedir.sentBody, lang)}
+            </p>
+          ) : null}
 
           {empty && !ticket ? (
             <div className="mt-10 rounded-xl border border-ink/8 bg-rice-warm p-8">
@@ -232,11 +269,25 @@ function PedirPage() {
           )}
 
           <dl className="mt-8 grid gap-4 text-sm sm:grid-cols-2">
-            <div className="border-t border-ink/8 pt-4">
+            <div className={closed ? "border-t border-ink/8 pt-4 sm:col-span-2" : "border-t border-ink/8 pt-4"}>
               <dt className="text-[11px] tracking-[0.18em] text-stone uppercase">
                 {lang === "pt" ? "Horário" : "Hours"}
               </dt>
-              <dd className="mt-1">{t(copy.pedir.hours, lang)}</dd>
+              <dd className="mt-1">
+                {closed ? (
+                  <div>
+                    <p className="font-display text-2xl">Estamos fechados</p>
+                    <p className="mt-1">{t(copy.pedir.hours, lang)}</p>
+                    <p className="mt-2 max-w-md text-sm leading-relaxed text-stone">
+                      {ticket
+                        ? "Recebemos a tua encomenda. Contactamos-te durante o horário de abertura, seguindo a ordem das encomendas."
+                        : "Podes deixar a encomenda. Contactamos-te na abertura, pela ordem de chegada."}
+                    </p>
+                  </div>
+                ) : (
+                  t(copy.pedir.hours, lang)
+                )}
+              </dd>
             </div>
             <div className="border-t border-ink/8 pt-4">
               <dt className="text-[11px] tracking-[0.18em] text-stone uppercase">
@@ -304,11 +355,55 @@ function PedirPage() {
 
         {ticket ? (
           <div className="space-y-4">
+            {ticket.afterHours ? <ClosedNotice received /> : null}
             <TicketSheet ticket={ticket} />
+            {ticket.pay !== "cash" ? (
+              <div className="print:hidden rounded-xl bg-rice-warm p-5 shadow-[var(--shadow-border)]">
+                <p className="text-[11px] tracking-[0.18em] text-kaki uppercase">
+                  Referência de pagamento
+                </p>
+                <p className="mt-2 font-display text-3xl tracking-tight">{ticket.id}</p>
+                {ticket.pay === "mcx" ? (
+                  <p className="mt-2 text-sm text-stone">
+                    Multicaixa Express · {MCX_NUMBER}
+                  </p>
+                ) : (
+                  <p className="mt-2 break-all text-sm text-stone">IBAN · {IBAN}</p>
+                )}
+                {proofOk ? (
+                  <p className="mt-4 text-sm text-kaki">Comprovativo recebido.</p>
+                ) : (
+                  <label className="mt-4 block text-sm font-medium">
+                    {t(copy.pedir.receipt, lang)}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,application/pdf,.pdf,.jpg,.jpeg,.png,.webp"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0] ?? null;
+                        setReceiptFile(f);
+                        setReceiptName(f?.name);
+                      }}
+                      className="mt-2 block w-full text-sm file:mr-3 file:rounded-full file:border-0 file:bg-kaki file:px-4 file:py-2 file:text-xs file:font-semibold file:tracking-[0.12em] file:text-rice file:uppercase"
+                    />
+                    <span className="mt-2 block text-xs leading-relaxed text-stone">
+                      {t(copy.pedir.receiptHint, lang)}
+                    </span>
+                    <button
+                      type="button"
+                      disabled={busy || !receiptFile}
+                      onClick={() => void onSendProof()}
+                      className="mt-4 flex min-h-11 w-full items-center justify-center rounded-full bg-nori text-xs font-semibold tracking-[0.12em] text-rice uppercase disabled:opacity-40"
+                    >
+                      Enviar comprovativo
+                    </button>
+                  </label>
+                )}
+              </div>
+            ) : null}
             {ticket.trackToken ? (
               <div className="print:hidden rounded-xl bg-rice-warm p-5 shadow-[var(--shadow-border)]">
                 <p className="text-[11px] tracking-[0.18em] text-kaki uppercase">
-                  {lang === "pt" ? "Ponto A → ponto B" : "Point A → point B"}
+                  {lang === "pt" ? "Seguimento" : "Tracking"}
                 </p>
                 <p className="mt-2 text-sm text-stone">{t(copy.pedir.trackHint, lang)}</p>
                 <Link
@@ -330,6 +425,7 @@ function PedirPage() {
                 {t(copy.pedir.print, lang)}
               </button>
               <a
+                ref={waRef}
                 href={buildWhatsAppUrl(ticket)}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -338,6 +434,12 @@ function PedirPage() {
                 {t(copy.pedir.again, lang)}
               </a>
             </div>
+            <Link
+              to="/"
+              className="print:hidden flex min-h-12 w-full items-center justify-center rounded-full border border-ink/15 text-sm font-semibold tracking-[0.12em] uppercase"
+            >
+              {t(copy.pedir.finish, lang)}
+            </Link>
             <button
               type="button"
               onClick={startNew}
@@ -345,11 +447,7 @@ function PedirPage() {
             >
               {t(copy.pedir.newOrder, lang)}
             </button>
-            {ticket.pay === "transfer" ? (
-              <p className="print:hidden text-xs leading-relaxed text-stone">
-                {t(copy.pedir.receiptHint, lang)}
-              </p>
-            ) : null}
+            {formError ? <p className="print:hidden text-sm text-kaki">{formError}</p> : null}
             <p className="print:hidden text-xs text-stone">
               {lang === "pt" ? "Horário" : "Hours"} · {HOURS}
             </p>
@@ -463,24 +561,6 @@ function PedirPage() {
               </div>
             </fieldset>
 
-            <label className="mt-5 block text-sm font-medium">
-              {t(copy.pedir.receipt, lang)}
-              <input
-                required
-                type="file"
-                accept="image/jpeg,image/png,image/webp,application/pdf,.pdf,.jpg,.jpeg,.png,.webp"
-                onChange={(e) => {
-                  const f = e.target.files?.[0] ?? null;
-                  setReceiptFile(f);
-                  setReceiptName(f?.name);
-                }}
-                className="mt-2 block w-full text-sm file:mr-3 file:rounded-full file:border-0 file:bg-kaki file:px-4 file:py-2 file:text-xs file:font-semibold file:tracking-[0.12em] file:text-rice file:uppercase"
-              />
-              <span className="mt-2 block text-xs leading-relaxed text-stone">
-                {t(copy.pedir.receiptHint, lang)}
-              </span>
-            </label>
-
             {formError ? <p className="mt-3 text-sm text-kaki">{formError}</p> : null}
 
             <button
@@ -490,10 +570,19 @@ function PedirPage() {
             >
               {busy
                 ? lang === "pt"
-                  ? "A gerar…"
-                  : "Creating…"
+                  ? "A gerar fatura…"
+                  : "Creating invoice…"
                 : t(copy.pedir.send, lang)}
             </button>
+            {needsProof ? (
+              <p className="mt-3 text-xs leading-relaxed text-stone">
+                Primeiro geras a fatura (fica com a referência). Depois pagas e anexas o comprovativo.
+              </p>
+            ) : (
+              <p className="mt-3 text-xs leading-relaxed text-stone">
+                Dinheiro: sem comprovativo. Pagas na entrega, contra a fatura.
+              </p>
+            )}
           </form>
         )}
       </main>

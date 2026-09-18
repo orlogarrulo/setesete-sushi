@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { ExportBar } from "@/components/export-bar.tsx";
 import { ZONES } from "@/lib/geo";
 import { CRM_TAGS, type CustomerRow } from "@/lib/ops";
 import { listCustomers, upsertCustomer } from "@/lib/ops.functions";
@@ -45,6 +46,22 @@ function CrmPage() {
       <p className="text-[11px] tracking-[0.28em] text-kaki-soft uppercase">Clientes</p>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
         <h1 className="font-display text-4xl">CRM da casa</h1>
+        <div className="flex flex-wrap items-center gap-2">
+          <ExportBar
+            title="CRM Sete Sete"
+            filename="setesete-crm"
+            orientation="landscape"
+            headers={["Nome", "Telefone", "Zona", "Tags", "Pedidos", "Gasto Kz", "Último pedido"]}
+            rows={rows.map((c) => [
+              c.name,
+              c.phone,
+              c.zone,
+              c.tags.join(", "),
+              c.orderCount,
+              c.spent,
+              c.lastOrderAt ? c.lastOrderAt.replace("T", " ").slice(0, 16) : "—",
+            ])}
+          />
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -52,6 +69,7 @@ function CrmPage() {
         >
           Novo contacto
         </button>
+        </div>
       </div>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone">
         Cada pedido cria ou actualiza uma ficha. Tags, notas da casa, histórico e

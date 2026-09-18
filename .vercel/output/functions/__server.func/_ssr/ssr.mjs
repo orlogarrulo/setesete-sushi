@@ -129,7 +129,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-7nA6Hck9.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-CxqSyzZG.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -151,83 +151,87 @@ async function getStartManifest(matchedRoutes) {
 var manifest = {
 	"090b8c82772100e5c03070b36dd145f30f77c7d016b34d50d105d5e1835b1518": {
 		functionName: "findOrders_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"0c5b4f45e7b0de6f73386fe666c1bc79cf68a0cf6fb77d3fb92be54819fe3ea4": {
 		functionName: "listOrders_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"0cdb5d236ddea06eef815ba38f4d3edfcdb72a921b66f012e705cc8d39c72f7f": {
 		functionName: "upsertCustomer_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"11c6341857a1ee251e4eef9540515c357a225e8c38a47aebccae25391d044334": {
 		functionName: "createOrder_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"156f710f63f255b6e16cb315bb8628ce6cb13c87af810a89809d0d6bd2856fb7": {
 		functionName: "listReceipts_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"3793b6eee164265ea5c215b5d2a658b3ef7ef43ee026711f9974483c8bd1de95": {
 		functionName: "getReceipt_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"3bd9e2fc61f7beb23b256763511a4d8841ff054eae7fd350f28d4cf652d9a62e": {
 		functionName: "logoutStaff_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"4f32623444f4033dd479dde7c76fedbbad1de4ed0c67e741c782f27b8d01a5c7": {
 		functionName: "addCrmNote_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"5e27cfefe075d717913eb60f7c1605ea77d90f9171de6d59c02b04f17a95daec": {
 		functionName: "listCustomers_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"79a74620f11d52b09dab3190235f823d72a062cbb2de8d98ef0ff69d2e580752": {
 		functionName: "staffSession_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"8778c2fb72152c901880a9404219b9aa85b0c397742a534686814f45c7286b75": {
 		functionName: "getOrder_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"8d63bf61709d7ee3c8cf157b71c82f91225ea174961c34c97411fbe09835b616": {
 		functionName: "attachReceipt_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"94cce137d1a8b85daeda3e302dde493adbb756b985840516409e2461f470aec5": {
 		functionName: "getDashboard_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"cdb11cfaec30595307b256d953f3ee15f1ed64ec2e11191087f75a2c663736f8": {
 		functionName: "getCustomer_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"d1c961430f01f84389693c862ec7f436df68576de9ded80eb41c6433a48e9dce": {
 		functionName: "verifyPayment_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"d627379a4d98ecb8e3212ac780d733a1d11b14a29540cd19dbdd84ce8325c95d": {
 		functionName: "getTracking_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"e0cbcdf52944b73080fce02cf0b1dd8db663c2faad14c826b3e0ee9ce975ecce": {
 		functionName: "loginStaff_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"e515a5316d5514e368ede5d8784f624e8ea3b99a4966c526048704b2e43e13a2": {
 		functionName: "lookupInvoice_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
+	},
+	"e808ac69a6c5e49c5813c24e9ab6144009a138ec6973699913d4d2e4d02adb37": {
+		functionName: "submitOrderReceipt_createServerFn_handler",
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"ec3a65fc64e19e0f916933be1ddf639951cb66c4565b2653b3fa35dfa437b8d9": {
 		functionName: "setOrderStatus_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	},
 	"eefcfaafa17efdfec84dbeae27272d2bbbb5c5587f79c3641f48b45198c9dbf8": {
 		functionName: "setCustomerTags_createServerFn_handler",
-		importer: () => import("./ops.functions-42LAkEuZ.mjs")
+		importer: () => import("./ops.functions-LekjFI0_.mjs")
 	}
 };
 async function getServerFnById(id, access) {
@@ -1497,7 +1501,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-Dnvpw5N2.mjs").then((n) => n.t),
+		import("./router-An-1XikS.mjs").then((n) => n.t),
 		import("./start-5Z2QO8AU.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);

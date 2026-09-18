@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { OpeningBanner } from "@/components/opening-banner.tsx";
 import { Mark } from "@/components/mark.tsx";
 import { Shell } from "@/components/shell.tsx";
 import { copy, t } from "@/lib/copy";
@@ -25,6 +26,9 @@ function Home() {
             className="absolute inset-0 size-full object-cover object-[20%_50%]"
           />
           <div className="absolute inset-0 bg-linear-to-t from-nori via-nori/55 to-nori/20" />
+          <div className="relative">
+            <OpeningBanner />
+          </div>
           <div className="relative mx-auto flex min-h-[88dvh] max-w-6xl flex-col justify-end px-4 pb-16 sm:px-6 sm:pb-20">
             <Mark className="size-16 sm:size-20" alt="Kamon Sete Sete" />
             <p className="mt-6 text-[11px] font-medium tracking-[0.32em] text-kaki-soft uppercase">

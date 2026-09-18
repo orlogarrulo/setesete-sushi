@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { ExportBar } from "@/components/export-bar.tsx";
 import { FLOW, STATUS_META, nextStatus, type OrderRow, type OrderStatus } from "@/lib/ops";
 import { findOrders, listOrders, setOrderStatus } from "@/lib/ops.functions";
 import { formatKz, cn } from "@/lib/utils";
@@ -60,7 +61,38 @@ function EncomendasPage() {
       <p className="text-[11px] tracking-[0.28em] text-kaki-soft uppercase">Cozinha</p>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
         <h1 className="font-display text-4xl">Encomendas</h1>
-        <p className="text-sm text-stone">{live.length} em curso</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="text-sm text-stone">{live.length} em curso</p>
+          <ExportBar
+            title="Encomendas Sete Sete"
+            filename="setesete-encomendas"
+            orientation="landscape"
+            headers={[
+              "Fatura",
+              "Cliente",
+              "Telefone",
+              "Zona",
+              "Estado",
+              "Pagamento",
+              "Total Kz",
+              "Comprovativo",
+              "Pago",
+              "Criada",
+            ]}
+            rows={orders.map((o) => [
+              o.id,
+              o.customerName,
+              o.phone,
+              o.zone,
+              STATUS_META[o.status].pt,
+              o.pay,
+              o.total,
+              o.hasReceipt ? "sim" : "não",
+              o.payVerified ? "verificado" : "pendente",
+              o.createdAt.replace("T", " ").slice(0, 16),
+            ])}
+          />
+        </div>
       </div>
       <p className="mt-3 max-w-2xl text-sm text-stone">
         Verifica a fatura pela referência (SS-…). O comprovativo fica ligado ao

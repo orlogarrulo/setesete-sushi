@@ -25,6 +25,7 @@ export type Ticket = {
   lang: Lang;
   trackToken?: string;
   trackUrl?: string;
+  afterHours?: boolean;
 };
 
 export function newTicketId(date = new Date()) {
@@ -44,6 +45,7 @@ export function buildTicket(opts: {
   notes: string;
   pay: PayMethod;
   receiptName?: string;
+  afterHours?: boolean;
 }): Ticket {
   const lines: TicketLine[] = useCart
     .getState()
@@ -70,6 +72,7 @@ export function buildTicket(opts: {
     notes: opts.notes.trim(),
     pay: opts.pay,
     receiptName: opts.receiptName,
+    afterHours: opts.afterHours,
     lines,
     total: lines.reduce((n, l) => n + l.total, 0),
     lang: opts.lang,
@@ -104,19 +107,33 @@ export function buildOrderMessage(ticket: Ticket) {
           : "Cash on delivery";
 
   const extra: string[] = [];
-  extra.push(
-    lang === "pt"
-      ? `Comprovativo: ${ticket.receiptName ?? "anexado na encomenda"}`
-      : `Proof: ${ticket.receiptName ?? "attached to the order"}`,
-  );
+  if (ticket.afterHours) {
+    extra.push(
+      lang === "pt"
+        ? "*Encomenda a ser confirmada — fora do horário*"
+        : "*Order pending confirmation — outside opening hours*",
+    );
+    extra.push(
+      lang === "pt"
+        ? "Contactamos-te na abertura (12h–22h), pela ordem das encomendas."
+        : "We will contact you at opening (12:00–22:00), in order of arrival.",
+    );
+  }
   if (ticket.pay === "transfer") {
     extra.push(`IBAN: ${IBAN}`);
   }
   if (ticket.pay === "mcx") {
     extra.push(
       lang === "pt"
-        ? `Multicaixa Express: ${MCX_NUMBER} · ref. ${ticket.id}`
-        : `Multicaixa Express: ${MCX_NUMBER} · ref. ${ticket.id}`,
+        ? `Multicaixa Express: ${MCX_NUMBER} · referência da fatura ${ticket.id}`
+        : `Multicaixa Express: ${MCX_NUMBER} · invoice reference ${ticket.id}`,
+    );
+  }
+  if (ticket.receiptName) {
+    extra.push(
+      lang === "pt"
+        ? `Comprovativo: ${ticket.receiptName}`
+        : `Proof: ${ticket.receiptName}`,
     );
   }
 

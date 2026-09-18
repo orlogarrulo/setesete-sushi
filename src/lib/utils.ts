@@ -35,24 +35,24 @@ export const PAY_METHODS: Record<
     pt: "Multicaixa Express",
     en: "Multicaixa Express",
     hint: {
-      pt: "Pagas no telemóvel para 974506949. A referência é o número da fatura.",
-      en: "Pay on your phone to 974506949. The invoice number is the reference.",
+      pt: "Gera a fatura. Paga no telemóvel para 974506949, com o número da fatura como referência.",
+      en: "Create the invoice. Pay on your phone to 974506949, using the invoice number as reference.",
     },
   },
   transfer: {
     pt: "Transferência bancária",
     en: "Bank transfer",
     hint: {
-      pt: "IBAN AO06.0040.0000.1297.1473.1038.1. Anexa o comprovativo em PDF.",
-      en: "IBAN AO06.0040.0000.1297.1473.1038.1. Attach the PDF receipt.",
+      pt: "Gera a fatura. Transfere para o IBAN AO06.0040.0000.1297.1473.1038.1 e anexa o PDF.",
+      en: "Create the invoice. Transfer to IBAN AO06.0040.0000.1297.1473.1038.1 and attach the PDF.",
     },
   },
   cash: {
     pt: "Dinheiro no local",
     en: "Cash on delivery",
     hint: {
-      pt: "Pagas na entrega, contra a fatura.",
-      en: "Pay on delivery, against the invoice.",
+      pt: "Pagas na entrega, contra a fatura. Sem comprovativo.",
+      en: "Pay on delivery, against the invoice. No proof required.",
     },
   },
 };
