@@ -1,9 +1,9 @@
 function escapeHtml(s: string) {
   return s
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
+    .replaceAll("&", "&" + "amp;")
+    .replaceAll("<", "&" + "lt;")
+    .replaceAll(">", "&" + "gt;")
+    .replaceAll('"', "&" + "quot;");
 }
 
 function sheetHtml(
@@ -38,7 +38,7 @@ function sheetHtml(
 <title>${escapeHtml(title)}</title>
 <style>
   @page { size: A4 ${orientation}; margin: 14mm; }
-  body { margin: 0; background: #fbfaf7; color: #1a1714; }
+  body { margin: 18px; background: #fbfaf7; color: #1a1714; }
   h1 { font-family: "Times New Roman", serif; font-size: 28px; margin: 0; }
   .kicker { font-family: Calibri, Arial, sans-serif; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #e24a17; }
   .meta { font-family: Calibri, Arial, sans-serif; font-size: 11px; color: #6b6560; margin-top: 4px; }
@@ -57,6 +57,24 @@ function sheetHtml(
 </html>`;
 }
 
+export function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+export async function downloadUrl(url: string, filename: string) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Ficheiro indisponível.");
+  downloadBlob(await res.blob(), filename);
+}
+
 export function downloadExcel(opts: {
   filename: string;
   title: string;
@@ -70,15 +88,14 @@ export function downloadExcel(opts: {
     opts.rows,
     opts.orientation ?? "landscape",
   );
-  const blob = new Blob(["\ufeff", html], { type: "application/vnd.ms-excel" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = opts.filename.endsWith(".xls") ? opts.filename : `${opts.filename}.xls`;
-  a.click();
-  window.setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  downloadBlob(
+    new Blob(["\ufeff", html], { type: "application/vnd.ms-excel" }),
+    opts.filename.endsWith(".xls") ? opts.filename : `${opts.filename}.xls`,
+  );
 }
 
 export function printPdf(opts: {
+  filename?: string;
   title: string;
   headers: string[];
   rows: (string | number)[][];
@@ -90,13 +107,33 @@ export function printPdf(opts: {
     opts.rows,
     opts.orientation ?? "landscape",
   );
-  const w = window.open("", "_blank", "noopener,noreferrer");
-  if (!w) return;
-  w.document.open();
-  w.document.write(html);
-  w.document.close();
-  w.focus();
-  window.setTimeout(() => {
-    w.print();
-  }, 350);
+  const base = (opts.filename ?? "setesete").replace(/\.html?$/i, "");
+  // Download first — no popup, works inside the preview iframe.
+  downloadBlob(new Blob([html], { type: "text/html;charset=utf-8" }), `${base}.html`);
+
+  const prev = document.getElementById("ss-print-frame");
+  prev?.remove();
+  const frame = document.createElement("iframe");
+  frame.id = "ss-print-frame";
+  frame.setAttribute("aria-hidden", "true");
+  frame.srcdoc = html;
+  Object.assign(frame.style, {
+    position: "fixed",
+    right: "0",
+    bottom: "0",
+    width: "0",
+    height: "0",
+    border: "0",
+  });
+  frame.addEventListener("load", () => {
+    window.setTimeout(() => {
+      try {
+        frame.contentWindow?.focus();
+        frame.contentWindow?.print();
+      } catch {
+        /* download already happened */
+      }
+    }, 200);
+  });
+  document.body.appendChild(frame);
 }

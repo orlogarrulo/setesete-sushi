@@ -72,8 +72,11 @@ function CrmPage() {
         </div>
       </div>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone">
-        Cada pedido cria ou actualiza uma ficha. Tags, notas da casa, histórico e
-        valor de vida — o CRM próprio da Sete Sete, sem plataforma terceira.
+        Fichas de quem pede sushi — não de quem entrega. A equipa de entrega (nome, WhatsApp, pausar, novo motoboy) está em{" "}
+        <Link to="/ops/motoboys" className="text-kaki-soft underline-offset-4 hover:underline">
+          Motoboys
+        </Link>
+        .
       </p>
 
       {open ? (

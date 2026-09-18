@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Bike, BookOpen, Smartphone } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Bar,
@@ -13,6 +14,7 @@ import {
   YAxis,
 } from "recharts";
 import { ExportBar } from "@/components/export-bar.tsx";
+import { ManualDownload } from "@/components/manual-download.tsx";
 import { getDashboard } from "@/lib/ops.functions";
 import { KPI_COPY } from "@/lib/ops";
 import { formatKz } from "@/lib/utils";
@@ -50,16 +52,7 @@ function OpsDashboard() {
       <p className="text-[11px] tracking-[0.28em] text-kaki-soft uppercase">Painel</p>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
         <h1 className="font-display text-4xl">O dia da casa</h1>
-        <div className="flex flex-wrap items-center gap-3">
-          <a
-            href="/manual/setesete-manual-seguimento.pdf"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex min-h-10 items-center rounded-full border border-rice/15 px-4 text-[11px] font-semibold tracking-[0.12em] uppercase"
-          >
-            Manual de seguimento
-          </a>
-          <ExportBar
+        <ExportBar
             title="Painel Sete Sete"
             filename="setesete-painel"
             orientation="landscape"
@@ -71,13 +64,44 @@ function OpsDashboard() {
               ...data.daily.map((d) => ["14 dias", d.day, `${d.orders} ped. · ${formatKz(d.revenue)}`]),
             ]}
           />
-        </div>
       </div>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone">
         Seis números que bastam para gerir o serviço: receita, carga, ticket,
         ciclo, pontualidade e recorrência. O resto é detalhe — zonas, produtos,
         e o CRM a puxar quem já não pede.
       </p>
+
+      <div className="mt-8 grid gap-3 md:grid-cols-3">
+        <Link
+          to="/ops/motoboys"
+          className="rounded-xl bg-kaki px-5 py-5 text-rice hover:bg-kaki-deep"
+        >
+          <Bike className="size-5" />
+          <p className="mt-3 font-display text-2xl">Motoboys</p>
+          <p className="mt-1 text-sm text-rice/80">
+            Nomes, WhatsApp, pausar, criar novo. Não é a lista de clientes.
+          </p>
+        </Link>
+        <div className="rounded-xl bg-rice/5 px-5 py-5">
+          <BookOpen className="size-5 text-kaki-soft" />
+          <p className="mt-3 font-display text-2xl">Manual</p>
+          <p className="mt-1 text-sm text-stone">PDF de 9 páginas: quem confirma o quê, e o telemóvel do motoboy.</p>
+          <div className="mt-4">
+            <ManualDownload label="Descarregar PDF" />
+          </div>
+        </div>
+        <Link
+          to="/ops/motoboys"
+          hash="provar"
+          className="rounded-xl bg-rice/5 px-5 py-5 hover:bg-rice/8"
+        >
+          <Smartphone className="size-5 text-kaki-soft" />
+          <p className="mt-3 font-display text-2xl">Provar a rota</p>
+          <p className="mt-1 text-sm text-stone">
+            Abre o ecrã do motoboy neste browser — o mesmo que ele vê no telemóvel.
+          </p>
+        </Link>
+      </div>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((c) => (

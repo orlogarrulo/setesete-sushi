@@ -435,6 +435,15 @@ function RiderActions({
       {!assigned ? (
         <p className="text-xs text-stone">Escolhe o motoboy em cima para enviar o link ao número dele.</p>
       ) : null}
+      <label className="block text-[11px] tracking-[0.12em] text-stone uppercase">
+        Link da rota (motoboy)
+        <input
+          readOnly
+          value={riderUrl}
+          onFocus={(e) => e.currentTarget.select()}
+          className="mt-2 min-h-11 w-full rounded-lg border border-rice/15 bg-nori px-3 font-mono text-xs text-rice outline-none"
+        />
+      </label>
       <div className="flex flex-col gap-2 sm:flex-row">
         {wa ? (
           <a
@@ -460,14 +469,13 @@ function RiderActions({
           {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
           {copied ? "Link copiado" : "Copiar link"}
         </button>
-        <a
-          href={`/moto/${order.riderToken}`}
-          target="_blank"
-          rel="noreferrer"
+        <Link
+          to="/moto/$token"
+          params={{ token: order.riderToken }}
           className="inline-flex min-h-11 items-center justify-center rounded-full border border-rice/15 px-4 text-xs font-semibold tracking-[0.12em] uppercase"
         >
-          Ver ecrã
-        </a>
+          Abrir ecrã da rota
+        </Link>
       </div>
     </div>
   );

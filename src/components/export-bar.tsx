@@ -14,7 +14,7 @@ export function ExportBar({ title, filename, headers, rows, orientation = "lands
     <div className="flex flex-wrap gap-2 print:hidden">
       <button
         type="button"
-        onClick={() => printPdf({ title, headers, rows, orientation })}
+        onClick={() => printPdf({ filename, title, headers, rows, orientation })}
         className="inline-flex min-h-11 items-center gap-2 rounded-full border border-rice/15 px-4 text-[11px] font-semibold tracking-[0.12em] uppercase"
       >
         <Printer className="size-3.5" />
