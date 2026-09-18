@@ -135,7 +135,7 @@ function OrderDetail() {
               <div>
                 <p className="text-[11px] tracking-[0.16em] text-kaki-soft uppercase">Motoboy · enviar rota</p>
                 <p className="mt-2 text-sm text-rice/80">
-                  Escolhe o estafeta. O botão abre o WhatsApp dele com o link desta encomenda.
+                  Tu alocas — clica no nome. Se esse motoboy não estiver perto, clica noutro. Não é automático.
                 </p>
               </div>
               <Link

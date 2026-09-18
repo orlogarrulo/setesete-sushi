@@ -3,6 +3,7 @@ import { Check, MapPin, Phone } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Mark } from "@/components/mark.tsx";
 import { getRiderJob, riderAdvance, type RiderJob } from "@/lib/ops.functions";
+import { KITCHEN, mapsNavUrl, mapsPinUrl } from "@/lib/geo";
 import { STATUS_META, type OrderStatus } from "@/lib/ops";
 import { clientWhatsAppDigits } from "@/lib/ticket";
 import { formatKz, cn } from "@/lib/utils";
@@ -80,7 +81,8 @@ function RiderPage() {
   }
 
   const wa = clientWhatsAppDigits(job.phone);
-  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${job.address}, ${job.zone}, Luanda`)}`;
+  const pin = mapsPinUrl(job.destLat, job.destLng);
+  const nav = mapsNavUrl(KITCHEN, { lat: job.destLat, lng: job.destLng });
   const action = nextAction(job.status);
   const done = job.status === "delivered";
   const blocked = job.status === "received" || job.status === "cancelled";
@@ -125,14 +127,24 @@ function RiderPage() {
               WhatsApp
             </a>
           </div>
-          <a
-            href={maps}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-2 flex min-h-11 items-center justify-center rounded-full border border-rice/15 text-xs font-semibold tracking-[0.12em] uppercase"
-          >
-            Abrir no mapa
-          </a>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            <a
+              href={pin}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-h-11 items-center justify-center rounded-full border border-rice/15 text-xs font-semibold tracking-[0.12em] uppercase"
+            >
+              Ver no mapa
+            </a>
+            <a
+              href={nav}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-h-11 items-center justify-center rounded-full bg-kaki text-xs font-semibold tracking-[0.12em] text-rice uppercase"
+            >
+              Navegar
+            </a>
+          </div>
         </section>
 
         <ul className="mt-6 space-y-2 text-sm">

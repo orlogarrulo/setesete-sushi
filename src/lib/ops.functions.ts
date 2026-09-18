@@ -709,11 +709,9 @@ export const setOrderStatus = createServerFn({ method: "POST" })
     let dispatched = asIso(rows[0].dispatched_at);
     let delivered = asIso(rows[0].delivered_at);
     if (data.status === "out" || data.status === "nearby") {
-      if (!courier) courier = pick(COURIERS, data.id.length);
       if (!dispatched) dispatched = now;
     }
     if (data.status === "delivered") {
-      if (!courier) courier = pick(COURIERS, data.id.length);
       if (!dispatched) dispatched = now;
       delivered = now;
     }
@@ -723,7 +721,7 @@ export const setOrderStatus = createServerFn({ method: "POST" })
     const note =
       data.note ||
       (data.status === "out"
-        ? `Saiu da ${KITCHEN.name} · estafeta ${courier}.`
+        ? `Saiu da ${KITCHEN.name}${courier ? ` · estafeta ${courier}` : ""}.`
         : data.status === "delivered"
           ? "Entregue na morada."
           : "");
@@ -1337,6 +1335,8 @@ export type RiderJob = {
   remainingMin: number;
   courierName: string | null;
   pay: PayMethod;
+  destLat: number;
+  destLng: number;
 };
 
 export const getRiderJob = createServerFn({ method: "GET" })
@@ -1360,6 +1360,8 @@ export const getRiderJob = createServerFn({ method: "GET" })
       remainingMin: remainingMinutes(order),
       courierName: order.courierName,
       pay: order.pay,
+      destLat: order.destLat,
+      destLng: order.destLng,
     };
   });
 
@@ -1395,7 +1397,6 @@ export const riderAdvance = createServerFn({ method: "POST" })
     const status = nextStatus[data.action];
     const now = iso(new Date());
     let courier = rows[0].courier_name;
-    if (!courier) courier = pick(COURIERS, order.id.length);
     const dispatched =
       data.action === "pickup" ? now : asIso(rows[0].dispatched_at) ?? now;
     const delivered = data.action === "delivered" ? now : asIso(rows[0].delivered_at);
@@ -1405,10 +1406,10 @@ export const riderAdvance = createServerFn({ method: "POST" })
       where id = ${order.id}`;
     const note =
       data.action === "pickup"
-        ? `Estafeta ${courier} recebeu a encomenda e saiu da cozinha.`
+        ? `Estafeta ${courier ?? "—"} recebeu a encomenda e saiu da cozinha.`
         : data.action === "nearby"
-          ? `Estafeta ${courier} na zona ${order.zone}.`
-          : `Estafeta ${courier} confirmou a entrega.`;
+          ? `Estafeta ${courier ?? "—"} na zona ${order.zone}.`
+          : `Estafeta ${courier ?? "—"} confirmou a entrega.`;
     await addEvent(sql, order.id, status, note);
     const next = await sql<OrderDb>`select * from orders where id = ${order.id} limit 1`;
     return mapOrder(next[0]);

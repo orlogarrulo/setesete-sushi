@@ -155,9 +155,6 @@ export function OpsShell() {
           </div>
         </nav>
       </header>
-      <p className="bg-kaki px-4 py-2.5 text-center text-[11px] font-semibold tracking-[0.16em] text-rice uppercase">
-        Motoboys · Manual PDF · Enviar rota — na faixa de cima
-      </p>
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         <Outlet />
       </div>

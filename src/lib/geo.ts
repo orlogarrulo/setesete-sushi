@@ -32,6 +32,14 @@ export const ZONES: Zone[] = [
   { id: "cazenga", name: "Cazenga", lat: -8.838, lng: 13.292, etaBias: 34 },
 ];
 
+export function mapsPinUrl(lat: number, lng: number) {
+  return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+}
+
+export function mapsNavUrl(from: { lat: number; lng: number }, to: { lat: number; lng: number }) {
+  return `https://www.google.com/maps/dir/?api=1&origin=${from.lat},${from.lng}&destination=${to.lat},${to.lng}&travelmode=driving`;
+}
+
 export function zoneById(id: string) {
   return ZONES.find((z) => z.id === id);
 }
