@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Shell } from "@/components/shell.tsx";
 import { getTracking, lookupInvoice } from "@/lib/ops.functions";
+import { parseTrackQuery } from "@/lib/track-query";
 import { useLang } from "@/store/lang";
 
 export const Route = createFileRoute("/seguir/")({ component: SeguirHome });
@@ -23,12 +24,12 @@ function SeguirHome() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setErr("");
-    const value = q.trim();
-    if (!value) return;
+    const parsed = parseTrackQuery(q);
+    if (!parsed) return;
     setBusy(true);
     try {
-      if (value.startsWith("SS-") || value.startsWith("ss-") || value.startsWith("Ss-")) {
-        const found = await lookupInvoice({ data: { id: value.toUpperCase() } });
+      if (parsed.kind === "invoice") {
+        const found = await lookupInvoice({ data: { id: parsed.value } });
         if (!found) {
           setErr(lang === "pt" ? "Fatura não encontrada." : "Invoice not found.");
           return;
@@ -36,12 +37,16 @@ function SeguirHome() {
         await nav({ to: "/seguir/$token", params: { token: found.token } });
         return;
       }
-      const track = await getTracking({ data: { token: value } });
+      if (parsed.kind === "rider") {
+        await nav({ to: "/moto/$token", params: { token: parsed.value } });
+        return;
+      }
+      const track = await getTracking({ data: { token: parsed.value } });
       if (!track) {
         setErr(lang === "pt" ? "Link de seguimento inválido." : "Invalid tracking link.");
         return;
       }
-      await nav({ to: "/seguir/$token", params: { token: value } });
+      await nav({ to: "/seguir/$token", params: { token: parsed.value } });
     } finally {
       setBusy(false);
     }
@@ -58,8 +63,8 @@ function SeguirHome() {
         </h1>
         <p className="mt-5 max-w-xl text-sm leading-relaxed text-stone sm:text-base">
           {lang === "pt"
-            ? "Cada encomenda gera um link único. A cozinha Sete Sete, em Talatona, é o ponto de partida. A casa e o motoboy actualizam o estado — tu vês o caminho até à porta."
-            : "Each order gets a unique link. The Sete Sete kitchen in Talatona is the starting point. The house and the courier update the status — you watch the route to your door."}
+            ? "Cola o link que recebeste, ou o número da fatura (SS-…). Vês o caminho da cozinha, em Talatona, até à tua porta — sem letras no mapa."
+            : "Paste the link you received, or the invoice number (SS-…). You watch the kitchen in Talatona to your door — no letters on the map."}
         </p>
 
         <form
@@ -67,11 +72,11 @@ function SeguirHome() {
           className="mt-10 rounded-xl bg-rice-warm p-5 shadow-[var(--shadow-border)] sm:p-7"
         >
           <label className="text-sm font-medium">
-            {lang === "pt" ? "Número da fatura ou código do link" : "Invoice number or tracking code"}
+            {lang === "pt" ? "Número da fatura ou link" : "Invoice number or tracking link"}
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="SS-… ou sete-ilha-77"
+              placeholder="SS-260918-C0X5  ou  setesete.ao/seguir/…"
               className="mt-2 min-h-12 w-full rounded-lg border border-ink/10 bg-rice px-3 text-sm outline-none ring-kaki focus:ring-2"
             />
           </label>

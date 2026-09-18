@@ -35,8 +35,8 @@ function CasaPage() {
             </p>
             <p className="mt-6 text-base leading-relaxed text-stone sm:text-lg">
               {lang === "pt"
-                ? "A cozinha está em Talatona — o ponto A de todas as rotas. Cada encomenda sai daqui rumo à tua zona, com um link para seguir o caminho."
-                : "The kitchen is in Talatona — point A of every route. Each order leaves here for your area, with a link to follow the path."}
+                ? "A cozinha está em Talatona. Cada encomenda sai daqui rumo à tua zona, com um link para seguir o caminho."
+                : "The kitchen is in Talatona. Each order leaves here for your area, with a link to follow the path."}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link

@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { ExportBar } from "@/components/export-bar.tsx";
-import { FLOW, STATUS_META, nextStatus, type OrderRow, type OrderStatus } from "@/lib/ops";
-import { findOrders, listOrders, setOrderStatus } from "@/lib/ops.functions";
+import { FLOW, STATUS_META, nextStatus, waDigits, type CourierRow, type OrderRow, type OrderStatus } from "@/lib/ops";
+import { findOrders, listCouriers, listOrders, setOrderStatus } from "@/lib/ops.functions";
 import { formatKz, cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ops/encomendas/")({
@@ -20,6 +20,7 @@ const COLS: { id: string; title: string; statuses: OrderStatus[] }[] = [
 function EncomendasPage() {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [couriers, setCouriers] = useState<CourierRow[]>([]);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
   const [lookup, setLookup] = useState("");
@@ -27,8 +28,12 @@ function EncomendasPage() {
   const [hits, setHits] = useState<OrderRow[] | null>(null);
 
   const load = useCallback(async () => {
-    const rows = await listOrders({ data: {} });
+    const [rows, list] = await Promise.all([
+      listOrders({ data: {} }),
+      listCouriers({ data: { all: false } }),
+    ]);
     setOrders(rows);
+    setCouriers(list);
   }, []);
 
   useEffect(() => {
@@ -58,7 +63,7 @@ function EncomendasPage() {
 
   return (
     <div>
-      <p className="text-[11px] tracking-[0.28em] text-kaki-soft uppercase">Cozinha</p>
+      <p className="text-[11px] tracking-[0.28em] text-kaki-soft uppercase">Operações</p>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
         <h1 className="font-display text-4xl">Encomendas</h1>
         <div className="flex flex-wrap items-center gap-3">
@@ -203,6 +208,39 @@ function EncomendasPage() {
                         >
                           {STATUS_META[nextStatus(o.status)!].pt}
                         </button>
+                      ) : null}
+                      {o.riderToken ? (
+                        <div className="mt-2 flex gap-1">
+                          <Link
+                            to="/moto/$token"
+                            params={{ token: o.riderToken }}
+                            className="inline-flex min-h-9 flex-1 items-center justify-center rounded-full border border-rice/15 px-2 text-[10px] font-semibold tracking-[0.1em] uppercase"
+                          >
+                            Abrir rota
+                          </Link>
+                          {(() => {
+                            const c =
+                              couriers.find((x) => x.id === o.courierId) ??
+                              couriers.find((x) => x.name === o.courierName);
+                            const wa = c ? waDigits(c.phone) : "";
+                            if (!wa || !c) return null;
+                            const origin = typeof window !== "undefined" ? window.location.origin : "";
+                            const riderUrl = `${origin}/moto/${o.riderToken}`;
+                            const text = encodeURIComponent(
+                              `Sete Sete · ${o.id}\n${o.customerName} · ${o.address}, ${o.zone}\nAbre este link e confirma a saída e a entrega:\n${riderUrl}`,
+                            );
+                            return (
+                              <a
+                                href={`https://wa.me/${wa}?text=${text}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex min-h-9 flex-1 items-center justify-center rounded-full bg-kaki px-2 text-[10px] font-semibold tracking-[0.1em] text-rice uppercase"
+                              >
+                                Enviar a {c.name}
+                              </a>
+                            );
+                          })()}
+                        </div>
                       ) : null}
                     </li>
                   ))

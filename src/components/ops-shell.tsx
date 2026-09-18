@@ -10,8 +10,8 @@ const NAV = [
   { to: "/ops", label: "Painel", icon: LayoutDashboard, exact: true },
   { to: "/ops/encomendas", label: "Encomendas", icon: ClipboardList, exact: false },
   { to: "/ops/cozinha", label: "Cozinha", icon: CookingPot, exact: false },
-  { to: "/ops/motoboys", label: "Motoboys", icon: Bike, exact: false },
   { to: "/ops/comprovativos", label: "Comprovativos", icon: FileCheck, exact: false },
+  { to: "/ops/motoboys", label: "Motoboys", icon: Bike, exact: false },
   { to: "/ops/crm", label: "CRM", icon: Users, exact: false },
   { to: "/ops/manual", label: "Manual", icon: BookOpen, exact: false },
 ];
@@ -106,30 +106,12 @@ export function OpsShell() {
 
   return (
     <div className="min-h-dvh bg-nori text-rice">
-      <header className="sticky top-0 z-30 border-b border-rice/10 bg-nori/92 backdrop-blur-md">
-        <div className="mx-auto flex min-h-16 max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-2 sm:px-6">
+      <header className="sticky top-0 z-30 border-b border-rice/10 bg-nori/95 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link to="/ops" className="flex items-center gap-2">
             <Mark invert className="size-9" alt="" />
             <span className="text-sm font-semibold tracking-[0.16em] uppercase">Backoffice</span>
           </Link>
-          <nav className="flex max-w-[70%] flex-wrap items-center justify-end gap-1">
-            {NAV.map((n) => {
-              const active = n.exact ? pathname === n.to || pathname === `${n.to}/` : pathname.startsWith(n.to);
-              return (
-                <Link
-                  key={n.to}
-                  to={n.to}
-                  className={cn(
-                    "inline-flex min-h-10 items-center gap-1.5 rounded-full px-2.5 text-[10px] font-semibold tracking-[0.1em] uppercase sm:min-h-11 sm:px-3 sm:text-[11px]",
-                    active ? "bg-kaki text-rice" : "text-rice/80 hover:bg-rice/8 hover:text-rice",
-                  )}
-                >
-                  <n.icon className="size-3.5" />
-                  <span>{n.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
           <button
             type="button"
             onClick={() => {
@@ -145,6 +127,28 @@ export function OpsShell() {
             <LogOut className="size-4" />
           </button>
         </div>
+        <nav className="border-t border-rice/10">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-1 px-3 py-2 sm:px-6">
+            {NAV.map((n) => {
+              const active = n.exact
+                ? pathname === n.to || pathname === `${n.to}/`
+                : pathname.startsWith(n.to);
+              return (
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  className={cn(
+                    "inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 text-[11px] font-semibold tracking-[0.1em] uppercase",
+                    active ? "bg-kaki text-rice" : "text-rice/80 hover:bg-rice/8 hover:text-rice",
+                  )}
+                >
+                  <n.icon className="size-3.5" />
+                  {n.label}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
       </header>
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         <Outlet />

@@ -130,7 +130,62 @@ function OrderDetail() {
           moving={order.status === "out" || order.status === "nearby"}
         />
         <div>
-          <p className="text-[11px] tracking-[0.16em] text-stone uppercase">Estado</p>
+          <section className="rounded-xl bg-kaki/15 p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[11px] tracking-[0.16em] text-kaki-soft uppercase">Motoboy · enviar rota</p>
+                <p className="mt-2 text-sm text-rice/80">
+                  Escolhe o estafeta. O botão abre o WhatsApp dele com o link desta encomenda.
+                </p>
+              </div>
+              <Link
+                to="/ops/motoboys"
+                className="shrink-0 text-[11px] tracking-[0.12em] text-kaki-soft uppercase hover:text-rice"
+              >
+                Lista
+              </Link>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {couriers.length === 0 ? (
+                <p className="text-sm text-stone">Ainda sem motoboys activos. Cria-os em Motoboys.</p>
+              ) : (
+                couriers.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      setBusy(true);
+                      void assignCourier({ data: { id: order.id, courierId: c.id } })
+                        .then(() => load())
+                        .finally(() => setBusy(false));
+                    }}
+                    className={cn(
+                      "min-h-10 rounded-full px-3 text-[11px] font-semibold tracking-[0.1em] uppercase",
+                      order.courierId === c.id || order.courierName === c.name
+                        ? "bg-kaki text-rice"
+                        : "bg-rice/8 text-rice/80 hover:bg-rice/15",
+                    )}
+                  >
+                    {c.name}
+                  </button>
+                ))
+              )}
+            </div>
+            {order.riderToken ? (
+              <RiderActions
+                order={order}
+                couriers={couriers}
+                copied={copiedRider}
+                onCopied={() => {
+                  setCopiedRider(true);
+                  window.setTimeout(() => setCopiedRider(false), 1600);
+                }}
+              />
+            ) : null}
+          </section>
+
+          <p className="mt-8 text-[11px] tracking-[0.16em] text-stone uppercase">Estado</p>
           <p className="mt-2 font-display text-3xl">{STATUS_META[order.status].pt}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {FLOW.map((st) => (
@@ -235,54 +290,6 @@ function OrderDetail() {
             >
               Actualizar tempo
             </button>
-          </section>
-
-          <section className="mt-4 rounded-xl bg-rice/5 p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-[11px] tracking-[0.16em] text-stone uppercase">Motoboy</p>
-                <p className="mt-2 text-sm text-stone">
-                  Escolhe na lista. O link da rota vai no WhatsApp dele — não no do cliente.
-                </p>
-              </div>
-              <Link
-                to="/ops/motoboys"
-                className="shrink-0 text-[11px] tracking-[0.12em] text-kaki-soft uppercase hover:text-rice"
-              >
-                Gerir lista
-              </Link>
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {couriers.length === 0 ? (
-                <p className="text-sm text-stone">Ainda sem motoboys activos. Cria-os na lista.</p>
-              ) : (
-                couriers.map((c) => (
-                  <button
-                    key={c.id}
-                    type="button"
-                    disabled={busy}
-                    onClick={() => {
-                      setBusy(true);
-                      void assignCourier({ data: { id: order.id, courierId: c.id } })
-                        .then(() => load())
-                        .finally(() => setBusy(false));
-                    }}
-                    className={cn(
-                      "min-h-10 rounded-full px-3 text-[11px] font-semibold tracking-[0.1em] uppercase",
-                      order.courierId === c.id || order.courierName === c.name
-                        ? "bg-kaki text-rice"
-                        : "bg-rice/8 text-rice/80 hover:bg-rice/15",
-                    )}
-                  >
-                    {c.name}
-                  </button>
-                ))
-              )}
-            </div>
-            {order.riderToken ? <RiderActions order={order} couriers={couriers} copied={copiedRider} onCopied={() => {
-              setCopiedRider(true);
-              window.setTimeout(() => setCopiedRider(false), 1600);
-            }} /> : null}
           </section>
 
           <div className="mt-6 flex gap-2">

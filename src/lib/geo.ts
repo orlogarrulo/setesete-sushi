@@ -1,4 +1,4 @@
-/** Cozinha Sete Sete — ponto A de todas as rotas. Talatona, Luanda. */
+/** Cozinha Sete Sete — origem de todas as rotas. Talatona, Luanda. */
 export const KITCHEN = {
   name: "Cozinha Sete Sete",
   zone: "Talatona",
