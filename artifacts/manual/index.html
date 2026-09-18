@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <title>Sete Sete · Manual de seguimento</title>
+  <style>
+    @font-face {
+      font-family: "Cormorant";
+      src: url("fonts/CormorantGaramond-Display.ttf") format("truetype");
+      font-weight: 500 700;
+    }
+    @font-face {
+      font-family: "Outfit";
+      src: url("fonts/Outfit-UI.ttf") format("truetype");
+      font-weight: 300 700;
+    }
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: #1a1714;
+      color: #1a1714;
+      font-family: "Outfit", sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .page {
+      width: 210mm;
+      height: 297mm;
+      overflow: hidden;
+      position: relative;
+      page-break-after: always;
+      break-after: page;
+    }
+    .page:last-child { page-break-after: auto; break-after: auto; }
+    .k { color: #e24a17; }
+    .stone { color: #8a8278; }
+    .rice { color: #f4f0e8; }
+    .display { font-family: "Cormorant", serif; font-weight: 600; }
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #e24a17;
+    }
+    .num {
+      font-family: "Cormorant", serif;
+      font-size: 42px;
+      line-height: 1;
+      color: #e24a17;
+    }
+    footer.bar {
+      position: absolute;
+      left: 16mm;
+      right: 16mm;
+      bottom: 10mm;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #8a8278;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+    .card {
+      background: #fbfaf7;
+      border: 1px solid rgba(26,23,20,.08);
+      border-radius: 10px;
+      padding: 6mm;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 14mm 1fr;
+      gap: 4mm;
+      padding: 3.5mm 0;
+      border-bottom: 1px solid rgba(26,23,20,.08);
+    }
+    .step:last-child { border-bottom: 0; }
+    p { line-height: 1.45; }
+  </style>
+</head>
+<body>
+
+<!-- 1 COVER -->
+<section class="page" style="background:#231f1c;color:#f4f0e8;">
+  <img src="images/cover.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;" />
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,31,28,.25) 0%,rgba(35,31,28,.82) 70%,#231f1c 100%);"></div>
+  <div style="position:relative;padding:18mm 16mm;height:100%;display:flex;flex-direction:column;">
+    <p class="eyebrow rice" style="color:#f3d5c6;">Sete Sete · Luanda</p>
+    <img src="images/selo.svg" alt="Sete Sete" style="width:22mm;margin-top:8mm;filter:invert(1);" />
+    <div style="margin-top:auto;padding-bottom:18mm;">
+      <p class="eyebrow" style="color:#f3d5c6;">Manual de operações · v1</p>
+      <h1 class="display" style="font-size:64px;line-height:.95;margin-top:6mm;">Seguimento<br/>da encomenda</h1>
+      <p style="max-width:120mm;margin-top:8mm;font-size:14px;color:#f3d5c6;line-height:1.5;">
+        Da fatura à porta. Quem confirma o quê, como o motoboy trabalha sem aplicação, e como o tempo de 45 minutos se ajusta a Luanda.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 OVERVIEW -->
+<section class="page" style="background:#f4f0e8;">
+  <div style="padding:16mm 16mm 18mm;">
+    <p class="eyebrow">01 · Visão geral</p>
+    <h2 class="display" style="font-size:42px;margin-top:4mm;">Quatro pessoas.<br/>Um único fio.</h2>
+    <p class="stone" style="max-width:150mm;margin-top:5mm;font-size:13px;">
+      Ninguém instala uma aplicação extra. O cliente segue no site. O escritório e a cozinha usam o backoffice. O motoboy abre um link no WhatsApp, no telemóvel que já tem.
+    </p>
+    <div class="grid-2" style="margin-top:10mm;">
+      <div class="card">
+        <p class="eyebrow">Cliente</p>
+        <p class="display" style="font-size:26px;margin-top:3mm;">Segue</p>
+        <p style="margin-top:3mm;font-size:12px;">Link único na fatura e no WhatsApp. Vê o estado e o mapa. Não confirma nada — só observa.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">Escritório</p>
+        <p class="display" style="font-size:26px;margin-top:3mm;">Confirma</p>
+        <p style="margin-top:3mm;font-size:12px;">Pagamento, zona e tempo. Ajusta os 45 minutos se Luanda atrasar. Envia a rota ao motoboy.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">Cozinha</p>
+        <p class="display" style="font-size:26px;margin-top:3mm;">Prepara</p>
+        <p style="margin-top:3mm;font-size:12px;">Marca «Começar» e «Pronto». Não confirma o pagamento nem a entrega.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">Motoboy</p>
+        <p class="display" style="font-size:26px;margin-top:3mm;">Entrega</p>
+        <p style="margin-top:3mm;font-size:12px;">Dois toques no telemóvel: recebi e saí · entregue. Sem app, sem PIN do backoffice.</p>
+      </div>
+    </div>
+    <div style="margin-top:10mm;display:flex;gap:3mm;flex-wrap:wrap;">
+      <span style="padding:2.2mm 4mm;border-radius:99px;background:#231f1c;color:#f4f0e8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;">1 Recebido</span>
+      <span style="padding:2.2mm 4mm;border-radius:99px;background:#231f1c;color:#f4f0e8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;">2 Confirmado</span>
+      <span style="padding:2.2mm 4mm;border-radius:99px;background:#231f1c;color:#f4f0e8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;">3 A preparar</span>
+      <span style="padding:2.2mm 4mm;border-radius:99px;background:#231f1c;color:#f4f0e8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;">4 Pronto</span>
+      <span style="padding:2.2mm 4mm;border-radius:99px;background:#e24a17;color:#f4f0e8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;">5 Em rota</span>
+      <span style="padding:2.2mm 4mm;border-radius:99px;background:#e24a17;color:#f4f0e8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;">6 Próximo</span>
+      <span style="padding:2.2mm 4mm;border-radius:99px;background:#231f1c;color:#f4f0e8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;">7 Entregue</span>
+    </div>
+  </div>
+  <footer class="bar"><span>Sete Sete · Manual de seguimento</span><span>02</span></footer>
+</section>
+
+<!-- 3 FLOW STEPS -->
+<section class="page" style="background:#f4f0e8;">
+  <div style="padding:16mm 16mm 18mm;">
+    <p class="eyebrow">02 · Passo a passo</p>
+    <h2 class="display" style="font-size:40px;margin-top:4mm;">O fio completo</h2>
+    <div style="margin-top:8mm;">
+      <div class="step">
+        <span class="num">1</span>
+        <div>
+          <p style="font-weight:600;font-size:14px;">O cliente gera a fatura</p>
+          <p class="stone" style="font-size:12px;margin-top:1mm;">O número da fatura nasce primeiro. O cliente paga com essa referência (Multicaixa, transferência ou dinheiro). Recebe o link de seguimento no ecrã e no WhatsApp.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <div>
+          <p style="font-weight:600;font-size:14px;">O escritório confirma — não a cozinha</p>
+          <p class="stone" style="font-size:12px;margin-top:1mm;">Verifica o comprovativo (ligado ao telefone e à fatura), aceita a zona e fixa o tempo. Só aqui a encomenda passa a Confirmado. A cozinha ainda não toca.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <div>
+          <p style="font-weight:600;font-size:14px;">A cozinha marca o prato</p>
+          <p class="stone" style="font-size:12px;margin-top:1mm;">No pass da cozinha: Começar (A preparar) e Pronto para o motoboy. A cozinha confirma comida, não pagamento nem entrega.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="num">4</span>
+        <div>
+          <p style="font-weight:600;font-size:14px;">O escritório envia a rota ao motoboy</p>
+          <p class="stone" style="font-size:12px;margin-top:1mm;">Um link privado, diferente do link do cliente, vai no WhatsApp. O motoboy abre no browser do telemóvel. Não entra no backoffice.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="num">5</span>
+        <div>
+          <p style="font-weight:600;font-size:14px;">O motoboy confirma a recepção e sai</p>
+          <p class="stone" style="font-size:12px;margin-top:1mm;">Um botão: «Recebi a encomenda · saí da casa». O mapa do cliente começa a andar. O estado passa a Em rota.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="num">6</span>
+        <div>
+          <p style="font-weight:600;font-size:14px;">Na zona, depois na porta</p>
+          <p class="stone" style="font-size:12px;margin-top:1mm;">«Estou na zona do cliente» e, ao entregar, «Encomenda entregue». A encomenda fecha. O cliente vê Chegou.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="bar"><span>Sete Sete · Manual de seguimento</span><span>03</span></footer>
+</section>
+
+<!-- 4 CLIENT -->
+<section class="page" style="background:#f4f0e8;">
+  <div style="padding:16mm 16mm 18mm;">
+    <p class="eyebrow">03 · Cliente</p>
+    <h2 class="display" style="font-size:40px;margin-top:4mm;">O que o cliente vê</h2>
+    <div class="grid-2" style="margin-top:8mm;align-items:start;">
+      <div>
+        <img src="images/cliente.jpg" alt="" style="width:100%;height:78mm;object-fit:cover;border-radius:10px;" />
+        <p class="stone" style="margin-top:4mm;font-size:11px;">O link vive na fatura, na mensagem de WhatsApp e em setesete.ao/seguir.</p>
+      </div>
+      <div>
+        <p style="font-size:13px;font-weight:600;">Não precisa de conta.</p>
+        <p class="stone" style="margin-top:3mm;font-size:12px;">Quem tem o link vê o estado. Pode partilhar com quem recebe em casa. Procura também pelo número da fatura (SS-…).</p>
+        <p style="margin-top:6mm;font-size:13px;font-weight:600;">O mapa actualiza sozinho.</p>
+        <p class="stone" style="margin-top:3mm;font-size:12px;">A cada poucos segundos o ecrã pergunta à casa. Quando o motoboy toca «saí» ou «entregue», o cliente vê no mesmo instante.</p>
+        <p style="margin-top:6mm;font-size:13px;font-weight:600;">Fora de horas.</p>
+        <p class="stone" style="margin-top:3mm;font-size:12px;">O pedido entra na mesma. A mensagem diz que está fechado (12h–22h) e que contactamos na abertura, por ordem de chegada. No WhatsApp da casa: «encomenda a ser confirmada — fora do horário».</p>
+      </div>
+    </div>
+  </div>
+  <footer class="bar"><span>Sete Sete · Manual de seguimento</span><span>04</span></footer>
+</section>
+
+<!-- 5 OFFICE -->
+<section class="page" style="background:#f4f0e8;">
+  <div style="padding:16mm 16mm 18mm;">
+    <p class="eyebrow">04 · Escritório</p>
+    <h2 class="display" style="font-size:40px;margin-top:4mm;">Quem confirma a encomenda</h2>
+    <p style="margin-top:5mm;max-width:160mm;font-size:13px;">O escritório. Não a cozinha. A encomenda chega sozinha ao backoffice quando o cliente gera a fatura. Confirmar é um acto humano: olhar o comprovativo, a zona, o tempo.</p>
+    <div class="grid-2" style="margin-top:8mm;">
+      <div class="card">
+        <p class="eyebrow">Backoffice</p>
+        <p class="display" style="font-size:24px;margin-top:2mm;">setesete.ao/ops</p>
+        <p class="stone" style="margin-top:3mm;font-size:12px;">Acesso com utilizador e palavra-passe. A sessão cai ao sair da página. O público não vê este endereço no menu.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">Ficha da encomenda</p>
+        <p class="display" style="font-size:24px;margin-top:2mm;">Uma referência</p>
+        <p class="stone" style="margin-top:3mm;font-size:12px;">Comprovativo, telefone, fatura e mapa na mesma ficha. Confirmar pagamento e avançar para Confirmado.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:6mm;">
+      <p style="font-weight:600;font-size:13px;">Checklist do escritório</p>
+      <ol style="margin-top:4mm;padding-left:5mm;font-size:12px;line-height:1.7;color:#231f1c;">
+        <li>Abrir a ficha pelo número da fatura.</li>
+        <li>Ver o comprovativo (Multicaixa / PDF) ou, se for dinheiro, seguir sem ficheiro.</li>
+        <li>Confirmar pagamento.</li>
+        <li>Fixar o tempo (45 min, ou outro se Luanda mandar).</li>
+        <li>Avançar para Confirmado — a cozinha vê no pass.</li>
+        <li>Quando estiver Pronto, atribuir motoboy e enviar a rota no WhatsApp.</li>
+      </ol>
+    </div>
+  </div>
+  <footer class="bar"><span>Sete Sete · Manual de seguimento</span><span>05</span></footer>
+</section>
+
+<!-- 6 KITCHEN -->
+<section class="page" style="background:#231f1c;color:#f4f0e8;">
+  <img src="images/cozinha.jpg" alt="" style="position:absolute;top:0;left:0;right:0;height:92mm;width:100%;object-fit:cover;opacity:.55;" />
+  <div style="position:absolute;top:0;left:0;right:0;height:92mm;background:linear-gradient(180deg,transparent, #231f1c);"></div>
+  <div style="position:relative;padding:16mm 16mm 18mm;height:100%;">
+    <p class="eyebrow" style="color:#f3d5c6;">05 · Cozinha</p>
+    <h2 class="display" style="font-size:42px;margin-top:4mm;margin-top:58mm;">O pass</h2>
+    <p style="max-width:150mm;margin-top:4mm;font-size:13px;color:#f3d5c6;">
+      Ecrã de cozinha, no backoffice. Três colunas: Confirmado · A preparar · Pronto. Dois botões. Nada de contas, nada de comprovativos.
+    </p>
+    <div class="grid-2" style="margin-top:8mm;">
+      <div style="background:rgba(244,240,232,.06);border-radius:10px;padding:6mm;">
+        <p class="eyebrow" style="color:#f3d5c6;">Começar</p>
+        <p style="margin-top:3mm;font-size:13px;">A encomenda já foi aceite pelo escritório. A cozinha monta. O cliente lê «A preparar».</p>
+      </div>
+      <div style="background:rgba(244,240,232,.06);border-radius:10px;padding:6mm;">
+        <p class="eyebrow" style="color:#f3d5c6;">Pronto para o motoboy</p>
+        <p style="margin-top:3mm;font-size:13px;">O prato está no pass. O escritório envia o link. O motoboy só agora pode tocar «Recebi».</p>
+      </div>
+    </div>
+    <p style="margin-top:8mm;font-size:12px;color:#8a8278;max-width:150mm;">
+      Se a cozinha se atrasar, o escritório não inventa um novo estado — aumenta o tempo de entrega. O cliente vê os minutos a serem honestos.
+    </p>
+  </div>
+  <footer class="bar" style="color:#8a8278;"><span>Sete Sete · Manual de seguimento</span><span>06</span></footer>
+</section>
+
+<!-- 7 MOTOBOY -->
+<section class="page" style="background:#f4f0e8;">
+  <div style="padding:16mm 16mm 18mm;">
+    <p class="eyebrow">06 · Motoboy</p>
+    <h2 class="display" style="font-size:40px;margin-top:4mm;">Sem aplicação.</h2>
+    <div class="grid-2" style="margin-top:7mm;">
+      <div>
+        <img src="images/moto.jpg" alt="" style="width:100%;height:62mm;object-fit:cover;border-radius:10px;" />
+        <p class="stone" style="margin-top:3mm;font-size:11px;">O telemóvel que já usa. Um link. Três botões, no máximo.</p>
+      </div>
+      <div>
+        <p style="font-size:13px;font-weight:600;">Como recebe o trabalho</p>
+        <p class="stone" style="margin-top:2mm;font-size:12px;">O escritório manda um WhatsApp com a fatura, a morada e o link da rota. O link é só do motoboy — o cliente não o tem, para ninguém marcar «entregue» por engano.</p>
+        <p style="margin-top:5mm;font-size:13px;font-weight:600;">Na palma da mão</p>
+        <p class="stone" style="margin-top:2mm;font-size:12px;">Nome, morada, zona, telefone (ligar ou WhatsApp), mapa, lista do pedido e se cobra em dinheiro ou já está pago.</p>
+      </div>
+    </div>
+    <div style="margin-top:7mm;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm;">
+      <div class="card" style="background:#231f1c;color:#f4f0e8;border:0;">
+        <p class="eyebrow" style="color:#f3d5c6;">Toque 1</p>
+        <p class="display" style="font-size:22px;margin-top:3mm;">Recebi · saí</p>
+        <p style="margin-top:3mm;font-size:11px;color:#f3d5c6;">Confirma que a encomenda saiu da casa. O cliente vê Em rota.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">Toque 2</p>
+        <p class="display" style="font-size:22px;margin-top:3mm;">Na zona</p>
+        <p class="stone" style="margin-top:3mm;font-size:11px;">Opcional, mas útil em Talatona e na Ilha. O cliente lê Próximo.</p>
+      </div>
+      <div class="card" style="background:#e24a17;color:#f4f0e8;border:0;">
+        <p class="eyebrow" style="color:#f3d5c6;">Toque 3</p>
+        <p class="display" style="font-size:22px;margin-top:3mm;">Entregue</p>
+        <p style="margin-top:3mm;font-size:11px;color:#f3d5c6;">Fecha a encomenda. Sem este toque, o ciclo não conta como feito.</p>
+      </div>
+    </div>
+  </div>
+  <footer class="bar"><span>Sete Sete · Manual de seguimento</span><span>07</span></footer>
+</section>
+
+<!-- 8 ETA -->
+<section class="page" style="background:#f4f0e8;">
+  <div style="padding:16mm 16mm 18mm;">
+    <p class="eyebrow">07 · Tempo</p>
+    <h2 class="display" style="font-size:40px;margin-top:4mm;">45 minutos,<br/>e quando Luanda manda.</h2>
+    <p style="margin-top:5mm;max-width:160mm;font-size:13px;">
+      Sim — o tempo é editável. 45 minutos é a referência interna (Talatona e zonas próximas). Cada zona já nasce com um viés: Ilha, Viana, Ingombota pedem mais. Se houver trânsito, chuva, controlo ou motoboy a faltar, o escritório muda o número na ficha. O cliente vê os minutos novos no seguimento.
+    </p>
+    <div style="margin-top:8mm;display:flex;gap:3mm;flex-wrap:wrap;">
+      <span style="padding:3mm 5mm;border-radius:99px;border:1px solid rgba(26,23,20,.12);font-size:12px;">30</span>
+      <span style="padding:3mm 5mm;border-radius:99px;background:#e24a17;color:#f4f0e8;font-size:12px;">45</span>
+      <span style="padding:3mm 5mm;border-radius:99px;border:1px solid rgba(26,23,20,.12);font-size:12px;">60</span>
+      <span style="padding:3mm 5mm;border-radius:99px;border:1px solid rgba(26,23,20,.12);font-size:12px;">75</span>
+      <span style="padding:3mm 5mm;border-radius:99px;border:1px solid rgba(26,23,20,.12);font-size:12px;">90</span>
+      <span style="padding:3mm 5mm;border-radius:99px;border:1px solid rgba(26,23,20,.12);font-size:12px;">120</span>
+      <span class="stone" style="align-self:center;font-size:11px;letter-spacing:.12em;text-transform:uppercase;">minutos</span>
+    </div>
+    <div class="card" style="margin-top:8mm;">
+      <p style="font-weight:600;font-size:13px;">Como decidir o número</p>
+      <table style="width:100%;margin-top:4mm;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="text-align:left;letter-spacing:.12em;text-transform:uppercase;font-size:9px;color:#8a8278;">
+            <th style="padding:2mm 0;">Situação</th>
+            <th style="padding:2mm 0;">Tempo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:2.2mm 0;border-top:1px solid rgba(26,23,20,.08);">Talatona, Benfica, Camama · dia limpo</td><td>30–45 min</td></tr>
+          <tr><td style="padding:2.2mm 0;border-top:1px solid rgba(26,23,20,.08);">Maianga, Alvalade, Samba</td><td>45–60 min</td></tr>
+          <tr><td style="padding:2.2mm 0;border-top:1px solid rgba(26,23,20,.08);">Ilha, Viana, hora de ponta</td><td>75–90 min</td></tr>
+          <tr><td style="padding:2.2mm 0;border-top:1px solid rgba(26,23,20,.08);">Chuva, acidente, controlo na via</td><td>somar 15–30 min e escrever o motivo</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="stone" style="margin-top:6mm;font-size:12px;max-width:160mm;">
+      O motivo fica no histórico da encomenda («Tempo actualizado para 75 min · trânsito na Samba»). Assim o CRM não esquece o porquê.
+    </p>
+  </div>
+  <footer class="bar"><span>Sete Sete · Manual de seguimento</span><span>08</span></footer>
+</section>
+
+<!-- 9 CHECKLIST -->
+<section class="page" style="background:#231f1c;color:#f4f0e8;">
+  <div style="padding:16mm 16mm 18mm;">
+    <p class="eyebrow" style="color:#f3d5c6;">08 · De bolso</p>
+    <h2 class="display" style="font-size:42px;margin-top:4mm;">Para não falhar.</h2>
+    <div style="margin-top:10mm;display:grid;grid-template-columns:1fr 1fr;gap:6mm;">
+      <div>
+        <p class="eyebrow" style="color:#f3d5c6;">Escritório</p>
+        <p style="margin-top:4mm;font-size:13px;line-height:1.7;">Confirma pagamento.<br/>Confirma zona.<br/>Edita o tempo se Luanda mandar.<br/>Envia o link ao motoboy.<br/>Nunca partilha o link do motoboy com o cliente.</p>
+      </div>
+      <div>
+        <p class="eyebrow" style="color:#f3d5c6;">Cozinha</p>
+        <p style="margin-top:4mm;font-size:13px;line-height:1.7;">Só toca no prato.<br/>Começar.<br/>Pronto.<br/>Se atrasar, avisa o escritório — eles mudam os minutos.</p>
+      </div>
+      <div>
+        <p class="eyebrow" style="color:#f3d5c6;">Motoboy</p>
+        <p style="margin-top:4mm;font-size:13px;line-height:1.7;">Abre o WhatsApp.<br/>Recebi e saí.<br/>Na zona.<br/>Entregue.<br/>Se for dinheiro, cobra na porta. Se já pagou, não cobra.</p>
+      </div>
+      <div>
+        <p class="eyebrow" style="color:#f3d5c6;">Cliente</p>
+        <p style="margin-top:4mm;font-size:13px;line-height:1.7;">Fatura primeiro, depois paga.<br/>Guarda o número SS-…<br/>Segue no link.<br/>Não precisa de app.</p>
+      </div>
+    </div>
+    <div style="margin-top:16mm;padding-top:8mm;border-top:1px solid rgba(244,240,232,.12);">
+      <p class="display" style="font-size:28px;">Sete Sete</p>
+      <p style="margin-top:3mm;font-size:12px;color:#f3d5c6;">Talatona · Luanda · Todos os dias, 12h – 22h<br/>WhatsApp +244 945 407 841 · @setesete.ao</p>
+    </div>
+  </div>
+  <footer class="bar" style="color:#8a8278;"><span>Sete Sete · Manual de seguimento</span><span>09</span></footer>
+</section>
+
+</body>
+</html>

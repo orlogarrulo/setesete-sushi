@@ -4,15 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { ExportBar } from "@/components/export-bar.tsx";
 import { RouteMap } from "@/components/route-map.tsx";
 import { KITCHEN } from "@/lib/geo";
-import {
-  FLOW,
-  STATUS_META,
-  nextStatus,
-  type OrderEvent,
-  type OrderRow,
-  type OrderStatus,
-} from "@/lib/ops";
-import { getOrder, getReceipt, setOrderStatus, verifyPayment, attachReceipt } from "@/lib/ops.functions";
+import { FLOW, STATUS_META, nextStatus, waDigits, type CourierRow, type OrderEvent, type OrderRow, type OrderStatus } from "@/lib/ops";
+import { getOrder, getReceipt, setOrderStatus, verifyPayment, attachReceipt, updateEta, assignCourier, listCouriers } from "@/lib/ops.functions";
 import { fileToReceipt } from "@/lib/receipt-file";
 import { formatKz, cn } from "@/lib/utils";
 
@@ -30,14 +23,22 @@ function OrderDetail() {
   const { id } = Route.useParams();
   const [order, setOrder] = useState<Detail | null | undefined>(undefined);
   const [copied, setCopied] = useState(false);
+  const [copiedRider, setCopiedRider] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [etaDraft, setEtaDraft] = useState<number | null>(null);
+  const [etaNote, setEtaNote] = useState("");
+  const [couriers, setCouriers] = useState<CourierRow[]>([]);
   const [proofs, setProofs] = useState<
     { id: string; mime: string; filename: string; dataB64: string; phone: string }[]
   >([]);
 
   const load = useCallback(async () => {
-    const row = await getOrder({ data: { id } });
+    const [row, list] = await Promise.all([
+      getOrder({ data: { id } }),
+      listCouriers({ data: { all: false } }),
+    ]);
     setOrder(row);
+    setCouriers(list);
     if (row) {
       const recs = await getReceipt({ data: { orderId: row.id } });
       setProofs(recs);
@@ -168,6 +169,122 @@ function OrderDetail() {
             </button>
           ) : null}
 
+          <section className="mt-6 rounded-xl bg-rice/5 p-4">
+            <p className="text-[11px] tracking-[0.16em] text-stone uppercase">Tempo de entrega</p>
+            <p className="mt-2 font-display text-3xl tabular-nums">{etaDraft ?? order.etaMin} min</p>
+            <p className="mt-1 text-xs text-stone">
+              Base por zona. Em Luanda, edita quando houver trânsito, chuva ou falta de estafeta.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {[30, 45, 60, 75, 90, 120].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setEtaDraft(n)}
+                  className={cn(
+                    "min-h-10 rounded-full px-3 text-[11px] font-semibold tracking-[0.1em] uppercase",
+                    (etaDraft ?? order.etaMin) === n
+                      ? "bg-kaki text-rice"
+                      : "bg-rice/8 text-rice/80 hover:bg-rice/15",
+                  )}
+                >
+                  {n} min
+                </button>
+              ))}
+              <label className="inline-flex min-h-10 items-center gap-2 rounded-full bg-rice/8 px-3 text-[11px] tracking-[0.08em] uppercase">
+                Outro
+                <input
+                  type="number"
+                  min={15}
+                  max={180}
+                  value={etaDraft ?? order.etaMin}
+                  onChange={(e) => {
+                    const n = Number(e.target.value);
+                    if (Number.isFinite(n)) setEtaDraft(Math.min(180, Math.max(15, Math.round(n))));
+                  }}
+                  className="w-14 bg-transparent text-right text-sm tabular-nums text-rice outline-none"
+                />
+                min
+              </label>
+            </div>
+            <input
+              value={etaNote}
+              onChange={(e) => setEtaNote(e.target.value)}
+              placeholder="Motivo — trânsito, chuva, motoboy atrasado…"
+              className="mt-3 min-h-11 w-full rounded-lg border border-rice/15 bg-nori px-3 text-sm text-rice outline-none ring-kaki focus:ring-2"
+            />
+            <button
+              type="button"
+              disabled={busy || ((etaDraft ?? order.etaMin) === order.etaMin && !etaNote.trim())}
+              onClick={() => {
+                setBusy(true);
+                void updateEta({
+                  data: {
+                    id: order.id,
+                    etaMin: etaDraft ?? order.etaMin,
+                    note: etaNote,
+                  },
+                })
+                  .then(() => {
+                    setEtaNote("");
+                    return load();
+                  })
+                  .finally(() => setBusy(false));
+              }}
+              className="mt-3 flex min-h-11 w-full items-center justify-center rounded-full border border-rice/15 text-xs font-semibold tracking-[0.12em] uppercase disabled:opacity-40"
+            >
+              Actualizar tempo
+            </button>
+          </section>
+
+          <section className="mt-4 rounded-xl bg-rice/5 p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[11px] tracking-[0.16em] text-stone uppercase">Motoboy</p>
+                <p className="mt-2 text-sm text-stone">
+                  Escolhe na lista. O link da rota vai no WhatsApp dele — não no do cliente.
+                </p>
+              </div>
+              <Link
+                to="/ops/motoboys"
+                className="shrink-0 text-[11px] tracking-[0.12em] text-kaki-soft uppercase hover:text-rice"
+              >
+                Gerir lista
+              </Link>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {couriers.length === 0 ? (
+                <p className="text-sm text-stone">Ainda sem motoboys activos. Cria-os na lista.</p>
+              ) : (
+                couriers.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      setBusy(true);
+                      void assignCourier({ data: { id: order.id, courierId: c.id } })
+                        .then(() => load())
+                        .finally(() => setBusy(false));
+                    }}
+                    className={cn(
+                      "min-h-10 rounded-full px-3 text-[11px] font-semibold tracking-[0.1em] uppercase",
+                      order.courierId === c.id || order.courierName === c.name
+                        ? "bg-kaki text-rice"
+                        : "bg-rice/8 text-rice/80 hover:bg-rice/15",
+                    )}
+                  >
+                    {c.name}
+                  </button>
+                ))
+              )}
+            </div>
+            {order.riderToken ? <RiderActions order={order} couriers={couriers} copied={copiedRider} onCopied={() => {
+              setCopiedRider(true);
+              window.setTimeout(() => setCopiedRider(false), 1600);
+            }} /> : null}
+          </section>
+
           <div className="mt-6 flex gap-2">
             <button
               type="button"
@@ -282,6 +399,75 @@ function OrderDetail() {
             Ficha CRM →
           </Link>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function RiderActions({
+  order,
+  couriers,
+  copied,
+  onCopied,
+}: {
+  order: OrderRow;
+  couriers: CourierRow[];
+  copied: boolean;
+  onCopied: () => void;
+}) {
+  const assigned =
+    couriers.find((c) => c.id === order.courierId) ??
+    couriers.find((c) => c.name === order.courierName);
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const riderUrl = `${origin}/moto/${order.riderToken}`;
+  const wa = assigned ? waDigits(assigned.phone) : "";
+  const text = encodeURIComponent(
+    `Sete Sete · ${order.id}\n${order.customerName} · ${order.address}, ${order.zone}\nAbre este link e confirma a saída e a entrega:\n${riderUrl}`,
+  );
+
+  return (
+    <div className="mt-4 space-y-2">
+      {assigned && !wa ? (
+        <p className="text-xs text-kaki">
+          {assigned.name} ainda não tem WhatsApp. Adiciona o número em Motoboys.
+        </p>
+      ) : null}
+      {!assigned ? (
+        <p className="text-xs text-stone">Escolhe o motoboy em cima para enviar o link ao número dele.</p>
+      ) : null}
+      <div className="flex flex-col gap-2 sm:flex-row">
+        {wa ? (
+          <a
+            href={`https://wa.me/${wa}?text=${text}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-kaki px-4 text-xs font-semibold tracking-[0.12em] text-rice uppercase"
+          >
+            Enviar rota a {assigned?.name}
+          </a>
+        ) : (
+          <span className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-rice/8 px-4 text-xs font-semibold tracking-[0.12em] text-stone uppercase">
+            Sem WhatsApp do motoboy
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={() => {
+            void navigator.clipboard.writeText(riderUrl).then(onCopied);
+          }}
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-rice/15 px-4 text-xs font-semibold tracking-[0.12em] uppercase"
+        >
+          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+          {copied ? "Link copiado" : "Copiar link"}
+        </button>
+        <a
+          href={`/moto/${order.riderToken}`}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex min-h-11 items-center justify-center rounded-full border border-rice/15 px-4 text-xs font-semibold tracking-[0.12em] uppercase"
+        >
+          Ver ecrã
+        </a>
       </div>
     </div>
   );

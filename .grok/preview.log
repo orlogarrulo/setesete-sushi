@@ -103,3 +103,26 @@
  ╰─────────────────────────────────────╯
 
   ➜  Local:   http://127.0.0.1:8081/
+
+> preview
+> node scripts/with-app-env.mjs vite preview
+
+Error: Error transforming route file /workspace/src/routes/ops/index.tsx: SyntaxError: Unterminated JSX contents. (240:10)
+    at file:///workspace/node_modules/@tanstack/router-generator/dist/esm/generator.js:143:13
+    at async generate (file:///workspace/node_modules/@tanstack/router-plugin/dist/esm/core/router-generator-plugin.js:39:4)
+    at async BasicMinimalPluginContext.configResolved (file:///workspace/node_modules/@tanstack/router-plugin/dist/esm/core/router-generator-plugin.js:56:4)
+    at async Promise.all (index 4)
+    at async resolveConfig (file:///workspace/node_modules/vite/dist/node/chunks/node.js:36883:2)
+    at async preview (file:///workspace/node_modules/vite/dist/node/chunks/node.js:35791:17)
+    at async CAC.<anonymous> (file:///workspace/node_modules/vite/dist/node/cli.js:807:18)
+
+ ╭────────── [Build Info] ─────────────╮
+ │                                     │
+ │  - Build Directory: .vercel/output  │
+ │  - Date: 9/18/2026, 3:52:06 AM      │
+ │  - Nitro Version: 3.0.260610-beta   │
+ │  - Nitro Preset: vercel             │
+ │                                     │
+ ╰─────────────────────────────────────╯
+
+  ➜  Local:   http://127.0.0.1:8081/

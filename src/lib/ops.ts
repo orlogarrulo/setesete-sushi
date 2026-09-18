@@ -27,7 +27,7 @@ export const STATUS_META: Record<
   confirmed: {
     pt: "Confirmado",
     en: "Confirmed",
-    hint: { pt: "A casa confirmou frescura, zona e tempo.", en: "The house confirmed freshness, zone and timing." },
+    hint: { pt: "A casa confirmou pagamento, zona e tempo.", en: "The house confirmed payment, zone and timing." },
     tone: "ink",
   },
   preparing: {
@@ -45,7 +45,7 @@ export const STATUS_META: Record<
   out: {
     pt: "Em rota",
     en: "On the way",
-    hint: { pt: "Saiu da cozinha · ponto A → destino B.", en: "Left the kitchen · point A → destination B." },
+    hint: { pt: "Saiu da cozinha em direcção à morada.", en: "Left the kitchen toward the address." },
     tone: "kaki",
   },
   nearby: {
@@ -57,7 +57,7 @@ export const STATUS_META: Record<
   delivered: {
     pt: "Entregue",
     en: "Delivered",
-    hint: { pt: "Chegou ao destino B.", en: "Arrived at destination B." },
+    hint: { pt: "Chegou à morada.", en: "Arrived at the address." },
     tone: "ink",
   },
   cancelled: {
@@ -119,6 +119,8 @@ export type OrderRow = {
   items: TicketItem[];
   etaMin: number;
   courierName: string | null;
+  courierId: string | null;
+  riderToken: string;
   createdAt: string;
   updatedAt: string;
   dispatchedAt: string | null;
@@ -176,6 +178,23 @@ export const CRM_TAGS = [
 ] as const;
 
 export const COURIERS = ["Nélson", "Rosa", "Paulo", "Marta", "Hélder"] as const;
+
+export type CourierRow = {
+  id: string;
+  name: string;
+  phone: string;
+  active: boolean;
+  createdAt: string;
+};
+
+export function waDigits(phone: string) {
+  let d = phone.replace(/\D/g, "");
+  if (!d) return "";
+  if (d.startsWith("00")) d = d.slice(2);
+  if (d.startsWith("244")) return d;
+  if (d.startsWith("0")) d = d.slice(1);
+  return `244${d}`;
+}
 
 export function firstName(full: string) {
   return full.trim().split(/\s+/)[0] || full;

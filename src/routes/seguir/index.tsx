@@ -58,8 +58,8 @@ function SeguirHome() {
         </h1>
         <p className="mt-5 max-w-xl text-sm leading-relaxed text-stone sm:text-base">
           {lang === "pt"
-            ? "Cada encomenda gera um link único. O ponto A é sempre a cozinha Sete Sete, em Talatona. O ponto B é a tua zona. A casa avança o estado — tu vês o estafeta no mapa."
-            : "Each order gets a unique link. Point A is always the Sete Sete kitchen in Talatona. Point B is your area. The house advances the status — you watch the courier on the map."}
+            ? "Cada encomenda gera um link único. A cozinha Sete Sete, em Talatona, é o ponto de partida. A casa e o motoboy actualizam o estado — tu vês o caminho até à porta."
+            : "Each order gets a unique link. The Sete Sete kitchen in Talatona is the starting point. The house and the courier update the status — you watch the route to your door."}
         </p>
 
         <form

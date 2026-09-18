@@ -65,8 +65,8 @@ export const copy = {
     },
     s3t: { pt: "Segue", en: "Track" },
     s3: {
-      pt: "Recebes um link. Vês a encomenda sair da cozinha (A) até à tua porta (B).",
-      en: "You get a link. Watch the order leave the kitchen (A) to your door (B).",
+      pt: "Recebes um link. Vês a encomenda sair da cozinha até à tua porta.",
+      en: "You get a link. Watch the order leave the kitchen to your door.",
     },
   },
   cart: {

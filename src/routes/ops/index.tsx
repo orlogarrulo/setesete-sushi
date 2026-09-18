@@ -50,18 +50,28 @@ function OpsDashboard() {
       <p className="text-[11px] tracking-[0.28em] text-kaki-soft uppercase">Painel</p>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
         <h1 className="font-display text-4xl">O dia da casa</h1>
-        <ExportBar
-          title="Painel Sete Sete"
-          filename="setesete-painel"
-          orientation="landscape"
-          headers={["Secção", "Item", "Valor"]}
-          rows={[
-            ...cards.map((c) => ["KPI", c.label, c.value]),
-            ...data.topProducts.map((p) => ["Top peças", p.name, `${p.qty} × ${formatKz(p.revenue)}`]),
-            ...data.zones.map((z) => ["Zonas", z.zone, `${z.orders} ped. · ${formatKz(z.revenue)}`]),
-            ...data.daily.map((d) => ["14 dias", d.day, `${d.orders} ped. · ${formatKz(d.revenue)}`]),
-          ]}
-        />
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href="/manual/setesete-manual-seguimento.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-10 items-center rounded-full border border-rice/15 px-4 text-[11px] font-semibold tracking-[0.12em] uppercase"
+          >
+            Manual de seguimento
+          </a>
+          <ExportBar
+            title="Painel Sete Sete"
+            filename="setesete-painel"
+            orientation="landscape"
+            headers={["Secção", "Item", "Valor"]}
+            rows={[
+              ...cards.map((c) => ["KPI", c.label, c.value]),
+              ...data.topProducts.map((p) => ["Top peças", p.name, `${p.qty} × ${formatKz(p.revenue)}`]),
+              ...data.zones.map((z) => ["Zonas", z.zone, `${z.orders} ped. · ${formatKz(z.revenue)}`]),
+              ...data.daily.map((d) => ["14 dias", d.day, `${d.orders} ped. · ${formatKz(d.revenue)}`]),
+            ]}
+          />
+        </div>
       </div>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone">
         Seis números que bastam para gerir o serviço: receita, carga, ticket,

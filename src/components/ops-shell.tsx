@@ -1,5 +1,5 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { ClipboardList, FileCheck, LayoutDashboard, LogOut, Users } from "lucide-react";
+import { Bike, BookOpen, ClipboardList, FileCheck, LayoutDashboard, LogOut, CookingPot, Users } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { Mark } from "@/components/mark.tsx";
 import { loginStaff, logoutStaff, staffSession } from "@/lib/ops.functions";
@@ -9,8 +9,11 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { to: "/ops", label: "Painel", icon: LayoutDashboard, exact: true },
   { to: "/ops/encomendas", label: "Encomendas", icon: ClipboardList, exact: false },
+  { to: "/ops/cozinha", label: "Cozinha", icon: CookingPot, exact: false },
+  { to: "/ops/motoboys", label: "Motoboys", icon: Bike, exact: false },
   { to: "/ops/comprovativos", label: "Comprovativos", icon: FileCheck, exact: false },
   { to: "/ops/crm", label: "CRM", icon: Users, exact: false },
+  { to: "/ops/manual", label: "Manual", icon: BookOpen, exact: false },
 ];
 
 export function OpsShell() {

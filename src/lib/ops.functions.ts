@@ -7,6 +7,8 @@ import {
   firstName,
   remainingMinutes,
   routeProgress,
+  waDigits,
+  type CourierRow,
   type CustomerRow,
   type OrderEvent,
   type OrderRow,
@@ -47,6 +49,8 @@ type OrderDb = {
   items_json: string;
   eta_min: number;
   courier_name: string | null;
+  courier_id?: string | null;
+  rider_token?: string | null;
   created_at: string;
   updated_at: string;
   dispatched_at: string | null;
@@ -116,6 +120,8 @@ function mapOrder(row: OrderDb): OrderRow {
     items: parseItems(row.items_json),
     etaMin: Number(row.eta_min),
     courierName: row.courier_name,
+    courierId: row.courier_id ?? null,
+    riderToken: row.rider_token ?? "",
     createdAt: asIso(row.created_at) ?? new Date().toISOString(),
     updatedAt: asIso(row.updated_at) ?? new Date().toISOString(),
     dispatchedAt: asIso(row.dispatched_at),
@@ -143,9 +149,26 @@ async function sqlReady() {
   try {
     const sql = await getSql();
     await ensureSeeded(sql);
+    await backfillRiderTokens(sql);
+    await ensureCouriers(sql);
     return sql;
   } catch (err) {
     dbFail(err);
+  }
+}
+
+async function backfillRiderTokens(sql: Sql) {
+  try {
+    const rows = await sql<{ id: string; track_token: string }>`
+      select id, track_token from orders where rider_token is null`;
+    for (const r of rows) {
+      const token = r.track_token.startsWith("sete-")
+        ? `rd-${r.track_token}`
+        : newRiderToken();
+      await sql`update orders set rider_token = ${token} where id = ${r.id} and rider_token is null`;
+    }
+  } catch {
+    /* column may not exist until migrate */
   }
 }
 
@@ -165,6 +188,44 @@ function newTicketId(date = new Date()) {
 
 function newToken() {
   return `ss${Math.random().toString(36).slice(2, 10)}${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function newRiderToken() {
+  return `rd${Math.random().toString(36).slice(2, 10)}${Math.random().toString(36).slice(2, 8)}`;
+}
+
+async function ensureCouriers(sql: Sql) {
+  try {
+    await sql.query(`create table if not exists couriers (
+      id text primary key,
+      name text not null,
+      phone text not null default '',
+      active integer not null default 1,
+      created_at timestamptz not null default now()
+    )`);
+    await sql.query(`alter table orders add column if not exists courier_id text`);
+    await sql.query(`create index if not exists couriers_active_idx on couriers (active)`);
+  } catch {
+    /* ignore — migration 0005 covers a fresh boot */
+  }
+  try {
+    const count = await sql<{ n: number }>`select count(*)::int as n from couriers`;
+    if (Number(count[0]?.n ?? 0) > 0) return;
+    for (const name of COURIERS) {
+      const id = `cr_${name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()}`;
+      await sql`insert into couriers (id, name, phone, active) values (${id}, ${name}, ${""}, ${1})`;
+    }
+  } catch {
+    /* table may not exist until migrate */
+  }
+}
+
+async function ensureRiderToken(sql: Sql, row: OrderDb): Promise<string> {
+  if (row.rider_token) return row.rider_token;
+  const token = newRiderToken();
+  await sql`update orders set rider_token = ${token} where id = ${row.id} and rider_token is null`;
+  const next = await sql<{ rider_token: string | null }>`select rider_token from orders where id = ${row.id}`;
+  return next[0]?.rider_token ?? token;
 }
 
 function pick<T>(arr: readonly T[], i: number) {
@@ -406,12 +467,12 @@ async function seedOps(sql: Sql) {
         : null);
 
     await sql`insert into orders (
-      id, track_token, customer_id, customer_name, phone, address, zone,
+      id, track_token, rider_token, customer_id, customer_name, phone, address, zone,
       origin_lat, origin_lng, dest_lat, dest_lng, notes, pay, receipt_name,
       status, total, items_json, eta_min, courier_name, created_at, updated_at,
       dispatched_at, delivered_at
     ) values (
-      ${orderId}, ${s.token}, ${customerId}, ${s.name}, ${s.phone}, ${s.address}, ${zone.name},
+      ${orderId}, ${s.token}, ${`rd-${s.token}`}, ${customerId}, ${s.name}, ${s.phone}, ${s.address}, ${zone.name},
       ${KITCHEN.lat}, ${KITCHEN.lng}, ${dest.lat}, ${dest.lng}, ${s.notes ?? ""}, ${s.pay}, ${null},
       ${s.status}, ${total}, ${JSON.stringify(s.items)}, ${eta}, ${courier}, ${iso(created)}, ${iso(delivered ?? dispatched ?? created)},
       ${dispatched ? iso(dispatched) : null}, ${delivered ? iso(delivered) : null}
@@ -515,6 +576,7 @@ export const createOrder = createServerFn({ method: "POST" })
     const now = iso(new Date());
     const eta = estimateEtaMin(zone);
     const token = newToken();
+    const rider = newRiderToken();
 
     const existing = await sql<CustomerDb>`select * from customers where id = ${customerId}`;
     if (existing.length === 0) {
@@ -528,11 +590,11 @@ export const createOrder = createServerFn({ method: "POST" })
     }
 
     await sql`insert into orders (
-      id, track_token, customer_id, customer_name, phone, address, zone,
+      id, track_token, rider_token, customer_id, customer_name, phone, address, zone,
       origin_lat, origin_lng, dest_lat, dest_lng, notes, pay, receipt_name,
       status, total, items_json, eta_min, courier_name, created_at, updated_at, pay_verified
     ) values (
-      ${data.id}, ${token}, ${customerId}, ${data.name}, ${data.phone}, ${data.address}, ${zone.name},
+      ${data.id}, ${token}, ${rider}, ${customerId}, ${data.name}, ${data.phone}, ${data.address}, ${zone.name},
       ${KITCHEN.lat}, ${KITCHEN.lng}, ${dest.lat}, ${dest.lng}, ${data.notes ?? ""}, ${data.pay}, ${data.receipt?.name ?? null},
       ${"received"}, ${data.total}, ${JSON.stringify(data.items)}, ${eta}, ${null}, ${now}, ${now}, ${false}
     )`;
@@ -613,8 +675,9 @@ export const getOrder = createServerFn({ method: "GET" })
     const sql = await sqlReady();
     const rows = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
     if (!rows[0]) return null;
+    const rider = await ensureRiderToken(sql, rows[0]);
     const pub = await toPublic(sql, rows[0]);
-    const mapped = mapOrder(rows[0]);
+    const mapped = mapOrder({ ...rows[0], rider_token: rider });
     const [withFlag] = await markReceiptFlags(sql, [mapped]);
     return { ...withFlag, events: pub.events, progress: pub.progress, remainingMin: pub.remainingMin };
   });
@@ -662,11 +725,119 @@ export const setOrderStatus = createServerFn({ method: "POST" })
       (data.status === "out"
         ? `Saiu da ${KITCHEN.name} · estafeta ${courier}.`
         : data.status === "delivered"
-          ? "Entregue no destino B."
+          ? "Entregue na morada."
           : "");
     await addEvent(sql, data.id, data.status, note);
     const next = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
     return mapOrder(next[0]);
+  });
+
+export const updateEta = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      id: z.string(),
+      etaMin: z.number().int().min(15).max(180),
+      note: z.string().max(200).optional().default(""),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await requireStaff();
+    const sql = await sqlReady();
+    const rows = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
+    if (!rows[0]) throw new Error("Encomenda não encontrada.");
+    const now = iso(new Date());
+    await sql`update orders set eta_min = ${data.etaMin}, updated_at = ${now} where id = ${data.id}`;
+    const reason = data.note.trim() || "constrangimento em Luanda";
+    await addEvent(
+      sql,
+      data.id,
+      rows[0].status,
+      `Tempo actualizado para ${data.etaMin} min · ${reason}.`,
+    );
+    const next = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
+    return mapOrder(next[0]);
+  });
+
+export const assignCourier = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      id: z.string(),
+      courierId: z.string().min(1).max(40),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await requireStaff();
+    const sql = await sqlReady();
+    const rows = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
+    if (!rows[0]) throw new Error("Encomenda não encontrada.");
+    const couriers = await sql<{ id: string; name: string; phone: string }>`
+      select id, name, phone from couriers where id = ${data.courierId} limit 1`;
+    if (!couriers[0]) throw new Error("Motoboy não encontrado.");
+    const now = iso(new Date());
+    await sql`update orders set courier_name = ${couriers[0].name}, courier_id = ${couriers[0].id}, updated_at = ${now} where id = ${data.id}`;
+    await addEvent(sql, data.id, rows[0].status, `Estafeta atribuído: ${couriers[0].name}.`);
+    const next = await sql<OrderDb>`select * from orders where id = ${data.id} limit 1`;
+    return mapOrder(next[0]);
+  });
+
+type CourierDb = {
+  id: string;
+  name: string;
+  phone: string;
+  active: number | boolean | string;
+  created_at: string;
+};
+
+function mapCourier(row: CourierDb): CourierRow {
+  return {
+    id: row.id,
+    name: row.name,
+    phone: row.phone,
+    active: Boolean(Number(row.active)),
+    createdAt: asIso(row.created_at) ?? new Date().toISOString(),
+  };
+}
+
+export const listCouriers = createServerFn({ method: "GET" })
+  .validator(z.object({ all: z.boolean().optional().default(false) }))
+  .handler(async ({ data }): Promise<CourierRow[]> => {
+    await requireStaff();
+    const sql = await sqlReady();
+    const rows = data.all
+      ? await sql<CourierDb>`select * from couriers order by active desc, name asc`
+      : await sql<CourierDb>`select * from couriers where active = 1 order by name asc`;
+    return rows.map(mapCourier);
+  });
+
+export const saveCourier = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      id: z.string().max(40).optional(),
+      name: z.string().trim().min(2).max(40),
+      phone: z.string().max(24).optional().default(""),
+      active: z.boolean().optional().default(true),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await requireStaff();
+    const sql = await sqlReady();
+    const phone = data.phone.trim();
+    const digits = waDigits(phone);
+    if (phone && digits.length < 11) {
+      throw new Error("WhatsApp incompleto. Usa o número angolano, ex. 923 000 000.");
+    }
+    const now = iso(new Date());
+    if (data.id) {
+      await sql`update couriers set name = ${data.name}, phone = ${phone}, active = ${data.active ? 1 : 0} where id = ${data.id}`;
+      const next = await sql<CourierDb>`select * from couriers where id = ${data.id} limit 1`;
+      if (!next[0]) throw new Error("Motoboy não encontrado.");
+      return mapCourier(next[0]);
+    }
+    const id = newId("cr");
+    await sql`insert into couriers (id, name, phone, active, created_at)
+      values (${id}, ${data.name}, ${phone}, ${data.active ? 1 : 0}, ${now})`;
+    const next = await sql<CourierDb>`select * from couriers where id = ${id} limit 1`;
+    return mapCourier(next[0]);
   });
 
 export const listCustomers = createServerFn({ method: "GET" })
@@ -1150,4 +1321,95 @@ export const getDashboard = createServerFn({ method: "GET" }).handler(async () =
       vip,
       winback,
     };
+  });
+
+export type RiderJob = {
+  id: string;
+  status: OrderStatus;
+  customerName: string;
+  phone: string;
+  address: string;
+  zone: string;
+  notes: string;
+  items: TicketItem[];
+  total: number;
+  etaMin: number;
+  remainingMin: number;
+  courierName: string | null;
+  pay: PayMethod;
+};
+
+export const getRiderJob = createServerFn({ method: "GET" })
+  .validator(z.object({ token: z.string().min(6).max(64) }))
+  .handler(async ({ data }): Promise<RiderJob | null> => {
+    const sql = await sqlReady();
+    const rows = await sql<OrderDb>`select * from orders where rider_token = ${data.token} limit 1`;
+    if (!rows[0]) return null;
+    const order = mapOrder(rows[0]);
+    return {
+      id: order.id,
+      status: order.status,
+      customerName: order.customerName,
+      phone: order.phone,
+      address: order.address,
+      zone: order.zone,
+      notes: order.notes,
+      items: order.items,
+      total: order.total,
+      etaMin: order.etaMin,
+      remainingMin: remainingMinutes(order),
+      courierName: order.courierName,
+      pay: order.pay,
+    };
+  });
+
+export const riderAdvance = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      token: z.string().min(6).max(64),
+      action: z.enum(["pickup", "nearby", "delivered"]),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const sql = await sqlReady();
+    const rows = await sql<OrderDb>`select * from orders where rider_token = ${data.token} limit 1`;
+    if (!rows[0]) throw new Error("Rota não encontrada.");
+    const order = mapOrder(rows[0]);
+    if (order.status === "cancelled") throw new Error("Esta encomenda foi cancelada.");
+    if (order.status === "delivered") return order;
+
+    const allowed: Record<typeof data.action, OrderStatus[]> = {
+      pickup: ["confirmed", "preparing", "ready"],
+      nearby: ["out"],
+      delivered: ["out", "nearby"],
+    };
+    if (!allowed[data.action].includes(order.status)) {
+      throw new Error("Este passo já não está disponível.");
+    }
+
+    const nextStatus: Record<typeof data.action, OrderStatus> = {
+      pickup: "out",
+      nearby: "nearby",
+      delivered: "delivered",
+    };
+    const status = nextStatus[data.action];
+    const now = iso(new Date());
+    let courier = rows[0].courier_name;
+    if (!courier) courier = pick(COURIERS, order.id.length);
+    const dispatched =
+      data.action === "pickup" ? now : asIso(rows[0].dispatched_at) ?? now;
+    const delivered = data.action === "delivered" ? now : asIso(rows[0].delivered_at);
+
+    await sql`update orders set status = ${status}, updated_at = ${now},
+      courier_name = ${courier}, dispatched_at = ${dispatched}, delivered_at = ${delivered}
+      where id = ${order.id}`;
+    const note =
+      data.action === "pickup"
+        ? `Estafeta ${courier} recebeu a encomenda e saiu da cozinha.`
+        : data.action === "nearby"
+          ? `Estafeta ${courier} na zona ${order.zone}.`
+          : `Estafeta ${courier} confirmou a entrega.`;
+    await addEvent(sql, order.id, status, note);
+    const next = await sql<OrderDb>`select * from orders where id = ${order.id} limit 1`;
+    return mapOrder(next[0]);
   });
