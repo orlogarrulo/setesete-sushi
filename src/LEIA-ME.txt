@@ -1,0 +1,21 @@
+SETETE — actualizar o Backoffice (Motoboys + Manual)
+
+O site publicado ainda tem só 4 separadores (Painel, Encomendas, Comprovativos, CRM).
+Este zip tem os ficheiros que faltam.
+
+No GitHub Desktop:
+1. Fecha o commit actual. Não grave nada da pasta .grok
+2. Descompacta este zip DENTRO da pasta do projecto (substitui os ficheiros com o mesmo nome)
+3. Na lista de Changes, deixa seleccionados só:
+   - src/
+   - public/manual/
+   - public/docs/
+   - migrations/
+   - .gitignore
+4. Desmarca tudo o que começa por .grok
+5. Summary: Backoffice: motoboys, manual e envio da rota
+6. Commit e Push origin/main
+7. Espera o Vercel. Depois actualiza o Backoffice (Sair e entrar).
+
+Tens de ver: Cozinha, Motoboys, Manual na faixa, e uma barra laranja
+«Motoboys · Manual PDF · Enviar rota».
